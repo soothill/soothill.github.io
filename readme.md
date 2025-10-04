@@ -103,8 +103,8 @@
         }
         
         pre {
-            background: #2d2d2d;
-            color: #f8f8f2;
+            background: #2d2d2d !important;
+            color: #f8f8f2 !important;
             padding: 1.5rem;
             border-radius: 6px;
             overflow-x: auto;
@@ -112,9 +112,17 @@
             border-left: 4px solid #667eea;
         }
         
+        pre code {
+            background: transparent !important;
+            color: #f8f8f2 !important;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+        
         code {
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.9rem;
+            color: inherit;
         }
         
         .warning {
