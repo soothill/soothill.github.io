@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NVMe-oF with RoCE Configuration Guide - Ubuntu Server</title>
+    <meta name="description" content="Complete guide for configuring NVMe over Fabrics (NVMe-oF) with RoCE (RDMA over Converged Ethernet) on Ubuntu Server. Step-by-step persistent configuration for enterprise storage.">
+    <meta name="keywords" content="NVMe-oF, NVMe over Fabrics, RoCE, RDMA, Ubuntu Server, nvmet, nvmetcli, storage configuration, RDMA over Converged Ethernet, enterprise storage, network storage, NVMe target, NVMe initiator, configfs, systemd, persistent storage, Linux storage, block storage, SAN, storage area network, RDMA configuration, InfiniBand, Mellanox, iSCSI alternative, low latency storage">
+    <meta name="author" content="Darren Soothill">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="NVMe-oF with RoCE Configuration Guide - Ubuntu Server">
+    <meta property="og:description" content="Complete guide for configuring NVMe over Fabrics with RoCE on Ubuntu Server with persistent configuration across reboots.">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NVMe-oF with RoCE Configuration Guide">
+    <meta name="twitter:description" content="Step-by-step guide for NVMe over Fabrics with RoCE on Ubuntu Server">
     <style>
         * {
             margin: 0;
@@ -696,6 +706,7 @@ sudo journalctl -k | grep -i rdma</code></pre>
         <footer>
             <p>NVMe-oF with RoCE Configuration Guide | Ubuntu Server</p>
             <p>Configuration: 172.16.10.10 (ens16) | Port 4420 | 3 Exported Devices</p>
+            <p style="margin-top: 1rem; opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
         </footer>
     </div>
 </body>
