@@ -293,7 +293,24 @@
     </main>
     
     <footer>
+        <p style="margin-bottom: 0.5rem; opacity: 0.8; font-size: 0.9rem;">Last updated: <span id="last-updated"></span></p>
         <p>&copy; 2025 Darren Soothill. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Display last modified date
+        document.addEventListener('DOMContentLoaded', function() {
+            const lastModified = new Date(document.lastModified);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            };
+            document.getElementById('last-updated').textContent = lastModified.toLocaleString('en-US', options);
+        });
+    </script>
 </body>
 </html>
