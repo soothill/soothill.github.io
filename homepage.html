@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darren Soothill | Professional Portfolio & Resources</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Welcome to Darren Soothill's professional website. Access important documents, resources, and information.">
+    <meta name="keywords" content="Darren Soothill, professional portfolio, documents, resources">
+    <meta name="author" content="Darren Soothill">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.darrensoothill.com">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Darren Soothill | Professional Portfolio">
+    <meta property="og:description" content="Welcome to Darren Soothill's professional website. Access important documents, resources, and information.">
+    <meta property="og:url" content="https://www.darrensoothill.com">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Darren Soothill | Professional Portfolio">
+    <meta name="twitter:description" content="Welcome to Darren Soothill's professional website.">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Darren Soothill",
+      "url": "https://www.darrensoothill.com",
+      "sameAs": []
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .documents-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .document-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .document-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .document-card p {
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Darren Soothill</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#documents">Documents</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <script>
+        // Email obfuscation to prevent scraping
+        function revealEmail() {
+            const user = 'darren';
+            const domain = 'soothill.com';
+            return user + '@' + domain;
+        }
+        
+        function createEmailLink() {
+            const email = revealEmail();
+            const emailLink = document.getElementById('email-link');
+            if (emailLink) {
+                emailLink.href = 'mailto:' + email;
+                emailLink.textContent = email;
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', createEmailLink);
+    </script>
+    
+    <main class="container">
+        <section class="hero" id="home">
+            <h1>Welcome to Darren Soothill's Website</h1>
+            <p>Your central hub for professional documents and resources</p>
+        </section>
+        
+        <section class="documents-section" id="documents">
+            <h2 class="section-title">Document Library</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+                Click on any document below to access the full content
+            </p>
+            
+            <div class="documents-grid">
+                <a href="/documents/resume.html" class="document-card">
+                    <h3>📄 Resume/CV</h3>
+                    <p>Professional background, experience, and qualifications</p>
+                </a>
+                
+                <a href="/documents/portfolio.html" class="document-card">
+                    <h3>💼 Portfolio</h3>
+                    <p>Showcase of projects and achievements</p>
+                </a>
+                
+                <a href="/documents/publications.html" class="document-card">
+                    <h3>📚 Publications</h3>
+                    <p>Articles, papers, and written works</p>
+                </a>
+                
+                <a href="/documents/certifications.html" class="document-card">
+                    <h3>🎓 Certifications</h3>
+                    <p>Professional credentials and qualifications</p>
+                </a>
+                
+                <a href="/documents/resources.html" class="document-card">
+                    <h3>🔗 Resources</h3>
+                    <p>Helpful links and reference materials</p>
+                </a>
+                
+                <a href="/documents/contact-info.html" class="document-card">
+                    <h3>📧 Contact Information</h3>
+                    <p>Get in touch and connect</p>
+                </a>
+            </div>
+        </section>
+        
+        <section class="documents-section" id="contact">
+            <h2 class="section-title">Contact Information</h2>
+            <div style="text-align: center; padding: 2rem;">
+                <div style="margin-bottom: 1.5rem;">
+                    <strong style="font-size: 1.1rem; color: #667eea;">Email:</strong><br>
+                    <a id="email-link" href="#" style="color: #333; text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
+                        Loading...
+                    </a>
+                </div>
+                <div>
+                    <strong style="font-size: 1.1rem; color: #667eea;">LinkedIn:</strong><br>
+                    <a href="https://www.linkedin.com/in/darrensoothill" target="_blank" rel="noopener noreferrer" style="color: #0077b5; text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
+                        linkedin.com/in/darrensoothill
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Darren Soothill. All rights reserved.</p>
+    </footer>
+</body>
+</html>
