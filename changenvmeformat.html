@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4KVJSXV6TK');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZFS NVMe Reformatting Guide: Change 512 to 4K Sectors | RAIDZ Tutorial</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Complete step-by-step guide to reformatting NVMe drives from 512 to 4K sectors in ZFS RAIDZ pools. Learn how to safely replace, format, and resilver NVMe devices in ZFS on Linux.">
+    <meta name="keywords" content="ZFS, NVMe, 4K sectors, RAIDZ, ZFS pool, nvme format, sector size, zpool replace, resilver, ZFS Linux, ZFS tutorial, NVMe reformatting, advanced format, 4096 byte sectors, ZFS administration, NVMe LBA format, ZFS degraded pool, zpool offline, Intel NVMe, storage optimization, ZFS guide">
+    <meta name="author" content="ZFS Administration Guide">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ZFS NVMe Reformatting Guide: Change 512 to 4K Sectors">
+    <meta property="og:description" content="Step-by-step tutorial for reformatting NVMe drives from 512-byte to 4K sectors in ZFS RAIDZ pools with safe replacement and resilver procedures.">
+    <meta property="og:url" content="https://yoursite.com/zfs-nvme-reformat-guide">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ZFS NVMe Reformatting Guide: 512 to 4K Sectors">
+    <meta name="twitter:description" content="Complete guide to safely reformatting NVMe drives in ZFS RAIDZ pools. Change sector sizes, replace drives, and monitor resilver progress.">
+    
+    <!-- Additional SEO -->
+    <link rel="canonical" href="https://yoursite.com/zfs-nvme-reformat-guide">
+    <meta name="language" content="English">
+    <meta name="category" content="Technology, Storage, Linux Administration">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "ZFS NVMe Reformatting Guide: Change 512 to 4K Sectors in RAIDZ Pool",
+      "description": "Complete step-by-step guide to reformatting NVMe drives from 512 to 4K sectors in ZFS RAIDZ pools",
+      "keywords": "ZFS, NVMe, 4K sectors, RAIDZ, zpool replace, resilver, storage optimization",
+      "articleSection": "Storage Administration",
+      "proficiencyLevel": "Advanced",
+      "dependencies": "ZFS, NVMe drive, Linux",
+      "author": {
+        "@type": "Organization",
+        "name": "ZFS Administration Guide"
+      }
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box h3 {
+            color: #e65100;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .warning-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .warning-box li {
+            margin: 8px 0;
+            color: #5d4037;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        
+        .info-box h3 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+        
+        .step {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .step p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        code {
+            background: #2d3748;
+            color: #68d391;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid #4a5568;
+            position: relative;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: #68d391;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .copy-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .copy-btn.copied {
+            background: #48bb78;
+        }
+        
+        .copy-btn.copied::after {
+            content: ' ✓';
+        }
+        
+        .command-note {
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ZFS NVMe Reformatting Guide: 512 to 4K Sectors</h1>
+            <p>Complete Tutorial: Change NVMe Sector Size in ZFS RAIDZ Pool</p>
+        </header>
+        
+        <main class="content">
+            <article>
+            <div class="warning-box">
+                <h3>⚠️ Critical Warnings - Read Before Proceeding!</h3>
+                <ul>
+                    <li><strong>BACKUP YOUR DATA FIRST!</strong> This process is inherently risky.</li>
+                    <li>The <code>nvme format</code> command will <strong>destroy all data</strong> on the device.</li>
+                    <li>You <strong>cannot simply remove</strong> a device from raidz - you must replace it.</li>
+                    <li>During resilver, your pool will be in a <strong>degraded state</strong>.</li>
+                    <li>The resilver process can take <strong>hours</strong> depending on pool size.</li>
+                    <li>Ensure you have proper redundancy before starting.</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3>📋 Device Information</h3>
+                <p><strong>Target Device:</strong> <code>nvme-INTEL_SSDPF2KX038TZ_PHAC210001SN3P8AGN</code></p>
+                <p><strong>Pool Name:</strong> <code>RaidZ</code></p>
+                <p><strong>Current Format:</strong> 512-byte sectors</p>
+                <p><strong>Target Format:</strong> 4K (4096-byte) sectors</p>
+            </div>
+
+            <div class="step">
+                <h2><span class="step-number">1</span>Check Current Pool Status</h2>
+                <p>First, verify the current state of your ZFS pool and confirm the device is present:</p>
+                <pre><code>zpool status RaidZ</code></pre>
+                <p class="command-note">This shows you the health and layout of your pool.</p>
+            </div>
+
+            <div class="step">
+                <h2><span class="step-number">2</span>Take Device Offline</h2>
+                <p>Safely take the device offline before removal:</p>
+                <pre><code>sudo zpool offline RaidZ nvme-INTEL_SSDPF2KX038TZ_PHAC210001SN3P8AGN</code></pre>
+                <p class="command-note">This is safer than immediate removal and puts the pool in a known state.</p>
+            </div>
+
+            <div class="step">
+                <h2><span class="step-number">3</span>Identify the Physical Device Path</h2>
+                <p>Find the actual device path (e.g., /dev/nvme0n1):</p>
+                <pre><code>ls -l /dev/disk/by-id/ | grep PHAC210001SN3P8AGN</code></pre>
+                <p class="command-note">You'll need this path for the formatting command. Look for something like <code>/dev/nvme0n1</code> or <code>/dev/nvme1n1</code>.</p>
+            </div>
+
+            <div class="step">
+                <h2><span class="step-number">4</span>Check Available LBA Formats</h2>
+                <p>Identify which LBA format index corresponds to 4K sectors:</p>
+                <pre><code>sudo nvme id-ns /dev/nvmeXnY -H | grep "LBA Format"</code></pre>
+                <p class="command-note">Replace <code>/dev/nvmeXnY</code> with your actual device path from Step 3. Look for a format with 4096 bytes per block (usually lbaf=1, but verify!).</p>
+            </div>
+
+            <div class="step">
+                <h2><span class="step-number">5</span>Format NVMe to 4K Sectors</h2>
+                <div class="warning-box" style="margin: 15px 0;">
+                    <h3>⚠️ DATA DESTRUCTION WARNING</h3>
+                    <p>This command will <strong>permanently erase all data</strong> on the device!</p>
+                </div>
+                <pre><code>sudo nvme format /dev/nvmeXnY --lbaf=1 --force</code></pre>
+                <p class="command-note">Replace <code>/dev/nvmeXnY</code> with your device and adjust <code>--lbaf=1</code> based on Step 4 results.</p>
+            </div>
+
+            <div class="step">
+                <h2><span class="step-number">6</span>Replace Device in Pool</h2>
+                <p>Add the reformatted device back into the pool (this triggers resilver):</p>
+                <pre><code>sudo zpool replace RaidZ nvme-INTEL_SSDPF2KX038TZ_PHAC210001SN3P8AGN</code></pre>
+                <p class="command-note">ZFS will automatically detect the device and begin resilvering data to it.</p>
+            </div>
+
+            <div class="step">
+                <h2><span class="step-number">7</span>Monitor Resilver Progress</h2>
+                <p>Watch the resilver process in real-time:</p>
+                <pre><code>watch -n 5 'zpool status RaidZ'</code></pre>
+                <p class="command-note">This updates every 5 seconds. Press Ctrl+C to exit. The resilver may take several hours.</p>
+                <p style="margin-top: 15px;">Alternatively, check status manually:</p>
+                <pre><code>zpool status RaidZ</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h3>✅ Verification</h3>
+                <p>Once the resilver completes, verify the device is using 4K sectors:</p>
+                <pre><code>sudo nvme id-ns /dev/nvmeXnY -H | grep "in use"</code></pre>
+                <p style="margin-top: 10px;">Check pool health:</p>
+                <pre><code>zpool status RaidZ</code></pre>
+                <p style="margin-top: 10px;">The pool should show as <strong>ONLINE</strong> with all devices healthy.</p>
+            </div>
+            </article>
+        </main>
+        
+        <footer>
+            <nav aria-label="Related topics">
+                <p style="font-weight: bold; margin-bottom: 10px;">Related Topics:</p>
+                <p style="font-size: 0.9em; color: #555;">
+                    ZFS Pool Management | NVMe Administration | RAIDZ Configuration | 
+                    ZFS Resilver | Storage Optimization | Advanced Format Drives | 
+                    ZFS on Linux | NVMe LBA Format | Sector Size Migration
+                </p>
+            </nav>
+            <p style="margin-top: 20px;">💾 Always maintain regular backups of critical data</p>
+            <p style="margin-top: 5px; font-size: 0.9em;">ZFS Administration | NVMe Management | Linux Storage Guide</p>
+            
+            <hr style="margin: 25px 0; border: none; border-top: 1px solid #dee2e6;">
+            
+            <div style="font-size: 0.85em; color: #666; line-height: 1.8;">
+                <p><strong>Author:</strong> Darren Soothill</p>
+                <p><strong>Published:</strong> Tuesday, October 07, 2025</p>
+                <p><strong>Last Updated:</strong> <span id="current-time"></span></p>
+                <p style="margin-top: 15px;">© 2025 Darren Soothill. All rights reserved.</p>
+                <p>This document may be freely distributed for educational purposes with proper attribution.</p>
+            </div>
+        </footer>
+        
+        <script>
+            // Display current date and time
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            };
+            document.getElementById('current-time').textContent = now.toLocaleString('en-US', options);
+            
+            // Add copy buttons to all code blocks
+            document.addEventListener('DOMContentLoaded', function() {
+                const codeBlocks = document.querySelectorAll('pre');
+                
+                codeBlocks.forEach(function(codeBlock) {
+                    // Create copy button
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.textContent = 'Copy';
+                    
+                    // Add click event
+                    copyBtn.addEventListener('click', function() {
+                        const code = codeBlock.querySelector('code');
+                        const text = code.textContent;
+                        
+                        // Copy to clipboard
+                        navigator.clipboard.writeText(text).then(function() {
+                            // Show success feedback
+                            copyBtn.textContent = 'Copied';
+                            copyBtn.classList.add('copied');
+                            
+                            // Reset button after 2 seconds
+                            setTimeout(function() {
+                                copyBtn.textContent = 'Copy';
+                                copyBtn.classList.remove('copied');
+                            }, 2000);
+                        }).catch(function(err) {
+                            console.error('Failed to copy:', err);
+                            copyBtn.textContent = 'Failed';
+                            setTimeout(function() {
+                                copyBtn.textContent = 'Copy';
+                            }, 2000);
+                        });
+                    });
+                    
+                    // Add button to code block
+                    codeBlock.appendChild(copyBtn);
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
