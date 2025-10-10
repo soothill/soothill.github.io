@@ -39,7 +39,7 @@ title: Home
                     {{ post.date | date: "%B %d, %Y" }}
                 </p>
                 <p style="margin: 0.5rem 0;">
-                    {{ post.excerpt | strip_html | truncatewords: 20 }}
+                    {% if post.description %}{{ post.description | truncatewords: 20 }}{% else %}{{ post.excerpt | strip_html | truncatewords: 20 }}{% endif %}
                 </p>
             </div>
             {% endfor %}

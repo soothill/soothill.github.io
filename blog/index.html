@@ -31,7 +31,9 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
                 </div>
 
                 <div class="post-excerpt">
-                    {% if post.excerpt %}
+                    {% if post.description %}
+                        {{ post.description }}
+                    {% elsif post.excerpt %}
                         {{ post.excerpt | strip_html | truncatewords: 50 }}
                     {% else %}
                         {{ post.content | strip_html | truncatewords: 50 }}
