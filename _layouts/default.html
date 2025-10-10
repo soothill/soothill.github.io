@@ -406,8 +406,28 @@
     </main>
 
     <footer class="site-footer">
-        <p>&copy; 2025 {{ site.author }}. All rights reserved.</p>
+        <p>&copy; 2025 <a href="#" id="author-contact" style="color: var(--text-primary); text-decoration: none; border-bottom: 1px dotted var(--text-secondary); transition: all 0.3s ease;">{{ site.author }}</a>. All rights reserved.</p>
         <p>{{ site.description }}</p>
     </footer>
+
+    <script>
+        // Obfuscated email link to prevent spam bots
+        (function() {
+            var link = document.getElementById('author-contact');
+            if (link) {
+                var user = 'darren';
+                var domain = 'soothill.com';
+                link.href = 'mailto:' + user + '@' + domain;
+                link.addEventListener('mouseenter', function() {
+                    this.style.color = 'var(--primary-light)';
+                    this.style.borderBottom = '1px solid var(--primary-light)';
+                });
+                link.addEventListener('mouseleave', function() {
+                    this.style.color = 'var(--text-primary)';
+                    this.style.borderBottom = '1px dotted var(--text-secondary)';
+                });
+            }
+        })();
+    </script>
 </body>
 </html>
