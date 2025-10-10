@@ -4,8 +4,8 @@ title: Home
 ---
 
 <div class="container" style="text-align: center;">
-    <h1 style="font-size: 3rem; margin-bottom: 1rem;">Welcome to Soothill Tech</h1>
-    <p style="font-size: 1.3rem; color: #666; margin-bottom: 3rem;">Technical guides on storage, NVMe, SPDK, and enterprise infrastructure</p>
+    <h1 style="font-size: 3rem; margin-bottom: 1rem;">Soot & Silicon</h1>
+    <p style="font-size: 1.3rem; color: #666; margin-bottom: 3rem;">Where hardware meets software - Technical insights on storage, NVMe, SPDK, and enterprise infrastructure</p>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 8px; text-align: left;">

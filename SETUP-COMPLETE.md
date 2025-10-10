@@ -1,6 +1,6 @@
-# Jekyll Blog Setup Complete! 🎉
+# Soot & Silicon - Jekyll Blog Setup Complete! 🎉
 
-Your GitHub Pages site has been successfully converted to a dynamic Jekyll-powered blog system.
+Your GitHub Pages site "Soot & Silicon" has been successfully converted to a dynamic Jekyll-powered blog system where hardware meets software.
 
 ## What Was Created
 

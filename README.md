@@ -1,6 +1,6 @@
-# Soothill Tech Blog
+# Soot & Silicon
 
-Technical guides and documentation for enterprise storage, NVMe technologies, SPDK, and infrastructure solutions.
+Where hardware meets software - Technical guides and insights on enterprise storage, NVMe technologies, SPDK, and infrastructure solutions.
 
 ## About
 

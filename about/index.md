@@ -1,14 +1,14 @@
 ---
 layout: default
 title: About
-description: About Soothill Tech - Technical guides and resources for storage and enterprise infrastructure
+description: About Soot & Silicon - Where hardware meets software. Technical guides and resources for storage and enterprise infrastructure
 ---
 
 <div class="container">
-    <h1>About Soothill Tech</h1>
+    <h1>About Soot & Silicon</h1>
 
     <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
-        Welcome to Soothill Tech, a technical resource dedicated to providing comprehensive guides and documentation for enterprise storage, NVMe technologies, SPDK, and infrastructure solutions.
+        Welcome to Soot & Silicon, where hardware meets software. This technical resource is dedicated to providing comprehensive guides and documentation for enterprise storage, NVMe technologies, SPDK, and infrastructure solutions.
     </p>
 
     <h2>What We Cover</h2>
