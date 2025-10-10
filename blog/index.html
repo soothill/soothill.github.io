@@ -6,33 +6,33 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
 
 <div class="container">
     <header style="text-align: center; margin-bottom: 4rem;">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem;">Tech Blog</h1>
-        <p style="font-size: 1.25rem; color: #4a5568; max-width: 600px; margin: 0 auto;">Latest articles and technical guides on storage, NVMe, and enterprise infrastructure</p>
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #f1f5f9;">Tech Blog</h1>
+        <p style="font-size: 1.25rem; color: #cbd5e1; max-width: 600px; margin: 0 auto;">Latest articles and technical guides on storage, NVMe, and enterprise infrastructure</p>
     </header>
 
     <div class="posts-list">
         {% if site.posts.size > 0 %}
             {% for post in site.posts %}
-            <article class="post-preview" style="margin-bottom: 3rem; padding: 2rem; background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid rgba(102, 126, 234, 0.1); transition: all 0.3s ease;">
+            <article class="post-preview" style="margin-bottom: 3rem; padding: 2rem; background: #1e293b; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); border: 1px solid #334155; transition: all 0.3s ease;">
                 <h2 style="margin-top: 0; margin-bottom: 1rem;">
-                    <a href="{{ post.url }}" style="color: #1a1a2e; text-decoration: none; transition: all 0.3s ease; display: inline-block;">{{ post.title }}</a>
+                    <a href="{{ post.url }}" style="color: #f1f5f9; text-decoration: none; transition: all 0.3s ease; display: inline-block;">{{ post.title }}</a>
                 </h2>
 
-                <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid rgba(102, 126, 234, 0.1);">
-                    <time datetime="{{ post.date | date_to_xmlschema }}" style="color: #667eea; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #334155;">
+                    <time datetime="{{ post.date | date_to_xmlschema }}" style="color: #818cf8; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         {{ post.date | date: "%B %d, %Y" }}
                     </time>
                     {% if post.categories %}
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                         {% for category in post.categories %}
-                            <span style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500;">{{ category }}</span>
+                            <span style="background: linear-gradient(135deg, #667eea, #06b6d4); color: white; padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500;">{{ category }}</span>
                         {% endfor %}
                     </div>
                     {% endif %}
                 </div>
 
-                <div class="post-excerpt" style="font-size: 1.05rem; line-height: 1.7; color: #2d3748; margin-bottom: 1.5rem;">
+                <div class="post-excerpt" style="font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 1.5rem;">
                     {% if post.description %}
                         {{ post.description }}
                     {% elsif post.excerpt %}
@@ -43,7 +43,7 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                    <a href="{{ post.url }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; font-weight: 600; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);">
+                    <a href="{{ post.url }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #06b6d4); color: white; text-decoration: none; font-weight: 600; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);">
                         Read Article
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
@@ -51,10 +51,10 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
                     {% if post.tags %}
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                         {% for tag in post.tags limit:3 %}
-                            <span style="background: #f7fafc; color: #4a5568; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; border: 1px solid #cbd5e0;">{{ tag }}</span>
+                            <span style="background: #0f172a; color: #94a3b8; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; border: 1px solid #334155;">{{ tag }}</span>
                         {% endfor %}
                         {% if post.tags.size > 3 %}
-                            <span style="background: #f7fafc; color: #4a5568; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; border: 1px solid #cbd5e0;">+{{ post.tags.size | minus: 3 }} more</span>
+                            <span style="background: #0f172a; color: #94a3b8; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; border: 1px solid #334155;">+{{ post.tags.size | minus: 3 }} more</span>
                         {% endif %}
                     </div>
                     {% endif %}
@@ -84,18 +84,18 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
 
     <!-- Pagination -->
     {% if paginator.total_pages > 1 %}
-    <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, #f7fafc, #ffffff); border-radius: 12px;">
+    <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 4rem; padding: 2rem; background: #1e293b; border-radius: 12px; border: 1px solid #334155;">
         {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path }}" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); display: inline-flex; align-items: center; gap: 0.5rem;">
+            <a href="{{ paginator.previous_page_path }}" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #06b6d4); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5); display: inline-flex; align-items: center; gap: 0.5rem;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 Previous
             </a>
         {% endif %}
 
-        <span style="padding: 0.75rem 1.5rem; background: white; border: 2px solid #667eea; border-radius: 8px; font-weight: 600; color: #667eea;">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+        <span style="padding: 0.75rem 1.5rem; background: #0f172a; border: 2px solid #667eea; border-radius: 8px; font-weight: 600; color: #818cf8;">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
 
         {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path }}" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); display: inline-flex; align-items: center; gap: 0.5rem;">
+            <a href="{{ paginator.next_page_path }}" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #06b6d4); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5); display: inline-flex; align-items: center; gap: 0.5rem;">
                 Next
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </a>
@@ -104,13 +104,13 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
     <style>
         .pagination a:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5) !important;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.7) !important;
         }
     </style>
     {% endif %}
 
     <!-- Categories/Archive -->
-    <aside style="margin-top: 4rem; padding: 2.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);">
+    <aside style="margin-top: 4rem; padding: 2.5rem; background: linear-gradient(135deg, #667eea 0%, #06b6d4 100%); border-radius: 16px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);">
         <h3 style="margin-top: 0; color: white; font-size: 1.75rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
             Browse by Category
@@ -119,7 +119,7 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
             {% assign categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
             {% for category in categories %}
                 {% if category != "" %}
-                <a href="{{ site.baseurl }}/categories/#{{ category | slugify }}" style="background: white; color: #667eea; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                <a href="{{ site.baseurl }}/categories/#{{ category | slugify }}" style="background: white; color: #667eea; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">
                     {{ category }}
                 </a>
                 {% endif %}
@@ -129,8 +129,8 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
     <style>
         aside a:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-            background: #f7fafc !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+            background: #f1f5f9 !important;
         }
     </style>
 </div>
