@@ -252,7 +252,7 @@ bundle exec jekyll doctor
 For questions or issues:
 - Review **HOWTO-ADD-POSTS.md** for posting guide
 - Check **README.md** for project overview
-- Email: darren@soothill.io
+- Email: darren@soothill.com
 
 ## Success Checklist
 

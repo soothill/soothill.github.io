@@ -313,7 +313,7 @@ Table:
 - [Jekyll Documentation](https://jekyllrb.com/docs/)
 - [GitHub Pages Documentation](https://docs.github.com/en/pages)
 - [Markdown Guide](https://www.markdownguide.org/)
-- Email: darren@soothill.io
+- Email: darren@soothill.com
 
 ---
 

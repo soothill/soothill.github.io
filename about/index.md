@@ -72,6 +72,6 @@ description: About Soothill Tech - Technical guides and resources for storage an
     <div style="margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 8px; text-align: center;">
         <h3 style="margin-top: 0;">Have Questions or Feedback?</h3>
         <p>We're always looking to improve our content and cover new topics.</p>
-        <p>Contact: <a href="mailto:darren@soothill.io" style="color: #667eea; font-weight: bold;">darren@soothill.io</a></p>
+        <p>Contact: <a href="mailto:darren@soothill.com" style="color: #667eea; font-weight: bold;">darren@soothill.com</a></p>
     </div>
 </div>

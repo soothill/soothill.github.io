@@ -110,5 +110,5 @@ If using a custom domain, ensure the `CNAME` file contains your domain name.
 
 ## Contact
 
-- Email: darren@soothill.io
+- Email: darren@soothill.com
 - Website: https://soothill.io
