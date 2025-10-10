@@ -1,0 +1,78 @@
+---
+layout: default
+title: Categories
+description: Browse blog posts by category
+---
+
+<div class="container">
+    <header style="text-align: center; margin-bottom: 3rem;">
+        <h1>Browse by Category</h1>
+        <p style="font-size: 1.1rem; color: #666;">Explore technical articles organized by topic</p>
+    </header>
+
+    {% assign categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+
+    {% for category in categories %}
+        {% if category != "" %}
+        <section id="{{ category | slugify }}" style="margin-bottom: 4rem;">
+            <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                {{ category }}
+            </h2>
+
+            <div style="display: grid; gap: 1.5rem;">
+                {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category" %}
+
+                {% for post in category_posts %}
+                <article style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <h3 style="margin-top: 0;">
+                        <a href="{{ post.url }}" style="color: #667eea; text-decoration: none;">
+                            {{ post.title }}
+                        </a>
+                    </h3>
+
+                    <div style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                        <time datetime="{{ post.date | date_to_xmlschema }}">
+                            {{ post.date | date: "%B %d, %Y" }}
+                        </time>
+                        {% if post.author %}
+                        | by {{ post.author }}
+                        {% endif %}
+                    </div>
+
+                    <p style="margin-bottom: 1rem;">
+                        {% if post.description %}
+                            {{ post.description }}
+                        {% else %}
+                            {{ post.excerpt | strip_html | truncatewords: 30 }}
+                        {% endif %}
+                    </p>
+
+                    {% if post.tags %}
+                    <div>
+                        {% for tag in post.tags limit:5 %}
+                            <span style="background: #e0e0e0; color: #555; padding: 0.2rem 0.6rem; border-radius: 12px; margin-right: 0.5rem; font-size: 0.8rem;">
+                                {{ tag }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    {% endfor %}
+
+    {% if categories.size == 0 %}
+    <div style="text-align: center; padding: 3rem; background: #f8f9fa; border-radius: 8px;">
+        <h3>No categories yet</h3>
+        <p>Categories will appear here as you add blog posts.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .container section {
+        scroll-margin-top: 80px;
+    }
+</style>

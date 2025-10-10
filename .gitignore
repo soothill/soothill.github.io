@@ -1,1 +1,20 @@
 .DS_Store
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby/Bundler
+vendor/
+.bundle/
+Gemfile.lock
+
+# Backup files
+*.bak
+*.swp
+*~
+
+# OS files
+Thumbs.db

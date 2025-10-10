@@ -1,0 +1,61 @@
+# Jekyll Configuration for GitHub Pages Blog
+title: "Soothill Tech Blog"
+description: "Technical guides and tutorials on storage, NVMe, SPDK, and enterprise infrastructure"
+author: "Darren Soothill"
+email: "darren@soothill.io"
+url: "https://soothill.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Permalink structure for blog posts
+permalink: /blog/:year/:month/:day/:title/
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /blog/:year/:month/:day/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Darren Soothill"
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
+# Google Analytics (update with your tracking ID)
+google_analytics: G-4KVJSXV6TK
+
+# SEO settings
+twitter:
+  username: soothill
+  card: summary_large_image
+
+social:
+  name: Darren Soothill
+  links:
+    - https://github.com/soothill
+
+# Pagination
+paginate: 10
+paginate_path: "/blog/page:num/"
+
+# Date format
+date_format: "%B %d, %Y"
