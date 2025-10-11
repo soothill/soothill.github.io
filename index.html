@@ -191,29 +191,32 @@
         }
         
         .document-card {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--bg-dark);
             padding: 2rem;
             border-radius: 12px;
             text-decoration: none;
-            color: white;
+            color: var(--text-primary);
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
         }
 
         .document-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+            border-color: var(--primary-light);
         }
 
         .document-card h3 {
             font-size: 1.3rem;
             margin-bottom: 0.8rem;
+            color: var(--text-primary);
         }
 
         .document-card p {
-            opacity: 0.95;
+            color: var(--text-secondary);
             font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         footer {
@@ -323,8 +326,8 @@
             <h2 class="section-title">Contact Information</h2>
             <div style="text-align: center; padding: 2rem;">
                 <div style="margin-bottom: 1.5rem;">
-                    <strong style="font-size: 1.1rem; color: #667eea;">Email:</strong><br>
-                    <a id="email-link" href="#" style="color: #333; text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
+                    <strong style="font-size: 1.1rem; color: var(--primary-light);">Email:</strong><br>
+                    <a id="email-link" href="#" style="color: var(--secondary); text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block; transition: color 0.3s ease;">
                         Loading...
                     </a>
                 </div>
