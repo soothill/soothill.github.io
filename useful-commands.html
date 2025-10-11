@@ -998,13 +998,8 @@ DEVICESCAN -a -W 4,40,45 -m darren@soothill.com
             });
         }
 
-        // Optional: Open first section by default
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstHeader = document.querySelector('.command-header');
-            if (firstHeader) {
-                firstHeader.click();
-            }
-        });
+        // All sections start collapsed by default
+        // Users can click to expand any section they want to view
     </script>
 </body>
 </html>
