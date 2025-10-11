@@ -44,18 +44,32 @@
     </script>
     
     <style>
+        :root {
+            --primary: #667eea;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background-attachment: fixed;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
         
         .container {
@@ -65,77 +79,106 @@
         }
         
         header {
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--border) 100%);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
         }
-        
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
+            padding: 1.5rem 2rem;
             flex-wrap: wrap;
         }
-        
+
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: #667eea;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            letter-spacing: -0.5px;
         }
-        
+
+        .logo:hover {
+            transform: translateY(-2px);
+            color: var(--primary-light);
+        }
+
         .nav-links {
             display: flex;
             list-style: none;
             gap: 2rem;
             flex-wrap: wrap;
         }
-        
+
         .nav-links a {
             text-decoration: none;
-            color: #333;
+            color: var(--text-secondary);
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             padding: 0.5rem 0;
+            position: relative;
         }
-        
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-light);
+            transition: width 0.3s ease;
+        }
+
         .nav-links a:hover {
-            color: #667eea;
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
         
         .hero {
             text-align: center;
             padding: 4rem 2rem;
-            color: white;
+            color: var(--text-primary);
         }
-        
+
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: -1px;
         }
-        
+
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             margin-bottom: 2rem;
-            opacity: 0.95;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
+
         .documents-section {
-            background: white;
-            border-radius: 20px;
+            background: var(--bg-card);
+            border-radius: 16px;
             padding: 3rem 2rem;
             margin: 2rem auto;
             max-width: 1000px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
         }
-        
+
         .section-title {
             font-size: 2rem;
-            color: #333;
+            color: var(--text-primary);
             margin-bottom: 2rem;
             text-align: center;
         }
@@ -148,35 +191,37 @@
         }
         
         .document-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 2rem;
             border-radius: 12px;
             text-decoration: none;
             color: white;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .document-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
         }
-        
+
         .document-card h3 {
             font-size: 1.3rem;
             margin-bottom: 0.8rem;
         }
-        
+
         .document-card p {
             opacity: 0.95;
             font-size: 0.95rem;
         }
-        
+
         footer {
             text-align: center;
             padding: 2rem;
-            color: white;
+            color: var(--text-secondary);
             margin-top: 3rem;
+            opacity: 0.9;
         }
         
         @media (max-width: 768px) {
@@ -202,6 +247,7 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#documents">Documents</a></li>
+                <li><a href="resources.html">Resources</a></li>
                 <li><a href="useful-commands.html">Useful Commands</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -212,11 +258,10 @@
     <script>
         // Email obfuscation to prevent scraping
         function revealEmail() {
-            const user = 'darren';
-            const domain = 'soothill.io';
-            return user + '@' + domain;
+            const parts = ['darren', 'soothill', 'com'];
+            return parts[0] + '@' + parts[1] + '.' + parts[2];
         }
-        
+
         function createEmailLink() {
             const email = revealEmail();
             const emailLink = document.getElementById('email-link');
@@ -225,7 +270,7 @@
                 emailLink.textContent = email;
             }
         }
-        
+
         window.addEventListener('DOMContentLoaded', createEmailLink);
     </script>
     
@@ -237,7 +282,7 @@
         
         <section class="documents-section" id="documents">
             <h2 class="section-title">Document Library</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
                 Click on any document below to access the full content
             </p>
             
@@ -262,9 +307,9 @@
                     <p>Professional credentials and qualifications</p>
                 </a>
                 
-                <a href="/documents/resources.html" class="document-card">
+                <a href="resources.html" class="document-card">
                     <h3>🔗 Resources</h3>
-                    <p>Helpful links and reference materials</p>
+                    <p>Curated collection of storage, HPC, and system administration resources</p>
                 </a>
                 
                 <a href="/documents/contact-info.html" class="document-card">

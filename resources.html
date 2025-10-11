@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4KVJSXV6TK');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - Darren Soothill</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Collection of useful resources, tools, and external links for storage, HPC, and system administration.">
+    <meta name="keywords" content="resources, storage, HPC, IO500, DAOS, system administration, NVMe, SPDK, Darren Soothill">
+    <meta name="author" content="Darren Soothill">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Resources - Darren Soothill">
+    <meta property="og:description" content="Collection of useful resources, tools, and external links for storage and HPC.">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Resources - Darren Soothill">
+    <meta name="twitter:description" content="Collection of useful resources, tools, and external links for storage and HPC.">
+
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--border) 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            letter-spacing: -0.5px;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+            color: var(--primary-light);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-light);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem 2rem 2rem;
+            color: var(--text-primary);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: var(--bg-dark);
+            padding: 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+            border-color: var(--primary-light);
+        }
+
+        .resource-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .resource-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .resource-card .link-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .resource-card .link-indicator svg {
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover .link-indicator svg {
+            transform: translateX(4px);
+        }
+
+        .external-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .internal-badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--primary-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            border: 1px solid var(--primary);
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .content-section {
+                padding: 2rem 1rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Darren Soothill</div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#documents">Documents</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="useful-commands.html">Useful Commands</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Resources</h1>
+            <p>A curated collection of useful resources, tools, and external links for storage, HPC, and system administration</p>
+        </div>
+
+        <div class="content-section">
+            <!-- Internal Resources -->
+            <div class="category-section">
+                <h2 class="section-title">Internal Resources</h2>
+                <p class="section-description">Tools and documentation hosted on this site</p>
+
+                <div class="resources-grid">
+                    <a href="useful-commands.html" class="resource-card">
+                        <div class="icon">💻</div>
+                        <h3>Useful Commands <span class="internal-badge">Internal</span></h3>
+                        <p>Collection of practical Linux commands for system administration, performance testing, and troubleshooting. Includes FIO examples, storage benchmarking, and more.</p>
+                        <span class="link-indicator">
+                            View Commands
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a href="blog/index.html" class="resource-card">
+                        <div class="icon">📝</div>
+                        <h3>Soot & Silicon Blog <span class="internal-badge">Internal</span></h3>
+                        <p>Technical articles and guides on storage, NVMe, SPDK, and enterprise infrastructure. Where hardware meets software.</p>
+                        <span class="link-indicator">
+                            Read Blog
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Storage & HPC Organizations -->
+            <div class="category-section">
+                <h2 class="section-title">Storage & HPC Organizations</h2>
+                <p class="section-description">Leading organizations and initiatives in high-performance computing and storage</p>
+
+                <div class="resources-grid">
+                    <a href="https://io500.org" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">🏆</div>
+                        <h3>IO500 <span class="external-badge">External</span></h3>
+                        <p>The IO500 benchmark suite measures and ranks the I/O performance of high-performance computing storage systems. Essential resource for understanding storage performance in HPC environments.</p>
+                        <span class="link-indicator">
+                            Visit io500.org
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a href="https://daos.io" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">💾</div>
+                        <h3>DAOS <span class="external-badge">External</span></h3>
+                        <p>Distributed Asynchronous Object Storage - An open-source software-defined object store designed from the ground up for massively distributed Non-Volatile Memory (NVM).</p>
+                        <span class="link-indicator">
+                            Visit daos.io
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a href="https://spdk.io" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">⚡</div>
+                        <h3>SPDK <span class="external-badge">External</span></h3>
+                        <p>Storage Performance Development Kit - Open source tools and libraries for high performance, scalable, user-mode storage applications.</p>
+                        <span class="link-indicator">
+                            Visit spdk.io
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a href="https://nvmexpress.org" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">🔌</div>
+                        <h3>NVMe Express <span class="external-badge">External</span></h3>
+                        <p>NVM Express consortium - Industry association defining and promoting NVMe technology. Access specifications, news, and educational resources.</p>
+                        <span class="link-indicator">
+                            Visit nvmexpress.org
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a href="https://ceph.com" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">🐙</div>
+                        <h3>Ceph <span class="external-badge">External</span></h3>
+                        <p>Open-source, distributed storage system providing object, block, and file storage in a single unified system. Highly scalable and designed for reliability and performance.</p>
+                        <span class="link-indicator">
+                            Visit ceph.com
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Additional Resources Section (Placeholder for future additions) -->
+            <div class="category-section">
+                <h2 class="section-title">Coming Soon</h2>
+                <p class="section-description">Additional resources and tools will be added regularly. Check back for updates on benchmarking tools, documentation, and community resources.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Resources | Darren Soothill</p>
+        <p style="opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
+    </footer>
+</body>
+</html>

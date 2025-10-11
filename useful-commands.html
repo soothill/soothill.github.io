@@ -12,12 +12,37 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Useful Commands - Linux System Administration</title>
+    <title>Useful Commands - Darren Soothill</title>
+
+    <!-- SEO Meta Tags -->
     <meta name="description" content="Collection of useful Linux commands for system administration, performance testing, and troubleshooting.">
-    <meta name="keywords" content="Linux commands, FIO, system administration, performance testing, disk benchmarking, storage testing">
+    <meta name="keywords" content="Linux commands, FIO, system administration, performance testing, disk benchmarking, storage testing, Darren Soothill">
     <meta name="author" content="Darren Soothill">
     <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Useful Commands - Darren Soothill">
+    <meta property="og:description" content="Collection of useful Linux commands for system administration and testing.">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Useful Commands - Darren Soothill">
+    <meta name="twitter:description" content="Collection of useful Linux commands for system administration and testing.">
+
     <style>
+        :root {
+            --primary: #667eea;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -25,178 +50,159 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 20px;
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--border) 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         nav {
-            background: #2d2d2d;
-            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            flex-wrap: wrap;
         }
 
-        nav a {
-            color: white;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            letter-spacing: -0.5px;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+            color: var(--primary-light);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
             text-decoration: none;
-            margin-right: 2rem;
+            color: var(--text-secondary);
             font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
         }
 
-        nav a:hover {
-            color: #667eea;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-light);
+            transition: width 0.3s ease;
         }
 
-        main {
-            padding: 2rem;
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem 2rem 2rem;
+            color: var(--text-primary);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
         }
 
         .intro {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-left: 4px solid var(--primary-light);
             padding: 1.5rem;
             margin-bottom: 2rem;
-            border-radius: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
 
         .intro h2 {
-            color: #667eea;
+            color: var(--primary-light);
             margin-bottom: 0.5rem;
             border: none;
             padding: 0;
+            font-size: 1.5rem;
         }
 
-        h2 {
-            color: #667eea;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        h3 {
-            color: #764ba2;
-            font-size: 1.3rem;
-            margin: 1.5rem 0 1rem 0;
-        }
-
-        h4 {
-            color: #555;
-            font-size: 1.1rem;
-            margin: 1rem 0 0.5rem 0;
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        pre {
-            background: #2d2d2d !important;
-            color: #f8f8f2 !important;
-            padding: 1.5rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            margin: 1rem 0;
-            border-left: 4px solid #667eea;
-        }
-
-        pre code {
-            background: transparent !important;
-            color: #f8f8f2 !important;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-        }
-
-        code {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: inherit;
-        }
-
-        .warning {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
-
-        .warning h4 {
-            color: #856404;
-            margin-top: 0;
-        }
-
-        .info {
-            background: #d1ecf1;
-            border-left: 4px solid #17a2b8;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
-
-        .info h4 {
-            color: #0c5460;
-            margin-top: 0;
-        }
-
-        .info ul {
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .info li {
-            margin-bottom: 0.3rem;
-        }
-
-        .success {
-            background: #d4edda;
-            border-left: 4px solid #28a745;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
+        .intro p {
+            color: var(--text-secondary);
         }
 
         /* Expandable Command Sections */
         .command-item {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 12px;
             margin-bottom: 1.5rem;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: box-shadow 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
         }
 
         .command-item:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
         }
 
         .command-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             padding: 1.5rem;
             cursor: pointer;
@@ -204,10 +210,11 @@
             justify-content: space-between;
             align-items: center;
             user-select: none;
+            transition: all 0.3s ease;
         }
 
         .command-header:hover {
-            background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+            filter: brightness(1.1);
         }
 
         .command-header h2 {
@@ -231,42 +238,253 @@
         .command-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s ease;
         }
 
         .command-content.active {
-            max-height: 5000px;
+            max-height: 10000px;
         }
 
         .command-content-inner {
             padding: 2rem;
         }
 
+        h3 {
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        h4 {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
         .subsection {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Code blocks with copy button */
+        .code-block-wrapper {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        pre {
+            background: #2d2d2d !important;
+            color: #f8f8f2 !important;
+            padding: 1.5rem;
+            padding-top: 3rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 0;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        pre code {
+            background: transparent !important;
+            color: #f8f8f2 !important;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            background: rgba(6, 182, 212, 0.15);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
+        }
+
+        .copy-button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background: #28a745;
+        }
+
+        .copy-button.copied::after {
+            content: ' ✓';
+        }
+
+        /* Info, Warning, Success boxes */
+        .warning {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.05) 100%);
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .warning h4 {
+            color: #ffc107;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning p {
+            color: var(--text-secondary);
+        }
+
+        .info {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .info h4 {
+            color: var(--secondary);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .info p {
+            color: var(--text-secondary);
+        }
+
+        .info ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .info li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .success h4 {
+            color: #10b981;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .success ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .success li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
         }
 
         footer {
-            background: #2d2d2d;
-            color: white;
             text-align: center;
             padding: 2rem;
+            color: var(--text-secondary);
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .content-section {
+                padding: 2rem 1rem;
+            }
+
+            .command-content-inner {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <nav>
+            <div class="logo">Darren Soothill</div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#documents">Documents</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="useful-commands.html">Useful Commands</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container">
-        <header>
+        <div class="hero">
             <h1>Useful Commands</h1>
             <p>A collection of practical Linux commands for system administration and testing</p>
-        </header>
+        </div>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="useful-commands.html">Useful Commands</a>
-        </nav>
-
-        <main>
+        <div class="content-section">
             <div class="intro">
                 <h2>About This Page</h2>
                 <p>This page contains a curated collection of useful Linux commands for system administration, performance testing, and troubleshooting. Click on any command section below to expand and view detailed examples and explanations.</p>
@@ -284,7 +502,9 @@
 
                         <div class="subsection">
                             <h3>Installation</h3>
-                            <pre><code># Install FIO on Ubuntu/Debian
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Install FIO on Ubuntu/Debian
 sudo apt update
 sudo apt install fio
 
@@ -293,6 +513,7 @@ sudo yum install fio
 
 # Verify installation
 fio --version</code></pre>
+                            </div>
                         </div>
 
                         <div class="subsection">
@@ -300,28 +521,37 @@ fio --version</code></pre>
                             <p>Use FIO to fill a disk with data for testing purposes. This is useful for initializing storage devices, testing write performance, or preparing disks for benchmarking.</p>
 
                             <h4>Sequential Write (Fastest)</h4>
-                            <pre><code># Fill entire disk with sequential writes
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Fill entire disk with sequential writes
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=100% --numjobs=1
 
 # Fill with larger block size for maximum speed
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=4M --direct=1 --size=100% --numjobs=1</code></pre>
+                            </div>
 
                             <h4>Random Write (More Realistic)</h4>
-                            <pre><code># Fill disk with random data (more realistic workload)
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Fill disk with random data (more realistic workload)
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=1
 
 # Fill with multiple jobs for parallel writes
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=4</code></pre>
+                            </div>
 
                             <h4>Fill Specific Partition</h4>
-                            <pre><code># Fill a specific partition instead of entire disk
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Fill a specific partition instead of entire disk
 sudo fio --name=filltest --filename=/dev/nvme0n1p1 --rw=write --bs=1M --direct=1 --size=100%
 
 # Fill specific size (e.g., 50GB)
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=50G</code></pre>
+                            </div>
 
                             <div class="warning">
-                                <h4>Data Loss Warning</h4>
+                                <h4>⚠️ Data Loss Warning</h4>
                                 <p><strong>CRITICAL:</strong> The commands above will <strong>PERMANENTLY OVERWRITE ALL DATA</strong> on the specified device. Always double-check the device path before running these commands.</p>
                                 <p>Use <code>lsblk</code> or <code>fdisk -l</code> to verify device names before proceeding.</p>
                             </div>
@@ -342,7 +572,9 @@ sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 -
 
                             <h4>Verify Device Before Filling</h4>
                             <p>Always verify the device path and ensure no mounted partitions exist before filling a disk:</p>
-                            <pre><code># List all block devices and their mountpoints
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># List all block devices and their mount points
 lsblk
 
 # Show detailed partition information
@@ -356,10 +588,13 @@ sudo umount /dev/nvme0n1p1
 
 # Verify device is not in use
 sudo fuser -v /dev/nvme0n1</code></pre>
+                            </div>
 
                             <h4>Monitor Fill Progress</h4>
                             <p>FIO provides real-time progress updates. You can also monitor from another terminal:</p>
-                            <pre><code># Watch I/O statistics in real-time
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Watch I/O statistics in real-time
 iostat -x 2
 
 # Monitor specific device
@@ -367,26 +602,36 @@ iostat -x 2 nvme0n1
 
 # Watch FIO progress with bandwidth and IOPS
 watch -n 1 'iostat -x | grep nvme0n1'</code></pre>
+                            </div>
                         </div>
 
                         <div class="subsection">
                             <h3>Additional FIO Examples</h3>
 
                             <h4>Random Read Performance Test</h4>
-                            <pre><code># Test random read performance
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Test random read performance
 sudo fio --name=randread --filename=/dev/nvme0n1 --rw=randread --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
+                            </div>
 
                             <h4>Sequential Read/Write Test</h4>
-                            <pre><code># Test sequential read and write
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Test sequential read and write
 sudo fio --name=seqrw --filename=/dev/nvme0n1 --rw=readwrite --bs=1M --direct=1 --numjobs=1 --time_based --runtime=60</code></pre>
+                            </div>
 
                             <h4>Mixed Workload Test</h4>
-                            <pre><code># 70% read, 30% write mixed workload
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># 70% read, 30% write mixed workload
 sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
+                            </div>
                         </div>
 
                         <div class="success">
-                            <h4>Best Practices</h4>
+                            <h4>✓ Best Practices</h4>
                             <ul>
                                 <li>Always verify device paths using <code>lsblk</code> before running write operations</li>
                                 <li>Unmount any mounted partitions before testing</li>
@@ -401,17 +646,17 @@ sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k
 
             <!-- Placeholder for future commands -->
             <div class="info">
-                <h4>More Commands Coming Soon</h4>
-                <p>Additional useful commands will be added to this page. Check back regularly for updates.</p>
+                <h4>📌 More Commands Coming Soon</h4>
+                <p>Additional useful commands will be added to this page. Check back regularly for updates including networking tools, monitoring commands, and more storage utilities.</p>
             </div>
 
-        </main>
-
-        <footer>
-            <p>Useful Commands | Linux System Administration</p>
-            <p style="margin-top: 1rem; opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
-        </footer>
+        </div>
     </div>
+
+    <footer>
+        <p>Useful Commands | Linux System Administration</p>
+        <p style="opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
+    </footer>
 
     <script>
         function toggleCommand(header) {
@@ -425,15 +670,63 @@ sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k
             content.classList.toggle('active');
         }
 
-        // Optional: Close all sections on page load
-        // Comment out if you want sections open by default
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const headers = document.querySelectorAll('.command-header');
-        //     headers.forEach(header => {
-        //         header.classList.remove('active');
-        //         header.nextElementSibling.classList.remove('active');
-        //     });
-        // });
+        function copyCode(button) {
+            // Get the code element
+            const wrapper = button.parentElement;
+            const codeElement = wrapper.querySelector('code');
+            const codeText = codeElement.textContent;
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(codeText).then(function() {
+                // Change button text and style
+                const originalText = button.innerHTML;
+                button.innerHTML = '✓ Copied!';
+                button.classList.add('copied');
+
+                // Reset button after 2 seconds
+                setTimeout(function() {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(function(err) {
+                // Fallback for older browsers
+                console.error('Failed to copy: ', err);
+
+                // Try fallback method
+                const textArea = document.createElement('textarea');
+                textArea.value = codeText;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+
+                try {
+                    document.execCommand('copy');
+                    button.innerHTML = '✓ Copied!';
+                    button.classList.add('copied');
+
+                    setTimeout(function() {
+                        button.innerHTML = '📋 Copy';
+                        button.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    button.innerHTML = '✗ Failed';
+                    setTimeout(function() {
+                        button.innerHTML = '📋 Copy';
+                    }, 2000);
+                }
+
+                document.body.removeChild(textArea);
+            });
+        }
+
+        // Optional: Open first section by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstHeader = document.querySelector('.command-header');
+            if (firstHeader) {
+                firstHeader.click();
+            }
+        });
     </script>
 </body>
 </html>
