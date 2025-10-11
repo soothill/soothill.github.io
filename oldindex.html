@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4KVJSXV6TK');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVMe-oF with RoCE Configuration Guide - Ubuntu Server</title>
+    <meta name="description" content="Complete guide for configuring NVMe over Fabrics (NVMe-oF) with RoCE (RDMA over Converged Ethernet) on Ubuntu Server. Step-by-step persistent configuration for enterprise storage.">
+    <meta name="keywords" content="NVMe-oF, NVMe over Fabrics, RoCE, RDMA, Ubuntu Server, nvmet, nvmetcli, storage configuration, RDMA over Converged Ethernet, enterprise storage, network storage, NVMe target, NVMe initiator, configfs, systemd, persistent storage, Linux storage, block storage, SAN, storage area network, RDMA configuration, InfiniBand, Mellanox, iSCSI alternative, low latency storage">
+    <meta name="author" content="Darren Soothill">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="NVMe-oF with RoCE Configuration Guide - Ubuntu Server">
+    <meta property="og:description" content="Complete guide for configuring NVMe over Fabrics with RoCE on Ubuntu Server with persistent configuration across reboots.">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NVMe-oF with RoCE Configuration Guide">
+    <meta name="twitter:description" content="Step-by-step guide for NVMe over Fabrics with RoCE on Ubuntu Server">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .config-info {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 2rem;
+            border-radius: 4px;
+        }
+        
+        .config-info h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .config-info ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+        
+        .config-info li {
+            padding: 0.25rem 0;
+        }
+        
+        .config-info li strong {
+            color: #764ba2;
+            display: inline-block;
+            min-width: 150px;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        pre {
+            background: #2d2d2d !important;
+            color: #f8f8f2 !important;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        pre code {
+            background: transparent !important;
+            color: #f8f8f2 !important;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+        
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: inherit;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .checklist {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        
+        .checklist h4 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        
+        .checklist ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .checklist li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .checklist li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+        
+        .toc li {
+            padding: 0.3rem 0;
+        }
+        
+        .toc a {
+            color: #764ba2;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NVMe-oF with RoCE Configuration Guide</h1>
+            <p>Complete setup for Ubuntu Server with persistent configuration</p>
+        </header>
+
+        <div class="config-info">
+            <h3>Configuration Summary</h3>
+            <ul>
+                <li><strong>Server IP:</strong> 172.16.10.10</li>
+                <li><strong>Interface:</strong> ens16</li>
+                <li><strong>Transport:</strong> RDMA (RoCE)</li>
+                <li><strong>Port:</strong> 4420</li>
+                <li><strong>Exported Devices:</strong> /dev/nvme0n1, /dev/sdb, /dev/sdc</li>
+                <li><strong>Subsystem NQN:</strong> nqn.2025-01.com.example:nvme-target</li>
+            </ul>
+        </div>
+
+        <main>
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="#prerequisites">1. Prerequisites and Package Installation</a></li>
+                    <li><a href="#modules">2. Kernel Modules Configuration</a></li>
+                    <li><a href="#network">3. Network Configuration</a></li>
+                    <li><a href="#nvmet">4. NVMe Target Configuration</a></li>
+                    <li><a href="#systemd">5. Systemd Service Setup</a></li>
+                    <li><a href="#optimization">6. RoCE Optimization</a></li>
+                    <li><a href="#verification">7. Verification and Testing</a></li>
+                    <li><a href="#client">8. Client Configuration</a></li>
+                    <li><a href="#troubleshooting">9. Troubleshooting</a></li>
+                    <li><a href="#useful-commands">10. Useful Commands</a></li>
+                </ul>
+            </div>
+
+            <section id="prerequisites">
+                <h2>1. Prerequisites and Package Installation</h2>
+                <p>Install all required packages for NVMe-oF and RoCE support:</p>
+                <pre><code># Update system
+sudo apt update
+
+# Install required packages
+sudo apt install nvme-cli rdma-core infiniband-diags perftest
+sudo apt install libibverbs1 ibverbs-utils nvmetcli</code></pre>
+            </section>
+
+            <section id="modules">
+                <h2>2. Kernel Modules Configuration</h2>
+                <p>Configure kernel modules to load automatically on boot:</p>
+                <pre><code>sudo tee /etc/modules-load.d/nvmet.conf &lt;&lt;EOF
+# NVMe-oF Target modules
+nvmet
+nvmet-rdma
+
+# RDMA modules
+rdma_cm
+ib_core
+ib_uverbs
+EOF
+
+# Apply module configuration
+sudo systemctl restart systemd-modules-load</code></pre>
+
+                <h3>Verify Modules Loaded</h3>
+                <pre><code># Check if modules are loaded
+lsmod | grep nvmet
+lsmod | grep rdma
+
+# Load manually if needed
+sudo modprobe nvmet
+sudo modprobe nvmet-rdma
+sudo modprobe rdma_cm
+sudo modprobe ib_core</code></pre>
+            </section>
+
+            <section id="network">
+                <h2>3. Network Configuration (ens16)</h2>
+                <p>Configure the ens16 interface with static IP 172.16.10.10 using Netplan:</p>
+                <pre><code>sudo tee /etc/netplan/50-rdma.yaml &lt;&lt;EOF
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens16:
+      addresses:
+        - 172.16.10.10/24
+      mtu: 9000
+      optional: true
+EOF
+
+# Apply network configuration
+sudo netplan apply
+
+# Verify interface
+ip addr show ens16</code></pre>
+
+                <div class="info">
+                    <h4>Note on MTU</h4>
+                    <p>The MTU is set to 9000 (Jumbo frames) for better RDMA performance. Ensure your network infrastructure supports this.</p>
+                </div>
+            </section>
+
+            <section id="nvmet">
+                <h2>4. NVMe Target Configuration Script</h2>
+                <p>Create a script to configure the NVMe-oF target with three exported devices:</p>
+                <pre><code>sudo tee /usr/local/bin/setup-nvmet.sh &lt;&lt;'EOF'
+#!/bin/bash
+
+SUBSYSTEM_NQN="nqn.2025-01.com.example:nvme-target"
+RDMA_IP="172.16.10.10"
+RDMA_PORT="4420"
+
+# Wait for configfs to be available
+sleep 2
+
+# Create subsystem
+mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}
+echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/attr_allow_any_host
+
+# Create namespace 1 for /dev/nvme0n1
+mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/1
+echo /dev/nvme0n1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/1/device_path
+echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/1/enable
+
+# Create namespace 2 for /dev/sdb
+mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/2
+echo /dev/sdb > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/2/device_path
+echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/2/enable
+
+# Create namespace 3 for /dev/sdc
+mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/3
+echo /dev/sdc > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/3/device_path
+echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/3/enable
+
+# Create port
+mkdir -p /sys/kernel/config/nvmet/ports/1
+echo rdma > /sys/kernel/config/nvmet/ports/1/addr_trtype
+echo ipv4 > /sys/kernel/config/nvmet/ports/1/addr_adrfam
+echo ${RDMA_IP} > /sys/kernel/config/nvmet/ports/1/addr_traddr
+echo ${RDMA_PORT} > /sys/kernel/config/nvmet/ports/1/addr_trsvcid
+
+# Link subsystem to port
+ln -s /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN} \
+      /sys/kernel/config/nvmet/ports/1/subsystems/${SUBSYSTEM_NQN}
+
+echo "NVMe-oF Target configured on ens16 (${RDMA_IP}:${RDMA_PORT})"
+echo "Exported devices:"
+echo "  Namespace 1: /dev/nvme0n1"
+echo "  Namespace 2: /dev/sdb"
+echo "  Namespace 3: /dev/sdc"
+EOF
+
+# Make script executable
+sudo chmod +x /usr/local/bin/setup-nvmet.sh</code></pre>
+
+                <h3>Create Cleanup Script</h3>
+                <pre><code>sudo tee /usr/local/bin/cleanup-nvmet.sh &lt;&lt;'EOF'
+#!/bin/bash
+
+SUBSYSTEM_NQN="nqn.2025-01.com.example:nvme-target"
+
+# Remove subsystem link from port
+rm -f /sys/kernel/config/nvmet/ports/1/subsystems/${SUBSYSTEM_NQN} 2>/dev/null
+
+# Disable and remove namespaces
+for ns in 1 2 3; do
+    if [ -d "/sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/${ns}" ]; then
+        echo 0 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/${ns}/enable 2>/dev/null
+        rmdir /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/${ns} 2>/dev/null
+    fi
+done
+
+# Remove port
+rmdir /sys/kernel/config/nvmet/ports/1 2>/dev/null
+
+# Remove subsystem
+rmdir /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN} 2>/dev/null
+
+echo "NVMe-oF Target cleaned up"
+EOF
+
+sudo chmod +x /usr/local/bin/cleanup-nvmet.sh</code></pre>
+            </section>
+
+            <section id="systemd">
+                <h2>5. Systemd Service Setup</h2>
+                <p>Create a systemd service to ensure the configuration persists across reboots:</p>
+                <pre><code>sudo tee /etc/systemd/system/nvmet.service &lt;&lt;'EOF'
+[Unit]
+Description=NVMe-oF Target Configuration
+After=network-online.target sys-kernel-config.mount systemd-networkd.service
+Wants=network-online.target
+Requires=sys-kernel-config.mount
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/setup-nvmet.sh
+ExecStop=/usr/local/bin/cleanup-nvmet.sh
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd daemon
+sudo systemctl daemon-reload
+
+# Enable service to start on boot
+sudo systemctl enable nvmet.service
+
+# Start service now
+sudo systemctl start nvmet.service
+
+# Check service status
+sudo systemctl status nvmet.service</code></pre>
+            </section>
+
+            <section id="optimization">
+                <h2>6. RoCE Optimization Settings</h2>
+                <p>Apply system-level optimizations for RDMA performance:</p>
+                <pre><code>sudo tee /etc/sysctl.d/99-rdma.conf &lt;&lt;EOF
+# Increase socket buffer sizes for RDMA
+net.core.rmem_max = 268435456
+net.core.wmem_max = 268435456
+net.ipv4.tcp_rmem = 4096 87380 134217728
+net.ipv4.tcp_wmem = 4096 65536 134217728
+
+# Enable TCP timestamps
+net.ipv4.tcp_timestamps = 1
+
+# Increase max connections
+net.core.somaxconn = 4096
+EOF
+
+# Apply sysctl settings
+sudo sysctl -p /etc/sysctl.d/99-rdma.conf</code></pre>
+            </section>
+
+            <section id="verification">
+                <h2>7. Verification and Testing</h2>
+                
+                <h3>Create Status Check Script</h3>
+                <pre><code>sudo tee /usr/local/bin/check-nvmet-status.sh &lt;&lt;'EOF'
+#!/bin/bash
+
+echo "=== NVMe-oF Target Status ==="
+echo ""
+echo "Interface ens16:"
+ip addr show ens16 | grep inet
+echo ""
+echo "RDMA Devices:"
+ibv_devices
+echo ""
+echo "Target Configuration:"
+cat /sys/kernel/config/nvmet/ports/1/addr_traddr 2>/dev/null || echo "Not configured"
+echo ""
+echo "Exported Namespaces:"
+for ns in 1 2 3; do
+    if [ -f "/sys/kernel/config/nvmet/subsystems/nqn.2025-01.com.example:nvme-target/namespaces/$ns/device_path" ]; then
+        device=$(cat /sys/kernel/config/nvmet/subsystems/nqn.2025-01.com.example:nvme-target/namespaces/$ns/device_path)
+        enabled=$(cat /sys/kernel/config/nvmet/subsystems/nqn.2025-01.com.example:nvme-target/namespaces/$ns/enable)
+        echo "  Namespace $ns: $device (enabled: $enabled)"
+    fi
+done
+echo ""
+echo "Service Status:"
+systemctl is-active nvmet.service
+echo ""
+echo "Loaded Modules:"
+lsmod | grep nvmet
+EOF
+
+sudo chmod +x /usr/local/bin/check-nvmet-status.sh</code></pre>
+
+                <h3>Run Verification Commands</h3>
+                <pre><code># Run status check
+sudo /usr/local/bin/check-nvmet-status.sh
+
+# Check interface
+ip addr show ens16
+
+# Verify RDMA devices
+ibv_devices
+rdma link show
+
+# Check exported namespaces
+ls -la /sys/kernel/config/nvmet/subsystems/nqn.2025-01.com.example:nvme-target/namespaces/
+
+# View kernel logs
+sudo dmesg | grep -i nvmet
+sudo dmesg | grep -i rdma</code></pre>
+
+                <div class="checklist">
+                    <h4>Verification Checklist</h4>
+                    <ul>
+                        <li>Modules loaded (nvmet, nvmet-rdma, rdma_cm)</li>
+                        <li>Interface ens16 has IP 172.16.10.10</li>
+                        <li>RDMA devices are visible (ibv_devices)</li>
+                        <li>NVMe target service is active</li>
+                        <li>Three namespaces are configured and enabled</li>
+                        <li>Port 1 is configured for RDMA on 172.16.10.10:4420</li>
+                    </ul>
+                </div>
+
+                <h3>Test Reboot Persistence</h3>
+                <pre><code># Reboot the server
+sudo reboot
+
+# After reboot, verify everything starts automatically
+sudo systemctl status nvmet.service
+sudo /usr/local/bin/check-nvmet-status.sh</code></pre>
+            </section>
+
+            <section id="client">
+                <h2>8. Client Configuration</h2>
+                <p>Configure client machines to connect to the NVMe-oF target:</p>
+
+                <h3>Install NVMe CLI on Client</h3>
+                <pre><code>sudo apt update
+sudo apt install nvme-cli rdma-core</code></pre>
+
+                <h3>Discover Available Targets</h3>
+                <pre><code># Discover targets on the network
+sudo nvme discover -t rdma -a 172.16.10.10 -s 4420</code></pre>
+
+                <h3>Connect to Target</h3>
+                <pre><code># Connect to the NVMe-oF target
+sudo nvme connect -t rdma -n nqn.2025-01.com.example:nvme-target -a 172.16.10.10 -s 4420
+
+# Verify connection
+sudo nvme list
+
+# Check subsystem details
+sudo nvme list-subsys</code></pre>
+
+                <div class="success">
+                    <h4>Expected Result</h4>
+                    <p>After connecting, you should see three NVMe namespaces appear on the client (e.g., /dev/nvme1n1, /dev/nvme1n2, /dev/nvme1n3) corresponding to the three exported devices from the target.</p>
+                </div>
+
+                <h3>Disconnect from Target</h3>
+                <pre><code># Disconnect from specific subsystem
+sudo nvme disconnect -n nqn.2025-01.com.example:nvme-target
+
+# Or disconnect all
+sudo nvme disconnect-all</code></pre>
+
+                <h3>Persistent Client Connection</h3>
+                <p>To make the connection persistent on the client side:</p>
+                <pre><code># Create systemd service on client
+sudo tee /etc/systemd/system/nvme-connect.service &lt;&lt;'EOF'
+[Unit]
+Description=NVMe-oF Client Connection
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/nvme connect -t rdma -n nqn.2025-01.com.example:nvme-target -a 172.16.10.10 -s 4420
+ExecStop=/usr/sbin/nvme disconnect -n nqn.2025-01.com.example:nvme-target
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable nvme-connect.service
+sudo systemctl start nvme-connect.service</code></pre>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>9. Troubleshooting</h2>
+
+                <h3>Common Issues and Solutions</h3>
+
+                <h4>Modules Not Loading</h4>
+                <pre><code># Check if modules exist
+modinfo nvmet
+modinfo nvmet-rdma
+
+# Force load modules
+sudo modprobe -v nvmet
+sudo modprobe -v nvmet-rdma
+
+# Check kernel logs
+sudo dmesg | tail -50</code></pre>
+
+                <h4>RDMA Devices Not Found</h4>
+                <pre><code># Check if RDMA stack is running
+sudo systemctl status rdma-core
+
+# List RDMA devices
+ibv_devices
+rdma link show
+
+# Verify NIC supports RoCE
+lspci | grep -i ethernet
+ethtool -i ens16</code></pre>
+
+                <h4>Target Not Accessible from Client</h4>
+                <pre><code># Check if port is listening
+sudo ss -tulpn | grep 4420
+
+# Verify firewall rules
+sudo ufw status
+sudo iptables -L -n
+
+# Test network connectivity
+ping 172.16.10.10
+
+# Check RDMA connectivity (if rping is available)
+# On server:
+rping -s -a 172.16.10.10 -p 4420
+# On client:
+rping -c -a 172.16.10.10 -p 4420</code></pre>
+
+                <h4>Namespace Configuration Issues</h4>
+                <pre><code># Check if devices exist
+ls -l /dev/nvme0n1 /dev/sdb /dev/sdc
+
+# Verify device paths in configuration
+cat /sys/kernel/config/nvmet/subsystems/nqn.2025-01.com.example:nvme-target/namespaces/*/device_path
+
+# Check if namespaces are enabled
+cat /sys/kernel/config/nvmet/subsystems/nqn.2025-01.com.example:nvme-target/namespaces/*/enable
+
+# Review service logs
+sudo journalctl -u nvmet.service -n 50</code></pre>
+
+                <div class="warning">
+                    <h4>Important Notes</h4>
+                    <ul>
+                        <li>Ensure all devices (/dev/nvme0n1, /dev/sdb, /dev/sdc) exist before starting the service</li>
+                        <li>RoCE requires proper network configuration - verify MTU settings match across all devices</li>
+                        <li>Some NICs require firmware updates for RoCE support</li>
+                        <li>Check that your NIC supports RDMA/RoCE (most modern Mellanox, Broadcom, Intel cards do)</li>
+                    </ul>
+                </div>
+
+                <h4>Viewing Detailed Logs</h4>
+                <pre><code># View systemd service logs
+sudo journalctl -u nvmet.service -f
+
+# View kernel messages
+sudo dmesg -w | grep -i nvmet
+
+# Check RDMA subsystem logs
+sudo journalctl -k | grep -i rdma</code></pre>
+            </section>
+
+            <section id="useful-commands">
+                <h2>10. Useful Commands</h2>
+
+                <h3>FIO (Flexible I/O Tester)</h3>
+                <p>FIO is a versatile tool for benchmarking and testing storage devices. Below are common use cases:</p>
+
+                <h4>Fill a Disk</h4>
+                <p>Use FIO to fill a disk with data for testing purposes:</p>
+                <pre><code># Install FIO if not already installed
+sudo apt install fio
+
+# Fill entire disk with sequential writes
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=100% --numjobs=1
+
+# Fill disk with random data (more realistic)
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=1
+
+# Fill specific partition
+sudo fio --name=filltest --filename=/dev/nvme0n1p1 --rw=write --bs=1M --direct=1 --size=100%</code></pre>
+
+                <div class="warning">
+                    <h4>Warning</h4>
+                    <p><strong>DATA LOSS WARNING:</strong> The commands above will overwrite ALL data on the specified device. Double-check the device path before running. Use lsblk to verify device names.</p>
+                </div>
+
+                <div class="info">
+                    <h4>FIO Parameters Explained</h4>
+                    <ul>
+                        <li><strong>--name:</strong> Job name for identification</li>
+                        <li><strong>--filename:</strong> Device or file to test (use full path)</li>
+                        <li><strong>--rw:</strong> I/O pattern (write, randwrite, read, randread, etc.)</li>
+                        <li><strong>--bs:</strong> Block size (1M = 1 megabyte, 4k = 4 kilobytes)</li>
+                        <li><strong>--direct:</strong> Use direct I/O (bypasses OS cache)</li>
+                        <li><strong>--size:</strong> Amount of data to write (100% = entire device)</li>
+                        <li><strong>--numjobs:</strong> Number of parallel jobs</li>
+                    </ul>
+                </div>
+
+                <h4>Verify Device Before Filling</h4>
+                <pre><code># List all block devices
+lsblk
+
+# Check device size
+sudo fdisk -l /dev/nvme0n1
+
+# Verify no mounted partitions
+mount | grep nvme0n1
+
+# If mounted, unmount first
+sudo umount /dev/nvme0n1p1</code></pre>
+            </section>
+
+            <div class="checklist">
+                <h3>Final Deployment Checklist</h3>
+                <ul>
+                    <li>All packages installed (nvme-cli, rdma-core, etc.)</li>
+                    <li>Kernel modules configuration created and loaded</li>
+                    <li>Network interface ens16 configured with 172.16.10.10</li>
+                    <li>Setup and cleanup scripts created and executable</li>
+                    <li>Systemd service created and enabled</li>
+                    <li>RoCE optimizations applied</li>
+                    <li>All three devices exported (/dev/nvme0n1, /dev/sdb, /dev/sdc)</li>
+                    <li>Status check script created</li>
+                    <li>Configuration tested and verified</li>
+                    <li>Reboot test completed successfully</li>
+                    <li>Client connection tested</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>NVMe-oF with RoCE Configuration Guide | Ubuntu Server</p>
+            <p>Configuration: 172.16.10.10 (ens16) | Port 4420 | 3 Exported Devices</p>
+            <p style="margin-top: 1rem; opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

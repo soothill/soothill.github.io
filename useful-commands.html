@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4KVJSXV6TK');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Useful Commands - Linux System Administration</title>
+    <meta name="description" content="Collection of useful Linux commands for system administration, performance testing, and troubleshooting.">
+    <meta name="keywords" content="Linux commands, FIO, system administration, performance testing, disk benchmarking, storage testing">
+    <meta name="author" content="Darren Soothill">
+    <meta name="robots" content="index, follow">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: #2d2d2d;
+            padding: 1rem 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 2rem;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        .intro {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .intro h2 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            border: none;
+            padding: 0;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        pre {
+            background: #2d2d2d !important;
+            color: #f8f8f2 !important;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        pre code {
+            background: transparent !important;
+            color: #f8f8f2 !important;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: inherit;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .info h4 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+
+        .info ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .info li {
+            margin-bottom: 0.3rem;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Expandable Command Sections */
+        .command-item {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .command-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .command-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .command-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+        }
+
+        .command-header h2 {
+            color: white;
+            margin: 0;
+            padding: 0;
+            border: none;
+            font-size: 1.5rem;
+        }
+
+        .command-header .toggle-icon {
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .command-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .command-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .command-content.active {
+            max-height: 5000px;
+        }
+
+        .command-content-inner {
+            padding: 2rem;
+        }
+
+        .subsection {
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Useful Commands</h1>
+            <p>A collection of practical Linux commands for system administration and testing</p>
+        </header>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="useful-commands.html">Useful Commands</a>
+        </nav>
+
+        <main>
+            <div class="intro">
+                <h2>About This Page</h2>
+                <p>This page contains a curated collection of useful Linux commands for system administration, performance testing, and troubleshooting. Click on any command section below to expand and view detailed examples and explanations.</p>
+            </div>
+
+            <!-- FIO Command -->
+            <div class="command-item">
+                <div class="command-header" onclick="toggleCommand(this)">
+                    <h2>FIO (Flexible I/O Tester)</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="command-content">
+                    <div class="command-content-inner">
+                        <p>FIO is a versatile tool for benchmarking and testing storage devices. It provides comprehensive I/O performance testing capabilities with extensive configuration options.</p>
+
+                        <div class="subsection">
+                            <h3>Installation</h3>
+                            <pre><code># Install FIO on Ubuntu/Debian
+sudo apt update
+sudo apt install fio
+
+# Install FIO on RHEL/CentOS
+sudo yum install fio
+
+# Verify installation
+fio --version</code></pre>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Fill a Disk</h3>
+                            <p>Use FIO to fill a disk with data for testing purposes. This is useful for initializing storage devices, testing write performance, or preparing disks for benchmarking.</p>
+
+                            <h4>Sequential Write (Fastest)</h4>
+                            <pre><code># Fill entire disk with sequential writes
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=100% --numjobs=1
+
+# Fill with larger block size for maximum speed
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=4M --direct=1 --size=100% --numjobs=1</code></pre>
+
+                            <h4>Random Write (More Realistic)</h4>
+                            <pre><code># Fill disk with random data (more realistic workload)
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=1
+
+# Fill with multiple jobs for parallel writes
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=4</code></pre>
+
+                            <h4>Fill Specific Partition</h4>
+                            <pre><code># Fill a specific partition instead of entire disk
+sudo fio --name=filltest --filename=/dev/nvme0n1p1 --rw=write --bs=1M --direct=1 --size=100%
+
+# Fill specific size (e.g., 50GB)
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=50G</code></pre>
+
+                            <div class="warning">
+                                <h4>Data Loss Warning</h4>
+                                <p><strong>CRITICAL:</strong> The commands above will <strong>PERMANENTLY OVERWRITE ALL DATA</strong> on the specified device. Always double-check the device path before running these commands.</p>
+                                <p>Use <code>lsblk</code> or <code>fdisk -l</code> to verify device names before proceeding.</p>
+                            </div>
+
+                            <div class="info">
+                                <h4>FIO Parameters Explained</h4>
+                                <ul>
+                                    <li><strong>--name:</strong> Job name for identification in output</li>
+                                    <li><strong>--filename:</strong> Device or file to test (use full path, e.g., /dev/nvme0n1)</li>
+                                    <li><strong>--rw:</strong> I/O pattern - write, randwrite, read, randread, readwrite, etc.</li>
+                                    <li><strong>--bs:</strong> Block size - 4k (4 kilobytes), 1M (1 megabyte), etc.</li>
+                                    <li><strong>--direct:</strong> Use direct I/O (1 = bypass OS cache, 0 = use cache)</li>
+                                    <li><strong>--size:</strong> Amount of data to write - 100% (entire device), 50G (50 gigabytes), etc.</li>
+                                    <li><strong>--numjobs:</strong> Number of parallel jobs (threads) to run</li>
+                                    <li><strong>--ioengine:</strong> I/O engine to use (libaio, io_uring, sync, etc.)</li>
+                                </ul>
+                            </div>
+
+                            <h4>Verify Device Before Filling</h4>
+                            <p>Always verify the device path and ensure no mounted partitions exist before filling a disk:</p>
+                            <pre><code># List all block devices and their mountpoints
+lsblk
+
+# Show detailed partition information
+sudo fdisk -l /dev/nvme0n1
+
+# Check if device or partitions are mounted
+mount | grep nvme0n1
+
+# If mounted, unmount first (replace with your partition)
+sudo umount /dev/nvme0n1p1
+
+# Verify device is not in use
+sudo fuser -v /dev/nvme0n1</code></pre>
+
+                            <h4>Monitor Fill Progress</h4>
+                            <p>FIO provides real-time progress updates. You can also monitor from another terminal:</p>
+                            <pre><code># Watch I/O statistics in real-time
+iostat -x 2
+
+# Monitor specific device
+iostat -x 2 nvme0n1
+
+# Watch FIO progress with bandwidth and IOPS
+watch -n 1 'iostat -x | grep nvme0n1'</code></pre>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Additional FIO Examples</h3>
+
+                            <h4>Random Read Performance Test</h4>
+                            <pre><code># Test random read performance
+sudo fio --name=randread --filename=/dev/nvme0n1 --rw=randread --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
+
+                            <h4>Sequential Read/Write Test</h4>
+                            <pre><code># Test sequential read and write
+sudo fio --name=seqrw --filename=/dev/nvme0n1 --rw=readwrite --bs=1M --direct=1 --numjobs=1 --time_based --runtime=60</code></pre>
+
+                            <h4>Mixed Workload Test</h4>
+                            <pre><code># 70% read, 30% write mixed workload
+sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
+                        </div>
+
+                        <div class="success">
+                            <h4>Best Practices</h4>
+                            <ul>
+                                <li>Always verify device paths using <code>lsblk</code> before running write operations</li>
+                                <li>Unmount any mounted partitions before testing</li>
+                                <li>Use <code>--direct=1</code> to bypass OS cache for accurate results</li>
+                                <li>Start with small test sizes before running full disk operations</li>
+                                <li>Monitor system resources during tests to avoid overload</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placeholder for future commands -->
+            <div class="info">
+                <h4>More Commands Coming Soon</h4>
+                <p>Additional useful commands will be added to this page. Check back regularly for updates.</p>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>Useful Commands | Linux System Administration</p>
+            <p style="margin-top: 1rem; opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleCommand(header) {
+            // Toggle active class on header
+            header.classList.toggle('active');
+
+            // Get the content div
+            const content = header.nextElementSibling;
+
+            // Toggle active class on content
+            content.classList.toggle('active');
+        }
+
+        // Optional: Close all sections on page load
+        // Comment out if you want sections open by default
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const headers = document.querySelectorAll('.command-header');
+        //     headers.forEach(header => {
+        //         header.classList.remove('active');
+        //         header.nextElementSibling.classList.remove('active');
+        //     });
+        // });
+    </script>
+</body>
+</html>
