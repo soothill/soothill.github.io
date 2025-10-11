@@ -36,6 +36,22 @@ layout: null
     <priority>0.7</priority>
   </url>
 
+  <!-- Resources Page -->
+  <url>
+    <loc>{{ site.url }}/resources.html</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Useful Commands Page -->
+  <url>
+    <loc>{{ site.url }}/useful-commands.html</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Blog Posts -->
   {% for post in site.posts %}
   <url>

@@ -15,20 +15,61 @@
     <title>Resources - Darren Soothill</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Collection of useful resources, tools, and external links for storage, HPC, and system administration.">
-    <meta name="keywords" content="resources, storage, HPC, IO500, DAOS, system administration, NVMe, SPDK, Darren Soothill">
+    <meta name="description" content="Comprehensive collection of storage, HPC, and system administration resources including IO500, DAOS, SPDK, Ceph, NVMe Express, and useful Linux commands. Expert-curated links for storage professionals.">
+    <meta name="keywords" content="storage resources, HPC resources, IO500, DAOS, SPDK, Ceph storage, NVMe Express, system administration, distributed storage, object storage, block storage, high performance computing, storage benchmarking, Linux commands, enterprise storage, data center storage, Darren Soothill">
     <meta name="author" content="Darren Soothill">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.darrensoothill.io/resources.html">
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Resources - Darren Soothill">
-    <meta property="og:description" content="Collection of useful resources, tools, and external links for storage and HPC.">
+    <meta property="og:title" content="Storage & HPC Resources - Darren Soothill">
+    <meta property="og:description" content="Expert-curated collection of storage and HPC resources including IO500, DAOS, SPDK, Ceph, and essential Linux commands for system administrators.">
+    <meta property="og:url" content="https://www.darrensoothill.io/resources.html">
+    <meta property="og:site_name" content="Darren Soothill">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Resources - Darren Soothill">
-    <meta name="twitter:description" content="Collection of useful resources, tools, and external links for storage and HPC.">
+    <meta name="twitter:title" content="Storage & HPC Resources - Darren Soothill">
+    <meta name="twitter:description" content="Expert-curated collection of storage and HPC resources including IO500, DAOS, SPDK, Ceph, and essential Linux commands.">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Storage & HPC Resources",
+      "description": "Comprehensive collection of storage, HPC, and system administration resources",
+      "author": {
+        "@type": "Person",
+        "name": "Darren Soothill"
+      },
+      "url": "https://www.darrensoothill.io/resources.html",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "IO500",
+            "url": "https://io500.org"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "DAOS",
+            "url": "https://daos.io"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Ceph",
+            "url": "https://ceph.com"
+          }
+        ]
+      }
+    }
+    </script>
 
     <style>
         :root {
@@ -368,12 +409,12 @@
                 <p class="section-description">Leading organizations and initiatives in high-performance computing and storage</p>
 
                 <div class="resources-grid">
-                    <a href="https://io500.org" target="_blank" rel="noopener noreferrer" class="resource-card">
-                        <div class="icon">🏆</div>
-                        <h3>IO500 <span class="external-badge">External</span></h3>
-                        <p>The IO500 benchmark suite measures and ranks the I/O performance of high-performance computing storage systems. Essential resource for understanding storage performance in HPC environments.</p>
+                    <a href="https://ceph.com" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">🐙</div>
+                        <h3>Ceph <span class="external-badge">External</span></h3>
+                        <p>Open-source, distributed storage system providing object, block, and file storage in a single unified system. Highly scalable and designed for reliability and performance.</p>
                         <span class="link-indicator">
-                            Visit io500.org
+                            Visit ceph.com
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                 <polyline points="15 3 21 3 21 9"></polyline>
@@ -396,12 +437,26 @@
                         </span>
                     </a>
 
-                    <a href="https://spdk.io" target="_blank" rel="noopener noreferrer" class="resource-card">
-                        <div class="icon">⚡</div>
-                        <h3>SPDK <span class="external-badge">External</span></h3>
-                        <p>Storage Performance Development Kit - Open source tools and libraries for high performance, scalable, user-mode storage applications.</p>
+                    <a href="https://github.com/axboe/fio" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">📊</div>
+                        <h3>FIO (GitHub) <span class="external-badge">External</span></h3>
+                        <p>Flexible I/O Tester - Official GitHub repository. Versatile I/O workload generator and benchmarking tool for testing storage performance. Essential for storage testing and validation.</p>
                         <span class="link-indicator">
-                            Visit spdk.io
+                            Visit GitHub
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a href="https://io500.org" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">🏆</div>
+                        <h3>IO500 <span class="external-badge">External</span></h3>
+                        <p>The IO500 benchmark suite measures and ranks the I/O performance of high-performance computing storage systems. Essential resource for understanding storage performance in HPC environments.</p>
+                        <span class="link-indicator">
+                            Visit io500.org
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                 <polyline points="15 3 21 3 21 9"></polyline>
@@ -424,12 +479,12 @@
                         </span>
                     </a>
 
-                    <a href="https://ceph.com" target="_blank" rel="noopener noreferrer" class="resource-card">
-                        <div class="icon">🐙</div>
-                        <h3>Ceph <span class="external-badge">External</span></h3>
-                        <p>Open-source, distributed storage system providing object, block, and file storage in a single unified system. Highly scalable and designed for reliability and performance.</p>
+                    <a href="https://spdk.io" target="_blank" rel="noopener noreferrer" class="resource-card">
+                        <div class="icon">⚡</div>
+                        <h3>SPDK <span class="external-badge">External</span></h3>
+                        <p>Storage Performance Development Kit - Open source tools and libraries for high performance, scalable, user-mode storage applications.</p>
                         <span class="link-indicator">
-                            Visit ceph.com
+                            Visit spdk.io
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                 <polyline points="15 3 21 3 21 9"></polyline>
@@ -451,6 +506,20 @@
     <footer>
         <p>Resources | Darren Soothill</p>
         <p style="opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
+        <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: <span id="lastUpdated"></span></p>
     </footer>
+
+    <script>
+        // Display last updated date and time
+        const lastUpdated = new Date('2025-01-11T00:00:00');
+        document.getElementById('lastUpdated').textContent = lastUpdated.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) + ' at ' + lastUpdated.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    </script>
 </body>
 </html>

@@ -15,20 +15,43 @@
     <title>Useful Commands - Darren Soothill</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Collection of useful Linux commands for system administration, performance testing, and troubleshooting.">
-    <meta name="keywords" content="Linux commands, FIO, system administration, performance testing, disk benchmarking, storage testing, Darren Soothill">
+    <meta name="description" content="Essential Linux commands for system administrators including FIO benchmarking, storage testing, disk filling, performance monitoring, and troubleshooting. Copy-paste ready commands with detailed explanations.">
+    <meta name="keywords" content="Linux commands, FIO commands, storage benchmarking, disk performance testing, NVMe testing, system administration commands, iostat, lsblk, fdisk commands, storage testing tools, disk fill commands, random read write, sequential IO, Linux performance testing, server administration, Ubuntu commands, RHEL commands, Darren Soothill">
     <meta name="author" content="Darren Soothill">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.darrensoothill.io/useful-commands.html">
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Useful Commands - Darren Soothill">
-    <meta property="og:description" content="Collection of useful Linux commands for system administration and testing.">
+    <meta property="og:title" content="Useful Linux Commands - FIO & Storage Testing - Darren Soothill">
+    <meta property="og:description" content="Practical Linux commands for system administrators. Includes FIO benchmarking examples, storage testing commands, and performance monitoring tools with copy-paste functionality.">
+    <meta property="og:url" content="https://www.darrensoothill.io/useful-commands.html">
+    <meta property="og:site_name" content="Darren Soothill">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Useful Commands - Darren Soothill">
-    <meta name="twitter:description" content="Collection of useful Linux commands for system administration and testing.">
+    <meta name="twitter:title" content="Useful Linux Commands - FIO & Storage Testing">
+    <meta name="twitter:description" content="Essential Linux commands for system administrators with FIO benchmarking, storage testing, and performance monitoring examples.">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Useful Linux Commands for System Administration",
+      "description": "Collection of practical Linux commands for system administrators including FIO benchmarking and storage testing",
+      "author": {
+        "@type": "Person",
+        "name": "Darren Soothill"
+      },
+      "datePublished": "2025-01-11",
+      "dateModified": "2025-01-11",
+      "url": "https://www.darrensoothill.io/useful-commands.html",
+      "keywords": "Linux, FIO, storage benchmarking, system administration, performance testing",
+      "articleSection": "Technical Documentation",
+      "educationalLevel": "Intermediate to Advanced"
+    }
+    </script>
 
     <style>
         :root {
@@ -656,9 +679,21 @@ sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k
     <footer>
         <p>Useful Commands | Linux System Administration</p>
         <p style="opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
+        <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: <span id="lastUpdated"></span></p>
     </footer>
 
     <script>
+        // Display last updated date and time
+        const lastUpdated = new Date('2025-01-11T00:00:00');
+        document.getElementById('lastUpdated').textContent = lastUpdated.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) + ' at ' + lastUpdated.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
         function toggleCommand(header) {
             // Toggle active class on header
             header.classList.toggle('active');
