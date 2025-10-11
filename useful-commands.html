@@ -667,6 +667,249 @@ sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k
                 </div>
             </div>
 
+            <!-- Smartmontools Command -->
+            <div class="command-item">
+                <div class="command-header" onclick="toggleCommand(this)">
+                    <h2>Smartmontools - Disk Health Monitoring</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="command-content">
+                    <div class="command-content-inner">
+                        <p>Smartmontools is a suite of utilities for monitoring and analyzing the health of storage devices using SMART (Self-Monitoring, Analysis and Reporting Technology). It can automatically detect all devices, perform periodic scans, and send email alerts when errors are detected.</p>
+
+                        <div class="subsection">
+                            <h3>Installation</h3>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Install on Ubuntu/Debian
+sudo apt update
+sudo apt install smartmontools
+
+# Install on RHEL/CentOS
+sudo yum install smartmontools
+
+# Verify installation
+smartctl --version</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Setting Up Automatic Monitoring</h3>
+                            <p>Configure smartd (the SMART daemon) to automatically detect all devices, perform periodic scans, and send email alerts for any errors detected.</p>
+
+                            <h4>Step 1: Configure Email Settings</h4>
+                            <p>First, ensure your system can send emails. Install and configure a mail transfer agent:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Install mailutils (Debian/Ubuntu)
+sudo apt install mailutils
+
+# Install mailx (RHEL/CentOS)
+sudo yum install mailx
+
+# Test email sending
+echo "Test email from smartmontools" | mail -s "Test Subject" darren@soothill.com</code></pre>
+                            </div>
+
+                            <h4>Step 2: Configure smartd Daemon</h4>
+                            <p>Edit the smartd configuration file to enable automatic device detection and email alerts:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Backup original configuration
+sudo cp /etc/smartd.conf /etc/smartd.conf.backup
+
+# Edit configuration file
+sudo nano /etc/smartd.conf</code></pre>
+                            </div>
+
+                            <h4>Step 3: Add Configuration Directives</h4>
+                            <p>Add the following line to <code>/etc/smartd.conf</code> to monitor all devices automatically:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Monitor all devices, run short self-test daily, long test weekly
+# Send email alerts to darren@soothill.com on any SMART errors
+DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m darren@soothill.com -M exec /usr/share/smartmontools/smartd-runner</code></pre>
+                            </div>
+
+                            <div class="info">
+                                <h4>Configuration Parameters Explained</h4>
+                                <ul>
+                                    <li><strong>DEVICESCAN:</strong> Automatically detect and monitor all SMART-capable devices</li>
+                                    <li><strong>-a:</strong> Monitor all SMART attributes and report changes</li>
+                                    <li><strong>-o on:</strong> Enable automatic offline testing</li>
+                                    <li><strong>-S on:</strong> Enable automatic attribute autosave</li>
+                                    <li><strong>-s (S/../.././02|L/../../6/03):</strong> Schedule tests
+                                        <ul>
+                                            <li>Short self-test daily at 2 AM</li>
+                                            <li>Long self-test weekly on Saturday at 3 AM</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>-m:</strong> Email address to send alerts to</li>
+                                    <li><strong>-M exec:</strong> Script to execute when sending email alerts</li>
+                                </ul>
+                            </div>
+
+                            <h4>Step 4: Configure Email Subject Line (Optional)</h4>
+                            <p>Customize the email alert subject line for better filtering:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># More advanced configuration with custom email subject
+DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m darren@soothill.com -M exec /usr/share/smartmontools/smartd-runner -M diminishing -M test</code></pre>
+                            </div>
+
+                            <div class="info">
+                                <h4>Additional Email Options</h4>
+                                <ul>
+                                    <li><strong>-M diminishing:</strong> Reduces frequency of repeated error notifications (sends alert, then waits 24h, 48h, 72h, etc.)</li>
+                                    <li><strong>-M test:</strong> Send a test email on smartd startup to verify email configuration</li>
+                                    <li><strong>-M once:</strong> Send only one email per problem (no repeat notifications)</li>
+                                    <li><strong>-M daily:</strong> Send reminder email daily if problem persists</li>
+                                </ul>
+                            </div>
+
+                            <h4>Step 5: Enable and Start smartd Service</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Enable smartd to start on boot
+sudo systemctl enable smartd
+
+# Start smartd service
+sudo systemctl start smartd
+
+# Check service status
+sudo systemctl status smartd
+
+# Restart service after configuration changes
+sudo systemctl restart smartd</code></pre>
+                            </div>
+
+                            <h4>Step 6: Verify Configuration</h4>
+                            <p>Test your smartd configuration and verify it's monitoring devices:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Test configuration file syntax
+sudo smartd -q onecheck
+
+# Check which devices are being monitored
+sudo smartctl --scan
+
+# View smartd log
+sudo journalctl -u smartd -f
+
+# Check syslog for smartd messages
+sudo tail -f /var/log/syslog | grep smartd</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Manual Device Testing</h3>
+                            <p>While smartd monitors devices automatically, you can also run manual tests:</p>
+
+                            <h4>Check Device SMART Status</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Check if SMART is available and enabled
+sudo smartctl -i /dev/sda
+
+# Check overall health status
+sudo smartctl -H /dev/sda
+
+# View all SMART attributes
+sudo smartctl -A /dev/sda
+
+# View detailed SMART information
+sudo smartctl -a /dev/sda</code></pre>
+                            </div>
+
+                            <h4>Run Manual Self-Tests</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Start a short self-test (takes ~2 minutes)
+sudo smartctl -t short /dev/sda
+
+# Start a long self-test (takes 1-2 hours)
+sudo smartctl -t long /dev/sda
+
+# View self-test results
+sudo smartctl -l selftest /dev/sda
+
+# View error log
+sudo smartctl -l error /dev/sda</code></pre>
+                            </div>
+
+                            <h4>Monitor Multiple Devices</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Scan for all SMART devices
+sudo smartctl --scan
+
+# Check health of all detected devices
+for device in $(sudo smartctl --scan | awk '{print $1}'); do
+    echo "Checking $device"
+    sudo smartctl -H $device
+    echo "---"
+done
+
+# Run short test on all devices
+for device in $(sudo smartctl --scan | awk '{print $1}'); do
+    echo "Starting short test on $device"
+    sudo smartctl -t short $device
+done</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Advanced Configuration Examples</h3>
+
+                            <h4>Monitor Specific Device Types</h4>
+                            <p>Configure monitoring for specific device types with tailored settings:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># In /etc/smartd.conf - Monitor NVMe devices separately
+DEVICESCAN -d nvme -a -o on -S on -s (S/../.././02|L/../../6/04) -m darren@soothill.com
+
+# Monitor SATA/SAS devices
+DEVICESCAN -d sat -a -o on -S on -s (S/../.././02|L/../../6/03) -m darren@soothill.com
+
+# Monitor specific device with custom schedule
+/dev/sda -a -s (S/../.././01|L/../../7/02) -m darren@soothill.com -M daily</code></pre>
+                            </div>
+
+                            <h4>Monitor Temperature Changes</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Alert if temperature exceeds thresholds
+DEVICESCAN -a -W 4,40,45 -m darren@soothill.com
+
+# Parameters: -W diff,info,crit
+# diff: Alert on 4°C change since last check
+# info: Informational alert at 40°C
+# crit: Critical alert at 45°C</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="warning">
+                            <h4>⚠️ Important Notes</h4>
+                            <p><strong>Email Configuration:</strong> Ensure your system's mail configuration is working before relying on email alerts. Test with the <code>-M test</code> option.</p>
+                            <p><strong>Firewall/SMTP:</strong> If emails aren't being delivered, check that your firewall allows outbound SMTP connections (port 25, 465, or 587).</p>
+                            <p><strong>Self-Tests:</strong> Long self-tests can impact system performance. Schedule them during maintenance windows or low-usage periods.</p>
+                        </div>
+
+                        <div class="success">
+                            <h4>✓ Best Practices</h4>
+                            <ul>
+                                <li>Always test email functionality with <code>-M test</code> before relying on alerts</li>
+                                <li>Use <code>-M diminishing</code> to avoid alert fatigue from repeated errors</li>
+                                <li>Schedule long tests during off-peak hours (weekends/nights)</li>
+                                <li>Monitor smartd logs regularly: <code>sudo journalctl -u smartd</code></li>
+                                <li>Keep a backup of your smartd.conf before making changes</li>
+                                <li>Document your monitoring configuration for future reference</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Placeholder for future commands -->
             <div class="info">
                 <h4>📌 More Commands Coming Soon</h4>
