@@ -275,6 +275,7 @@
                     <li><a href="#verification">7. Verification and Testing</a></li>
                     <li><a href="#client">8. Client Configuration</a></li>
                     <li><a href="#troubleshooting">9. Troubleshooting</a></li>
+                    <li><a href="#useful-commands">10. Useful Commands</a></li>
                 </ul>
             </div>
 
@@ -692,6 +693,58 @@ sudo dmesg -w | grep -i nvmet
 
 # Check RDMA subsystem logs
 sudo journalctl -k | grep -i rdma</code></pre>
+            </section>
+
+            <section id="useful-commands">
+                <h2>10. Useful Commands</h2>
+
+                <h3>FIO (Flexible I/O Tester)</h3>
+                <p>FIO is a versatile tool for benchmarking and testing storage devices. Below are common use cases:</p>
+
+                <h4>Fill a Disk</h4>
+                <p>Use FIO to fill a disk with data for testing purposes:</p>
+                <pre><code># Install FIO if not already installed
+sudo apt install fio
+
+# Fill entire disk with sequential writes
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=100% --numjobs=1
+
+# Fill disk with random data (more realistic)
+sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=1
+
+# Fill specific partition
+sudo fio --name=filltest --filename=/dev/nvme0n1p1 --rw=write --bs=1M --direct=1 --size=100%</code></pre>
+
+                <div class="warning">
+                    <h4>Warning</h4>
+                    <p><strong>DATA LOSS WARNING:</strong> The commands above will overwrite ALL data on the specified device. Double-check the device path before running. Use lsblk to verify device names.</p>
+                </div>
+
+                <div class="info">
+                    <h4>FIO Parameters Explained</h4>
+                    <ul>
+                        <li><strong>--name:</strong> Job name for identification</li>
+                        <li><strong>--filename:</strong> Device or file to test (use full path)</li>
+                        <li><strong>--rw:</strong> I/O pattern (write, randwrite, read, randread, etc.)</li>
+                        <li><strong>--bs:</strong> Block size (1M = 1 megabyte, 4k = 4 kilobytes)</li>
+                        <li><strong>--direct:</strong> Use direct I/O (bypasses OS cache)</li>
+                        <li><strong>--size:</strong> Amount of data to write (100% = entire device)</li>
+                        <li><strong>--numjobs:</strong> Number of parallel jobs</li>
+                    </ul>
+                </div>
+
+                <h4>Verify Device Before Filling</h4>
+                <pre><code># List all block devices
+lsblk
+
+# Check device size
+sudo fdisk -l /dev/nvme0n1
+
+# Verify no mounted partitions
+mount | grep nvme0n1
+
+# If mounted, unmount first
+sudo umount /dev/nvme0n1p1</code></pre>
             </section>
 
             <div class="checklist">
