@@ -15,23 +15,23 @@
     <title>Useful Commands - Darren Soothill</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Essential Linux commands for system administrators including FIO benchmarking, Smartmontools disk health monitoring, storage testing, SMART monitoring setup, automated email alerts, and performance testing. Copy-paste ready commands with detailed explanations.">
-    <meta name="keywords" content="Linux commands, FIO commands, smartmontools, SMART monitoring, disk health monitoring, smartctl commands, smartd configuration, automated disk monitoring, storage benchmarking, disk performance testing, NVMe testing, system administration commands, iostat, lsblk, fdisk commands, storage testing tools, disk fill commands, random read write, sequential IO, Linux performance testing, server administration, Ubuntu commands, RHEL commands, email alerts, Darren Soothill">
+    <meta name="description" content="Essential Linux commands for system administrators including FIO benchmarking, Smartmontools disk health monitoring, SSH legacy algorithm fixes, storage testing, SMART monitoring setup, automated email alerts, and performance testing. Copy-paste ready commands with detailed explanations.">
+    <meta name="keywords" content="Linux commands, FIO commands, smartmontools, SMART monitoring, SSH legacy algorithms, SSH connection fix, diffie-hellman, ssh-rsa, disk health monitoring, smartctl commands, smartd configuration, automated disk monitoring, storage benchmarking, disk performance testing, NVMe testing, system administration commands, iostat, lsblk, fdisk commands, storage testing tools, disk fill commands, random read write, sequential IO, Linux performance testing, server administration, Ubuntu commands, RHEL commands, email alerts, SSH config, Darren Soothill">
     <meta name="author" content="Darren Soothill">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.soothill.io/useful-commands.html">
+    <link rel="canonical" href="https://www.darrensoothill.io/useful-commands.html">
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Useful Linux Commands - FIO, Smartmontools & Storage Testing - Darren Soothill">
-    <meta property="og:description" content="Practical Linux commands for system administrators. Includes FIO benchmarking, Smartmontools SMART monitoring with automated alerts, storage testing commands, and performance monitoring tools with copy-paste functionality.">
-    <meta property="og:url" content="https://www.soothill.io/useful-commands.html">
+    <meta property="og:title" content="Useful Linux Commands - FIO, Smartmontools, SSH & Storage Testing - Darren Soothill">
+    <meta property="og:description" content="Practical Linux commands for system administrators. Includes FIO benchmarking, Smartmontools SMART monitoring with automated alerts, SSH legacy algorithm fixes, storage testing commands, and performance monitoring tools with copy-paste functionality.">
+    <meta property="og:url" content="https://www.darrensoothill.io/useful-commands.html">
     <meta property="og:site_name" content="Darren Soothill">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Useful Linux Commands - FIO, Smartmontools & Storage Testing">
-    <meta name="twitter:description" content="Essential Linux commands for system administrators with FIO benchmarking, Smartmontools disk health monitoring with automated alerts, storage testing, and performance monitoring examples.">
+    <meta name="twitter:title" content="Useful Linux Commands - FIO, Smartmontools, SSH & Storage Testing">
+    <meta name="twitter:description" content="Essential Linux commands for system administrators with FIO benchmarking, Smartmontools disk health monitoring with automated alerts, SSH connection fixes for legacy servers, storage testing, and performance monitoring examples.">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -39,15 +39,15 @@
       "@context": "https://schema.org",
       "@type": "TechArticle",
       "headline": "Useful Linux Commands for System Administration",
-      "description": "Collection of practical Linux commands for system administrators including FIO benchmarking, Smartmontools disk health monitoring with automated email alerts, and storage testing",
+      "description": "Collection of practical Linux commands for system administrators including FIO benchmarking, Smartmontools disk health monitoring with automated email alerts, SSH legacy algorithm fixes, and storage testing",
       "author": {
         "@type": "Person",
         "name": "Darren Soothill"
       },
       "datePublished": "2025-01-11",
-      "dateModified": "2025-01-11",
-      "url": "https://www.soothill.io/useful-commands.html",
-      "keywords": "Linux, FIO, smartmontools, SMART monitoring, disk health, automated alerts, storage benchmarking, system administration, performance testing",
+      "dateModified": "2025-10-19",
+      "url": "https://www.darrensoothill.io/useful-commands.html",
+      "keywords": "Linux, FIO, smartmontools, SMART monitoring, SSH, SSH legacy algorithms, disk health, automated alerts, storage benchmarking, system administration, performance testing",
       "articleSection": "Technical Documentation",
       "educationalLevel": "Intermediate to Advanced"
     }
@@ -904,6 +904,195 @@ DEVICESCAN -a -W 4,40,45 -m darren@soothill.com
                                 <li>Monitor smartd logs regularly: <code>sudo journalctl -u smartd</code></li>
                                 <li>Keep a backup of your smartd.conf before making changes</li>
                                 <li>Document your monitoring configuration for future reference</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SSH Connection Fix -->
+            <div class="command-item">
+                <div class="command-header" onclick="toggleCommand(this)">
+                    <h2>SSH Connection Fix - Legacy Algorithms</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="command-content">
+                    <div class="command-content-inner">
+                        <p>Fix SSH connection issues with legacy servers that use outdated key exchange and host key algorithms. Modern SSH clients disable these older algorithms by default for security reasons, but they can be re-enabled when needed for legacy equipment.</p>
+
+                        <div class="subsection">
+                            <h3>Common Error Messages</h3>
+                            <p>You may encounter these error messages when connecting to older SSH servers:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code>Unable to negotiate with 10.10.201.2 port 22: no matching key exchange method found.
+Their offer: diffie-hellman-group1-sha1,diffie-hellman-group14-sha1
+
+Unable to negotiate with 10.10.201.2 port 22: no matching host key type found.
+Their offer: ssh-rsa</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Quick Fix (One-time Connection)</h3>
+                            <p>Use this command to connect immediately with both legacy algorithms enabled. Replace <code>user</code> with your actual username:</p>
+
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code>ssh -oKexAlgorithms=+diffie-hellman-group14-sha1 -oHostKeyAlgorithms=+ssh-rsa user@10.10.201.2</code></pre>
+                            </div>
+
+                            <h4>Alternative with Additional Legacy Support</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Include both diffie-hellman algorithms and ssh-rsa
+ssh -oKexAlgorithms=+diffie-hellman-group14-sha1,diffie-hellman-group1-sha1 \
+    -oHostKeyAlgorithms=+ssh-rsa \
+    -oPubkeyAcceptedKeyTypes=+ssh-rsa \
+    user@10.10.201.2</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Permanent Fix (SSH Config)</h3>
+                            <p>For servers you connect to regularly, add configuration to your <code>~/.ssh/config</code> file for automatic handling:</p>
+
+                            <h4>For Specific Host</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Add to ~/.ssh/config
+Host 10.10.201.2
+    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa</code></pre>
+                            </div>
+
+                            <h4>For Entire Subnet</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Add to ~/.ssh/config - applies to all hosts in 10.10.201.* subnet
+Host 10.10.201.*
+    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa</code></pre>
+                            </div>
+
+                            <h4>Using Hostname Pattern</h4>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Add to ~/.ssh/config - applies to legacy-* hostnames
+Host legacy-*
+    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa</code></pre>
+                            </div>
+
+                            <p>After adding this configuration, connect normally:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code>ssh user@10.10.201.2</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>If You Still Have Issues</h3>
+                            <p>Very old servers might require additional legacy cipher support:</p>
+
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Add to ~/.ssh/config with legacy cipher support
+Host 10.10.201.2
+    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa
+    Ciphers +aes256-cbc,aes128-cbc,3des-cbc</code></pre>
+                            </div>
+
+                            <h4>MAC Algorithm Issues</h4>
+                            <p>If you get errors about MAC (Message Authentication Code) algorithms:</p>
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Add legacy MAC algorithms
+Host 10.10.201.2
+    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+    HostKeyAlgorithms +ssh-rsa
+    PubkeyAcceptedKeyTypes +ssh-rsa
+    MACs +hmac-sha1,hmac-sha1-96</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Creating/Editing SSH Config File</h3>
+                            <p>If you don't have an SSH config file yet, create one:</p>
+
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Create .ssh directory if it doesn't exist
+mkdir -p ~/.ssh
+
+# Set proper permissions
+chmod 700 ~/.ssh
+
+# Create or edit config file
+nano ~/.ssh/config
+
+# Set proper permissions on config file
+chmod 600 ~/.ssh/config</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h3>Checking What Algorithms a Server Supports</h3>
+                            <p>To see what algorithms a remote SSH server offers:</p>
+
+                            <div class="code-block-wrapper">
+                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
+                                <pre><code># Use nmap to scan SSH algorithms
+nmap --script ssh2-enum-algos -sV -p 22 10.10.201.2
+
+# Or use ssh with verbose mode to see negotiation
+ssh -vv user@10.10.201.2</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="info">
+                            <h4>Configuration Parameters Explained</h4>
+                            <ul>
+                                <li><strong>KexAlgorithms:</strong> Key exchange algorithms - methods for securely exchanging encryption keys</li>
+                                <li><strong>HostKeyAlgorithms:</strong> Algorithms used to verify the server's identity</li>
+                                <li><strong>PubkeyAcceptedKeyTypes:</strong> Algorithms accepted for public key authentication</li>
+                                <li><strong>Ciphers:</strong> Encryption algorithms used for the actual data transfer</li>
+                                <li><strong>MACs:</strong> Message Authentication Codes for verifying data integrity</li>
+                                <li><strong>+ prefix:</strong> Appends algorithms to the default list instead of replacing it</li>
+                            </ul>
+                        </div>
+
+                        <div class="warning">
+                            <h4>⚠️ Security Warning</h4>
+                            <p><strong>Important:</strong> These algorithms are disabled by default in modern SSH clients because they have known security weaknesses:</p>
+                            <ul>
+                                <li><strong>diffie-hellman-group1-sha1:</strong> Vulnerable to logjam attacks, uses weak 1024-bit key</li>
+                                <li><strong>ssh-rsa with SHA-1:</strong> SHA-1 hash collisions have been demonstrated</li>
+                                <li><strong>Legacy ciphers:</strong> CBC-mode ciphers are vulnerable to certain attacks</li>
+                            </ul>
+                            <p><strong>Only re-enable these if:</strong></p>
+                            <ul>
+                                <li>You're on a trusted, isolated network (not over the internet)</li>
+                                <li>You need to connect to legacy equipment that cannot be updated</li>
+                                <li>You understand and accept the security risks</li>
+                            </ul>
+                            <p><strong>Best practice:</strong> The proper long-term solution is to upgrade the SSH server to support modern algorithms.</p>
+                        </div>
+
+                        <div class="success">
+                            <h4>✓ Best Practices</h4>
+                            <ul>
+                                <li>Use SSH config file instead of command-line options for regular connections</li>
+                                <li>Limit legacy algorithm support to specific hosts, not globally</li>
+                                <li>Document why you need legacy algorithm support (compliance, old hardware, etc.)</li>
+                                <li>Regularly check if legacy servers can be upgraded to modern SSH versions</li>
+                                <li>Use VPN or jump hosts when accessing legacy systems over untrusted networks</li>
+                                <li>Keep your SSH config file backed up and version controlled</li>
                             </ul>
                         </div>
                     </div>
