@@ -7,7 +7,7 @@ description: Browse blog posts by category
 <div class="container">
     <header style="text-align: center; margin-bottom: 3rem;">
         <h1>Browse by Category</h1>
-        <p style="font-size: 1.1rem; color: #666;">Explore technical articles organized by topic</p>
+        <p style="font-size: 1.1rem; color: var(--text-secondary);">Explore technical articles organized by topic</p>
     </header>
 
     {% assign categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
@@ -15,7 +15,7 @@ description: Browse blog posts by category
     {% for category in categories %}
         {% if category != "" %}
         <section id="{{ category | slugify }}" style="margin-bottom: 4rem;">
-            <h2 style="color: #667eea; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+            <h2 style="color: var(--primary-light); border-bottom: 3px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
                 {{ category }}
             </h2>
 
@@ -23,15 +23,15 @@ description: Browse blog posts by category
                 {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category" %}
 
                 {% for post in category_posts %}
-                <article style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+                <article style="padding: 1.5rem; background: var(--bg-darker); border-radius: 8px; border-left: 4px solid var(--primary); border: 1px solid var(--border); border-left: 4px solid var(--primary); box-shadow: var(--shadow-md); transition: all 0.3s ease;">
                     <h3 style="margin-top: 0;">
-                        <a href="{{ post.url }}" style="color: #667eea; text-decoration: none;">
+                        <a href="{{ post.url }}" style="color: var(--primary-light); text-decoration: none; transition: color 0.3s ease;">
                             {{ post.title }}
                         </a>
                     </h3>
 
-                    <div style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-                        <time datetime="{{ post.date | date_to_xmlschema }}">
+                    <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                        <time datetime="{{ post.date | date_to_xmlschema }}" style="color: var(--primary-light); font-weight: 600;">
                             {{ post.date | date: "%B %d, %Y" }}
                         </time>
                         {% if post.author %}
@@ -39,7 +39,7 @@ description: Browse blog posts by category
                         {% endif %}
                     </div>
 
-                    <p style="margin-bottom: 1rem;">
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary);">
                         {% if post.description %}
                             {{ post.description }}
                         {% else %}
@@ -50,7 +50,7 @@ description: Browse blog posts by category
                     {% if post.tags %}
                     <div>
                         {% for tag in post.tags limit:5 %}
-                            <span style="background: #e0e0e0; color: #555; padding: 0.2rem 0.6rem; border-radius: 12px; margin-right: 0.5rem; font-size: 0.8rem;">
+                            <span style="background: var(--border); color: var(--text-secondary); padding: 0.2rem 0.6rem; border-radius: 12px; margin-right: 0.5rem; font-size: 0.8rem;">
                                 {{ tag }}
                             </span>
                         {% endfor %}
@@ -64,9 +64,9 @@ description: Browse blog posts by category
     {% endfor %}
 
     {% if categories.size == 0 %}
-    <div style="text-align: center; padding: 3rem; background: #f8f9fa; border-radius: 8px;">
-        <h3>No categories yet</h3>
-        <p>Categories will appear here as you add blog posts.</p>
+    <div style="text-align: center; padding: 3rem; background: var(--bg-darker); border-radius: 8px; border: 1px solid var(--border);">
+        <h3 style="color: var(--text-primary);">No categories yet</h3>
+        <p style="color: var(--text-secondary);">Categories will appear here as you add blog posts.</p>
     </div>
     {% endif %}
 </div>
@@ -74,5 +74,16 @@ description: Browse blog posts by category
 <style>
     .container section {
         scroll-margin-top: 80px;
+    }
+
+    article:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+        border-color: var(--primary-light) !important;
+    }
+
+    article h3 a:hover {
+        color: var(--secondary) !important;
+        text-decoration: underline !important;
     }
 </style>
