@@ -60,7 +60,7 @@ A comprehensive list of improvements to give the website a more modern and dynam
 ### Technical Architecture
 - [x] Implement service worker for offline support (PWA)
 - [x] Add lazy loading for images
-- [ ] Minify CSS/JS for production
+- [x] Minify CSS/JS for production (via GitHub Actions)
 - [x] Add resource hints (preconnect, preload)
 - [x] Optimize font loading strategy
 - [x] Add print-friendly styles
@@ -78,8 +78,10 @@ A comprehensive list of improvements to give the website a more modern and dynam
 |----------|-------|-----------|-----------|
 | High Priority | 7 | 7 | 0 |
 | Medium Priority | 17 | 17 | 0 |
-| Lower Priority | 14 | 13 | 1 |
-| **Total** | **38** | **37** | **1** |
+| Lower Priority | 14 | 14 | 0 |
+| **Total** | **38** | **38** | **0** |
+
+🎉 **All tasks completed!**
 
 ---
 
@@ -106,8 +108,19 @@ A comprehensive list of improvements to give the website a more modern and dynam
 - `_layouts/post.html` - Blog post layout
 - `about/index.md` - Fixed dark theme consistency
 
-### Remaining Items:
-1. **Minify CSS/JS for production** - Requires build tool (e.g., Gulp, Webpack, or GitHub Actions)
+### GitHub Actions Setup:
+
+To enable the minification and deployment workflow:
+
+1. Go to repository **Settings** → **Pages**
+2. Under "Build and deployment", select **Source: GitHub Actions**
+3. The workflow will automatically run on every push to `main`
+
+The workflow (`.github/workflows/build.yml`) will:
+- Minify CSS using `csso`
+- Minify JavaScript using `terser`
+- Build the Jekyll site
+- Deploy to GitHub Pages
 
 ---
 
