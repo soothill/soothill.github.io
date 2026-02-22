@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Cookie Consent - Must be first to control other scripts -->
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4KVJSXV6TK');
-    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Preconnect to external resources for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <!-- Google Fonts - Inter & Fira Code -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <title>Darren Soothill | Professional Portfolio & Resources</title>
     
     <!-- SEO Meta Tags -->
@@ -43,332 +47,128 @@
     }
     </script>
 
+    <!-- Google tag (gtag.js) - Controlled by Cookiebot -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK" data-cookieconsent="statistics"></script>
+    <script data-cookieconsent="statistics">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4KVJSXV6TK');
+    </script>
+
     <!-- Google Custom Search -->
     <script async src="https://cse.google.com/cse.js?cx=723d8f7fe590e4eba"></script>
 
-    <style>
-        :root {
-            --primary: #667eea;
-            --primary-light: #818cf8;
-            --secondary: #06b6d4;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border: #334155;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.7;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--bg-card) 0%, var(--border) 100%);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 2rem;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            letter-spacing: -0.5px;
-        }
-
-        .logo:hover {
-            transform: translateY(-2px);
-            color: var(--primary-light);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary-light);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-primary);
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: -1px;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .documents-section {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            margin: 2rem auto;
-            max-width: 1000px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: var(--text-primary);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .documents-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .document-card {
-            background: var(--bg-dark);
-            padding: 2rem;
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-        }
-
-        .document-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
-            border-color: var(--primary-light);
-        }
-
-        .document-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
-            color: var(--text-primary);
-        }
-
-        .document-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            margin-top: 3rem;
-            opacity: 0.9;
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .nav-links {
-                gap: 1rem;
-            }
-            
-            nav {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-    </style>
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Darren Soothill</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="/blog/">Blog</a></li>
-                <li><a href="#documents">Documents</a></li>
-                <li><a href="resources.html">Resources</a></li>
-                <li><a href="useful-commands.html">Useful Commands</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container" style="background: transparent; border: none; box-shadow: none; padding: 0 2rem; margin: 0; max-width: 100%;">
+            <a href="/" class="site-title">Darren Soothill</a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="#documents">Documents</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="useful-commands.html">Useful Commands</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     
-    <script>
-        // Email obfuscation to prevent scraping
-        function revealEmail() {
-            const parts = ['darren', 'soothill', 'com'];
-            return parts[0] + '@' + parts[1] + '.' + parts[2];
-        }
+    <main id="main-content">
+        <div class="container">
+            <section class="hero" id="home">
+                <h1>Welcome to <span class="gradient-text">Darren Soothill's</span> Website</h1>
+                <p>Your central hub for professional documents and resources</p>
+            </section>
+        </div>
 
-        function createEmailLink() {
-            const email = revealEmail();
-            const emailLink = document.getElementById('email-link');
-            if (emailLink) {
-                emailLink.href = 'mailto:' + email;
-                emailLink.textContent = email;
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', createEmailLink);
-    </script>
-    
-    <main class="container">
-        <section class="hero" id="home">
-            <h1>Welcome to Darren Soothill's Website</h1>
-            <p>Your central hub for professional documents and resources</p>
-        </section>
-
-        <section class="documents-section" id="documents">
-            <h2 class="section-title">Document Library</h2>
-            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
-                Click on any document below to access the full content
-            </p>
+        <section class="section" id="documents">
+            <h2 class="section__title">Document Library</h2>
+            <p class="section__description">Click on any document below to access the full content</p>
             
-            <div class="documents-grid">
-                <a href="/documents/resume.html" class="document-card">
-                    <h3>📄 Resume/CV</h3>
-                    <p>Professional background, experience, and qualifications</p>
+            <div class="cards-grid">
+                <a href="/documents/resume.html" class="card reveal">
+                    <div class="card__icon">📄</div>
+                    <h3 class="card__title">Resume/CV</h3>
+                    <p class="card__description">Professional background, experience, and qualifications</p>
+                    <span class="card__link">View Document →</span>
                 </a>
                 
-                <a href="/documents/portfolio.html" class="document-card">
-                    <h3>💼 Portfolio</h3>
-                    <p>Showcase of projects and achievements</p>
+                <a href="/documents/portfolio.html" class="card reveal stagger-1">
+                    <div class="card__icon">💼</div>
+                    <h3 class="card__title">Portfolio</h3>
+                    <p class="card__description">Showcase of projects and achievements</p>
+                    <span class="card__link">View Document →</span>
                 </a>
                 
-                <a href="/documents/publications.html" class="document-card">
-                    <h3>📚 Publications</h3>
-                    <p>Articles, papers, and written works</p>
+                <a href="/documents/publications.html" class="card reveal stagger-2">
+                    <div class="card__icon">📚</div>
+                    <h3 class="card__title">Publications</h3>
+                    <p class="card__description">Articles, papers, and written works</p>
+                    <span class="card__link">View Document →</span>
                 </a>
                 
-                <a href="/documents/certifications.html" class="document-card">
-                    <h3>🎓 Certifications</h3>
-                    <p>Professional credentials and qualifications</p>
+                <a href="/documents/certifications.html" class="card reveal stagger-3">
+                    <div class="card__icon">🎓</div>
+                    <h3 class="card__title">Certifications</h3>
+                    <p class="card__description">Professional credentials and qualifications</p>
+                    <span class="card__link">View Document →</span>
                 </a>
                 
-                <a href="resources.html" class="document-card">
-                    <h3>🔗 Resources</h3>
-                    <p>Curated collection of storage, HPC, and system administration resources</p>
+                <a href="resources.html" class="card reveal stagger-4">
+                    <div class="card__icon">🔗</div>
+                    <h3 class="card__title">Resources</h3>
+                    <p class="card__description">Curated collection of storage, HPC, and system administration resources</p>
+                    <span class="card__link">View Resources →</span>
                 </a>
                 
-                <a href="/documents/contact-info.html" class="document-card">
-                    <h3>📧 Contact Information</h3>
-                    <p>Get in touch and connect</p>
+                <a href="/documents/contact-info.html" class="card reveal stagger-5">
+                    <div class="card__icon">📧</div>
+                    <h3 class="card__title">Contact Information</h3>
+                    <p class="card__description">Get in touch and connect</p>
+                    <span class="card__link">View Contact →</span>
                 </a>
             </div>
         </section>
         
-        <section class="documents-section" id="contact">
-            <h2 class="section-title">Contact Information</h2>
+        <section class="section" id="contact">
+            <h2 class="section__title">Contact Information</h2>
             <div style="text-align: center; padding: 2rem;">
                 <div style="margin-bottom: 1.5rem;">
                     <strong style="font-size: 1.1rem; color: var(--primary-light);">Email:</strong><br>
-                    <a id="email-link" href="#" style="color: var(--secondary); text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block; transition: color 0.3s ease;">
+                    <a id="email-link" href="#" data-email style="color: var(--secondary); text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
                         Loading...
                     </a>
                 </div>
                 <div>
-                    <strong style="font-size: 1.1rem; color: #667eea;">LinkedIn:</strong><br>
-                    <a href="https://www.linkedin.com/in/darrensoothill" target="_blank" rel="noopener noreferrer" style="color: #0077b5; text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
+                    <strong style="font-size: 1.1rem; color: var(--primary-light);">LinkedIn:</strong><br>
+                    <a href="https://www.linkedin.com/in/darrensoothill" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
                         linkedin.com/in/darrensoothill
                     </a>
                 </div>
             </div>
         </section>
 
-        <section class="documents-section" id="search">
-            <h2 class="section-title">Search</h2>
+        <section class="section" id="search">
+            <h2 class="section__title">Search</h2>
             <div class="gcse-search"></div>
         </section>
     </main>
 
-    <footer>
+    <footer class="site-footer">
         <p style="margin-bottom: 0.5rem; opacity: 0.8; font-size: 0.9rem;">Last updated: <span id="last-updated"></span></p>
         <p>&copy; 2025 Darren Soothill. All rights reserved.</p>
     </footer>
 
-    <script>
-        // Display last modified date
-        document.addEventListener('DOMContentLoaded', function() {
-            const lastModified = new Date(document.lastModified);
-            const options = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZoneName: 'short'
-            };
-            document.getElementById('last-updated').textContent = lastModified.toLocaleString('en-US', options);
-        });
-    </script>
+    <!-- Main JavaScript -->
+    <script src="assets/js/main.js" defer></script>
 </body>
 </html>

@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Cookie Consent - Must be first to control other scripts -->
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4KVJSXV6TK');
-    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Preconnect to external resources for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <!-- Google Fonts - Inter & Fira Code -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <title>Useful Commands - Darren Soothill</title>
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="Essential Linux commands for system administrators including FIO benchmarking, Smartmontools disk health monitoring, SSH legacy algorithm fixes, storage testing, SMART monitoring setup, automated email alerts, and performance testing. Copy-paste ready commands with detailed explanations.">
-    <meta name="keywords" content="Linux commands, FIO commands, smartmontools, SMART monitoring, SSH legacy algorithms, SSH connection fix, diffie-hellman, ssh-rsa, disk health monitoring, smartctl commands, smartd configuration, automated disk monitoring, storage benchmarking, disk performance testing, NVMe testing, system administration commands, iostat, lsblk, fdisk commands, storage testing tools, disk fill commands, random read write, sequential IO, Linux performance testing, server administration, Ubuntu commands, RHEL commands, email alerts, SSH config, Darren Soothill">
+    <meta name="keywords" content="Linux commands, FIO commands, smartmontools, SMART monitoring, SSH legacy algorithms, disk health monitoring, storage benchmarking, NVMe testing, system administration commands, Darren Soothill">
     <meta name="author" content="Darren Soothill">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.darrensoothill.io/useful-commands.html">
@@ -24,14 +28,13 @@
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Useful Linux Commands - FIO, Smartmontools, SSH & Storage Testing - Darren Soothill">
-    <meta property="og:description" content="Practical Linux commands for system administrators. Includes FIO benchmarking, Smartmontools SMART monitoring with automated alerts, SSH legacy algorithm fixes, storage testing commands, and performance monitoring tools with copy-paste functionality.">
+    <meta property="og:description" content="Practical Linux commands for system administrators. Includes FIO benchmarking, Smartmontools SMART monitoring with automated alerts, SSH legacy algorithm fixes, and storage testing commands.">
     <meta property="og:url" content="https://www.darrensoothill.io/useful-commands.html">
-    <meta property="og:site_name" content="Darren Soothill">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Useful Linux Commands - FIO, Smartmontools, SSH & Storage Testing">
-    <meta name="twitter:description" content="Essential Linux commands for system administrators with FIO benchmarking, Smartmontools disk health monitoring with automated alerts, SSH connection fixes for legacy servers, storage testing, and performance monitoring examples.">
+    <meta name="twitter:description" content="Essential Linux commands for system administrators with FIO benchmarking, Smartmontools disk health monitoring, SSH connection fixes, and storage testing.">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -47,175 +50,33 @@
       "datePublished": "2025-01-11",
       "dateModified": "2025-10-19",
       "url": "https://www.darrensoothill.io/useful-commands.html",
-      "keywords": "Linux, FIO, smartmontools, SMART monitoring, SSH, SSH legacy algorithms, disk health, automated alerts, storage benchmarking, system administration, performance testing",
-      "articleSection": "Technical Documentation",
-      "educationalLevel": "Intermediate to Advanced"
+      "keywords": "Linux, FIO, smartmontools, SMART monitoring, SSH, storage benchmarking, system administration"
     }
     </script>
 
+    <!-- Google tag (gtag.js) - Controlled by Cookiebot -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK" data-cookieconsent="statistics"></script>
+    <script data-cookieconsent="statistics">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4KVJSXV6TK');
+    </script>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <!-- Page-specific styles -->
     <style>
-        :root {
-            --primary: #667eea;
-            --primary-light: #818cf8;
-            --secondary: #06b6d4;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border: #334155;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.7;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--bg-card) 0%, var(--border) 100%);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 2rem;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            letter-spacing: -0.5px;
-        }
-
-        .logo:hover {
-            transform: translateY(-2px);
-            color: var(--primary-light);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary-light);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 4rem 2rem 2rem 2rem;
-            color: var(--text-primary);
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            letter-spacing: -1px;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .content-section {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            margin: 2rem auto;
-            max-width: 1000px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-        }
-
-        .intro {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
-            border-left: 4px solid var(--primary-light);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .intro h2 {
-            color: var(--primary-light);
-            margin-bottom: 0.5rem;
-            border: none;
-            padding: 0;
-            font-size: 1.5rem;
-        }
-
-        .intro p {
-            color: var(--text-secondary);
-        }
-
         /* Expandable Command Sections */
         .command-item {
             background: var(--bg-dark);
             border: 2px solid var(--border);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             margin-bottom: 1.5rem;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
         }
 
         .command-item:hover {
@@ -233,7 +94,7 @@
             justify-content: space-between;
             align-items: center;
             user-select: none;
-            transition: all 0.3s ease;
+            transition: all var(--transition-base);
         }
 
         .command-header:hover {
@@ -251,7 +112,7 @@
         .command-header .toggle-icon {
             font-size: 1.5rem;
             font-weight: bold;
-            transition: transform 0.3s ease;
+            transition: transform var(--transition-base);
         }
 
         .command-header.active .toggle-icon {
@@ -272,101 +133,8 @@
             padding: 2rem;
         }
 
-        h3 {
-            color: var(--primary-light);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem 0;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        h4 {
-            color: var(--secondary);
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.5rem 0;
-        }
-
-        p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-        }
-
         .subsection {
             margin-bottom: 2.5rem;
-        }
-
-        /* Code blocks with copy button */
-        .code-block-wrapper {
-            position: relative;
-            margin: 1rem 0;
-        }
-
-        pre {
-            background: #2d2d2d !important;
-            color: #f8f8f2 !important;
-            padding: 1.5rem;
-            padding-top: 3rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 0;
-            border-left: 4px solid #667eea;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        pre code {
-            background: transparent !important;
-            color: #f8f8f2 !important;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        code {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            color: var(--secondary);
-            background: rgba(6, 182, 212, 0.15);
-            padding: 0.2rem 0.4rem;
-            border-radius: 3px;
-        }
-
-        .copy-button {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
-        }
-
-        .copy-button:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-        }
-
-        .copy-button:active {
-            transform: translateY(0);
-        }
-
-        .copy-button.copied {
-            background: #28a745;
-        }
-
-        .copy-button.copied::after {
-            content: ' ✓';
         }
 
         /* Info, Warning, Success boxes */
@@ -375,8 +143,8 @@
             border-left: 4px solid #ffc107;
             padding: 1.5rem;
             margin: 1.5rem 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
             border: 1px solid rgba(255, 193, 7, 0.3);
         }
 
@@ -386,17 +154,13 @@
             margin-bottom: 0.5rem;
         }
 
-        .warning p {
-            color: var(--text-secondary);
-        }
-
         .info {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%);
             border-left: 4px solid var(--secondary);
             padding: 1.5rem;
             margin: 1.5rem 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
             border: 1px solid rgba(6, 182, 212, 0.3);
         }
 
@@ -404,10 +168,6 @@
             color: var(--secondary);
             margin-top: 0;
             margin-bottom: 0.5rem;
-        }
-
-        .info p {
-            color: var(--text-secondary);
         }
 
         .info ul {
@@ -425,8 +185,8 @@
             border-left: 4px solid #10b981;
             padding: 1.5rem;
             margin: 1.5rem 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
@@ -446,68 +206,52 @@
             color: var(--text-secondary);
         }
 
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            margin-top: 3rem;
+        .intro {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-left: 4px solid var(--primary-light);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
         }
 
-        footer p {
-            margin: 0.5rem 0;
-            opacity: 0.9;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            nav {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .content-section {
-                padding: 2rem 1rem;
-            }
-
-            .command-content-inner {
-                padding: 1.5rem;
-            }
+        .intro h2 {
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+            border: none;
+            padding: 0;
+            font-size: 1.5rem;
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Darren Soothill</div>
-            <ul class="nav-links">
-                <li><a href="index.html#home">Home</a></li>
-                <li><a href="index.html#documents">Documents</a></li>
-                <li><a href="resources.html">Resources</a></li>
-                <li><a href="useful-commands.html">Useful Commands</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
-            </ul>
-        </nav>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container" style="background: transparent; border: none; box-shadow: none; padding: 0 2rem; margin: 0; max-width: 100%;">
+            <a href="/" class="site-title">Darren Soothill</a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#documents">Documents</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="useful-commands.html">Useful Commands</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <div class="container">
-        <div class="hero">
-            <h1>Useful Commands</h1>
-            <p>A collection of practical Linux commands for system administration and testing</p>
+    <main id="main-content">
+        <div class="container">
+            <section class="hero">
+                <h1>Useful <span class="gradient-text">Commands</span></h1>
+                <p>A collection of practical Linux commands for system administration and testing</p>
+            </section>
         </div>
 
-        <div class="content-section">
+        <section class="section reveal">
             <div class="intro">
                 <h2>About This Page</h2>
                 <p>This page contains a curated collection of useful Linux commands for system administration, performance testing, and troubleshooting. Click on any command section below to expand and view detailed examples and explanations.</p>
@@ -525,9 +269,7 @@
 
                         <div class="subsection">
                             <h3>Installation</h3>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Install FIO on Ubuntu/Debian
+                            <pre><code># Install FIO on Ubuntu/Debian
 sudo apt update
 sudo apt install fio
 
@@ -536,95 +278,42 @@ sudo yum install fio
 
 # Verify installation
 fio --version</code></pre>
-                            </div>
                         </div>
 
                         <div class="subsection">
                             <h3>Fill a Disk</h3>
-                            <p>Use FIO to fill a disk with data for testing purposes. This is useful for initializing storage devices, testing write performance, or preparing disks for benchmarking.</p>
+                            <p>Use FIO to fill a disk with data for testing purposes.</p>
 
                             <h4>Sequential Write (Fastest)</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Fill entire disk with sequential writes
+                            <pre><code># Fill entire disk with sequential writes
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=100% --numjobs=1
 
 # Fill with larger block size for maximum speed
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=4M --direct=1 --size=100% --numjobs=1</code></pre>
-                            </div>
 
                             <h4>Random Write (More Realistic)</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Fill disk with random data (more realistic workload)
+                            <pre><code># Fill disk with random data (more realistic workload)
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=1
 
 # Fill with multiple jobs for parallel writes
 sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=4</code></pre>
-                            </div>
-
-                            <h4>Fill Specific Partition</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Fill a specific partition instead of entire disk
-sudo fio --name=filltest --filename=/dev/nvme0n1p1 --rw=write --bs=1M --direct=1 --size=100%
-
-# Fill specific size (e.g., 50GB)
-sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=50G</code></pre>
-                            </div>
 
                             <div class="warning">
                                 <h4>⚠️ Data Loss Warning</h4>
                                 <p><strong>CRITICAL:</strong> The commands above will <strong>PERMANENTLY OVERWRITE ALL DATA</strong> on the specified device. Always double-check the device path before running these commands.</p>
-                                <p>Use <code>lsblk</code> or <code>fdisk -l</code> to verify device names before proceeding.</p>
                             </div>
 
                             <div class="info">
                                 <h4>FIO Parameters Explained</h4>
                                 <ul>
                                     <li><strong>--name:</strong> Job name for identification in output</li>
-                                    <li><strong>--filename:</strong> Device or file to test (use full path, e.g., /dev/nvme0n1)</li>
-                                    <li><strong>--rw:</strong> I/O pattern - write, randwrite, read, randread, readwrite, etc.</li>
-                                    <li><strong>--bs:</strong> Block size - 4k (4 kilobytes), 1M (1 megabyte), etc.</li>
-                                    <li><strong>--direct:</strong> Use direct I/O (1 = bypass OS cache, 0 = use cache)</li>
-                                    <li><strong>--size:</strong> Amount of data to write - 100% (entire device), 50G (50 gigabytes), etc.</li>
-                                    <li><strong>--numjobs:</strong> Number of parallel jobs (threads) to run</li>
-                                    <li><strong>--ioengine:</strong> I/O engine to use (libaio, io_uring, sync, etc.)</li>
+                                    <li><strong>--filename:</strong> Device or file to test</li>
+                                    <li><strong>--rw:</strong> I/O pattern - write, randwrite, read, randread</li>
+                                    <li><strong>--bs:</strong> Block size - 4k, 1M, etc.</li>
+                                    <li><strong>--direct:</strong> Use direct I/O (1 = bypass OS cache)</li>
+                                    <li><strong>--size:</strong> Amount of data - 100%, 50G, etc.</li>
+                                    <li><strong>--numjobs:</strong> Number of parallel jobs</li>
                                 </ul>
-                            </div>
-
-                            <h4>Verify Device Before Filling</h4>
-                            <p>Always verify the device path and ensure no mounted partitions exist before filling a disk:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># List all block devices and their mount points
-lsblk
-
-# Show detailed partition information
-sudo fdisk -l /dev/nvme0n1
-
-# Check if device or partitions are mounted
-mount | grep nvme0n1
-
-# If mounted, unmount first (replace with your partition)
-sudo umount /dev/nvme0n1p1
-
-# Verify device is not in use
-sudo fuser -v /dev/nvme0n1</code></pre>
-                            </div>
-
-                            <h4>Monitor Fill Progress</h4>
-                            <p>FIO provides real-time progress updates. You can also monitor from another terminal:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Watch I/O statistics in real-time
-iostat -x 2
-
-# Monitor specific device
-iostat -x 2 nvme0n1
-
-# Watch FIO progress with bandwidth and IOPS
-watch -n 1 'iostat -x | grep nvme0n1'</code></pre>
                             </div>
                         </div>
 
@@ -632,25 +321,12 @@ watch -n 1 'iostat -x | grep nvme0n1'</code></pre>
                             <h3>Additional FIO Examples</h3>
 
                             <h4>Random Read Performance Test</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Test random read performance
+                            <pre><code># Test random read performance
 sudo fio --name=randread --filename=/dev/nvme0n1 --rw=randread --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
-                            </div>
-
-                            <h4>Sequential Read/Write Test</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Test sequential read and write
-sudo fio --name=seqrw --filename=/dev/nvme0n1 --rw=readwrite --bs=1M --direct=1 --numjobs=1 --time_based --runtime=60</code></pre>
-                            </div>
 
                             <h4>Mixed Workload Test</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># 70% read, 30% write mixed workload
+                            <pre><code># 70% read, 30% write mixed workload
 sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
-                            </div>
                         </div>
 
                         <div class="success">
@@ -660,7 +336,6 @@ sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k
                                 <li>Unmount any mounted partitions before testing</li>
                                 <li>Use <code>--direct=1</code> to bypass OS cache for accurate results</li>
                                 <li>Start with small test sizes before running full disk operations</li>
-                                <li>Monitor system resources during tests to avoid overload</li>
                             </ul>
                         </div>
                     </div>
@@ -675,13 +350,11 @@ sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k
                 </div>
                 <div class="command-content">
                     <div class="command-content-inner">
-                        <p>Smartmontools is a suite of utilities for monitoring and analyzing the health of storage devices using SMART (Self-Monitoring, Analysis and Reporting Technology). It can automatically detect all devices, perform periodic scans, and send email alerts when errors are detected.</p>
+                        <p>Smartmontools is a suite of utilities for monitoring and analyzing the health of storage devices using SMART (Self-Monitoring, Analysis and Reporting Technology).</p>
 
                         <div class="subsection">
                             <h3>Installation</h3>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Install on Ubuntu/Debian
+                            <pre><code># Install on Ubuntu/Debian
 sudo apt update
 sudo apt install smartmontools
 
@@ -690,125 +363,38 @@ sudo yum install smartmontools
 
 # Verify installation
 smartctl --version</code></pre>
-                            </div>
                         </div>
 
                         <div class="subsection">
                             <h3>Setting Up Automatic Monitoring</h3>
-                            <p>Configure smartd (the SMART daemon) to automatically detect all devices, perform periodic scans, and send email alerts for any errors detected.</p>
+                            <p>Configure smartd to automatically detect all devices and send email alerts.</p>
 
-                            <h4>Step 1: Configure Email Settings</h4>
-                            <p>First, ensure your system can send emails. Install and configure a mail transfer agent:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Install mailutils (Debian/Ubuntu)
-sudo apt install mailutils
-
-# Install mailx (RHEL/CentOS)
-sudo yum install mailx
-
-# Test email sending
-echo "Test email from smartmontools" | mail -s "Test Subject" darren@soothill.com</code></pre>
-                            </div>
-
-                            <h4>Step 2: Configure smartd Daemon</h4>
-                            <p>Edit the smartd configuration file to enable automatic device detection and email alerts:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Backup original configuration
+                            <h4>Configure smartd Daemon</h4>
+                            <pre><code># Backup original configuration
 sudo cp /etc/smartd.conf /etc/smartd.conf.backup
 
 # Edit configuration file
 sudo nano /etc/smartd.conf</code></pre>
-                            </div>
 
-                            <h4>Step 3: Add Configuration Directives</h4>
-                            <p>Add the following line to <code>/etc/smartd.conf</code> to monitor all devices automatically:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Monitor all devices, run short self-test daily, long test weekly
-# Send email alerts to darren@soothill.com on any SMART errors
+                            <h4>Add Configuration</h4>
+                            <pre><code># Monitor all devices, run short self-test daily, long test weekly
+# Send email alerts on any SMART errors
 DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m darren@soothill.com -M exec /usr/share/smartmontools/smartd-runner</code></pre>
-                            </div>
 
-                            <div class="info">
-                                <h4>Configuration Parameters Explained</h4>
-                                <ul>
-                                    <li><strong>DEVICESCAN:</strong> Automatically detect and monitor all SMART-capable devices</li>
-                                    <li><strong>-a:</strong> Monitor all SMART attributes and report changes</li>
-                                    <li><strong>-o on:</strong> Enable automatic offline testing</li>
-                                    <li><strong>-S on:</strong> Enable automatic attribute autosave</li>
-                                    <li><strong>-s (S/../.././02|L/../../6/03):</strong> Schedule tests
-                                        <ul>
-                                            <li>Short self-test daily at 2 AM</li>
-                                            <li>Long self-test weekly on Saturday at 3 AM</li>
-                                        </ul>
-                                    </li>
-                                    <li><strong>-m:</strong> Email address to send alerts to</li>
-                                    <li><strong>-M exec:</strong> Script to execute when sending email alerts</li>
-                                </ul>
-                            </div>
-
-                            <h4>Step 4: Configure Email Subject Line (Optional)</h4>
-                            <p>Customize the email alert subject line for better filtering:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># More advanced configuration with custom email subject
-DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m darren@soothill.com -M exec /usr/share/smartmontools/smartd-runner -M diminishing -M test</code></pre>
-                            </div>
-
-                            <div class="info">
-                                <h4>Additional Email Options</h4>
-                                <ul>
-                                    <li><strong>-M diminishing:</strong> Reduces frequency of repeated error notifications (sends alert, then waits 24h, 48h, 72h, etc.)</li>
-                                    <li><strong>-M test:</strong> Send a test email on smartd startup to verify email configuration</li>
-                                    <li><strong>-M once:</strong> Send only one email per problem (no repeat notifications)</li>
-                                    <li><strong>-M daily:</strong> Send reminder email daily if problem persists</li>
-                                </ul>
-                            </div>
-
-                            <h4>Step 5: Enable and Start smartd Service</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Enable smartd to start on boot
+                            <h4>Enable and Start smartd</h4>
+                            <pre><code># Enable smartd to start on boot
 sudo systemctl enable smartd
 
 # Start smartd service
 sudo systemctl start smartd
 
 # Check service status
-sudo systemctl status smartd
-
-# Restart service after configuration changes
-sudo systemctl restart smartd</code></pre>
-                            </div>
-
-                            <h4>Step 6: Verify Configuration</h4>
-                            <p>Test your smartd configuration and verify it's monitoring devices:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Test configuration file syntax
-sudo smartd -q onecheck
-
-# Check which devices are being monitored
-sudo smartctl --scan
-
-# View smartd log
-sudo journalctl -u smartd -f
-
-# Check syslog for smartd messages
-sudo tail -f /var/log/syslog | grep smartd</code></pre>
-                            </div>
+sudo systemctl status smartd</code></pre>
                         </div>
 
                         <div class="subsection">
                             <h3>Manual Device Testing</h3>
-                            <p>While smartd monitors devices automatically, you can also run manual tests:</p>
-
-                            <h4>Check Device SMART Status</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Check if SMART is available and enabled
+                            <pre><code># Check if SMART is available and enabled
 sudo smartctl -i /dev/sda
 
 # Check overall health status
@@ -817,93 +403,23 @@ sudo smartctl -H /dev/sda
 # View all SMART attributes
 sudo smartctl -A /dev/sda
 
-# View detailed SMART information
-sudo smartctl -a /dev/sda</code></pre>
-                            </div>
-
-                            <h4>Run Manual Self-Tests</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Start a short self-test (takes ~2 minutes)
+# Start a short self-test
 sudo smartctl -t short /dev/sda
 
-# Start a long self-test (takes 1-2 hours)
+# Start a long self-test
 sudo smartctl -t long /dev/sda
 
 # View self-test results
-sudo smartctl -l selftest /dev/sda
-
-# View error log
-sudo smartctl -l error /dev/sda</code></pre>
-                            </div>
-
-                            <h4>Monitor Multiple Devices</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Scan for all SMART devices
-sudo smartctl --scan
-
-# Check health of all detected devices
-for device in $(sudo smartctl --scan | awk '{print $1}'); do
-    echo "Checking $device"
-    sudo smartctl -H $device
-    echo "---"
-done
-
-# Run short test on all devices
-for device in $(sudo smartctl --scan | awk '{print $1}'); do
-    echo "Starting short test on $device"
-    sudo smartctl -t short $device
-done</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="subsection">
-                            <h3>Advanced Configuration Examples</h3>
-
-                            <h4>Monitor Specific Device Types</h4>
-                            <p>Configure monitoring for specific device types with tailored settings:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># In /etc/smartd.conf - Monitor NVMe devices separately
-DEVICESCAN -d nvme -a -o on -S on -s (S/../.././02|L/../../6/04) -m darren@soothill.com
-
-# Monitor SATA/SAS devices
-DEVICESCAN -d sat -a -o on -S on -s (S/../.././02|L/../../6/03) -m darren@soothill.com
-
-# Monitor specific device with custom schedule
-/dev/sda -a -s (S/../.././01|L/../../7/02) -m darren@soothill.com -M daily</code></pre>
-                            </div>
-
-                            <h4>Monitor Temperature Changes</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Alert if temperature exceeds thresholds
-DEVICESCAN -a -W 4,40,45 -m darren@soothill.com
-
-# Parameters: -W diff,info,crit
-# diff: Alert on 4°C change since last check
-# info: Informational alert at 40°C
-# crit: Critical alert at 45°C</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="warning">
-                            <h4>⚠️ Important Notes</h4>
-                            <p><strong>Email Configuration:</strong> Ensure your system's mail configuration is working before relying on email alerts. Test with the <code>-M test</code> option.</p>
-                            <p><strong>Firewall/SMTP:</strong> If emails aren't being delivered, check that your firewall allows outbound SMTP connections (port 25, 465, or 587).</p>
-                            <p><strong>Self-Tests:</strong> Long self-tests can impact system performance. Schedule them during maintenance windows or low-usage periods.</p>
+sudo smartctl -l selftest /dev/sda</code></pre>
                         </div>
 
                         <div class="success">
                             <h4>✓ Best Practices</h4>
                             <ul>
-                                <li>Always test email functionality with <code>-M test</code> before relying on alerts</li>
-                                <li>Use <code>-M diminishing</code> to avoid alert fatigue from repeated errors</li>
-                                <li>Schedule long tests during off-peak hours (weekends/nights)</li>
-                                <li>Monitor smartd logs regularly: <code>sudo journalctl -u smartd</code></li>
-                                <li>Keep a backup of your smartd.conf before making changes</li>
-                                <li>Document your monitoring configuration for future reference</li>
+                                <li>Test email functionality with <code>-M test</code> before relying on alerts</li>
+                                <li>Use <code>-M diminishing</code> to avoid alert fatigue</li>
+                                <li>Schedule long tests during off-peak hours</li>
+                                <li>Monitor smartd logs: <code>sudo journalctl -u smartd</code></li>
                             </ul>
                         </div>
                     </div>
@@ -918,181 +434,72 @@ DEVICESCAN -a -W 4,40,45 -m darren@soothill.com
                 </div>
                 <div class="command-content">
                     <div class="command-content-inner">
-                        <p>Fix SSH connection issues with legacy servers that use outdated key exchange and host key algorithms. Modern SSH clients disable these older algorithms by default for security reasons, but they can be re-enabled when needed for legacy equipment.</p>
+                        <p>Fix SSH connection issues with legacy servers that use outdated key exchange and host key algorithms.</p>
 
                         <div class="subsection">
                             <h3>Common Error Messages</h3>
-                            <p>You may encounter these error messages when connecting to older SSH servers:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code>Unable to negotiate with 10.10.201.2 port 22: no matching key exchange method found.
+                            <pre><code>Unable to negotiate with 10.10.201.2 port 22: no matching key exchange method found.
 Their offer: diffie-hellman-group1-sha1,diffie-hellman-group14-sha1
 
 Unable to negotiate with 10.10.201.2 port 22: no matching host key type found.
 Their offer: ssh-rsa</code></pre>
-                            </div>
                         </div>
 
                         <div class="subsection">
                             <h3>Quick Fix (One-time Connection)</h3>
-                            <p>Use this command to connect immediately with both legacy algorithms enabled. Replace <code>user</code> with your actual username:</p>
-
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code>ssh -oKexAlgorithms=+diffie-hellman-group14-sha1 -oHostKeyAlgorithms=+ssh-rsa user@10.10.201.2</code></pre>
-                            </div>
+                            <pre><code>ssh -oKexAlgorithms=+diffie-hellman-group14-sha1 -oHostKeyAlgorithms=+ssh-rsa user@10.10.201.2</code></pre>
 
                             <h4>Alternative with Additional Legacy Support</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Include both diffie-hellman algorithms and ssh-rsa
-ssh -oKexAlgorithms=+diffie-hellman-group14-sha1,diffie-hellman-group1-sha1 \
+                            <pre><code>ssh -oKexAlgorithms=+diffie-hellman-group14-sha1,diffie-hellman-group1-sha1 \
     -oHostKeyAlgorithms=+ssh-rsa \
     -oPubkeyAcceptedKeyTypes=+ssh-rsa \
     user@10.10.201.2</code></pre>
-                            </div>
                         </div>
 
                         <div class="subsection">
                             <h3>Permanent Fix (SSH Config)</h3>
-                            <p>For servers you connect to regularly, add configuration to your <code>~/.ssh/config</code> file for automatic handling:</p>
-
-                            <h4>For Specific Host</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Add to ~/.ssh/config
+                            <p>Add to <code>~/.ssh/config</code>:</p>
+                            <pre><code># For specific host
 Host 10.10.201.2
     KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
     HostKeyAlgorithms +ssh-rsa
-    PubkeyAcceptedKeyTypes +ssh-rsa</code></pre>
-                            </div>
+    PubkeyAcceptedKeyTypes +ssh-rsa
 
-                            <h4>For Entire Subnet</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Add to ~/.ssh/config - applies to all hosts in 10.10.201.* subnet
+# For entire subnet
 Host 10.10.201.*
     KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
     HostKeyAlgorithms +ssh-rsa
     PubkeyAcceptedKeyTypes +ssh-rsa</code></pre>
-                            </div>
 
-                            <h4>Using Hostname Pattern</h4>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Add to ~/.ssh/config - applies to legacy-* hostnames
-Host legacy-*
-    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
-    HostKeyAlgorithms +ssh-rsa
-    PubkeyAcceptedKeyTypes +ssh-rsa</code></pre>
-                            </div>
-
-                            <p>After adding this configuration, connect normally:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code>ssh user@10.10.201.2</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="subsection">
-                            <h3>If You Still Have Issues</h3>
-                            <p>Very old servers might require additional legacy cipher support:</p>
-
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Add to ~/.ssh/config with legacy cipher support
-Host 10.10.201.2
-    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
-    HostKeyAlgorithms +ssh-rsa
-    PubkeyAcceptedKeyTypes +ssh-rsa
-    Ciphers +aes256-cbc,aes128-cbc,3des-cbc</code></pre>
-                            </div>
-
-                            <h4>MAC Algorithm Issues</h4>
-                            <p>If you get errors about MAC (Message Authentication Code) algorithms:</p>
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Add legacy MAC algorithms
-Host 10.10.201.2
-    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
-    HostKeyAlgorithms +ssh-rsa
-    PubkeyAcceptedKeyTypes +ssh-rsa
-    MACs +hmac-sha1,hmac-sha1-96</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="subsection">
-                            <h3>Creating/Editing SSH Config File</h3>
-                            <p>If you don't have an SSH config file yet, create one:</p>
-
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Create .ssh directory if it doesn't exist
+                            <h4>Create SSH Config File</h4>
+                            <pre><code># Create .ssh directory if it doesn't exist
 mkdir -p ~/.ssh
-
-# Set proper permissions
 chmod 700 ~/.ssh
 
 # Create or edit config file
 nano ~/.ssh/config
 
-# Set proper permissions on config file
+# Set proper permissions
 chmod 600 ~/.ssh/config</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="subsection">
-                            <h3>Checking What Algorithms a Server Supports</h3>
-                            <p>To see what algorithms a remote SSH server offers:</p>
-
-                            <div class="code-block-wrapper">
-                                <button class="copy-button" onclick="copyCode(this)">📋 Copy</button>
-                                <pre><code># Use nmap to scan SSH algorithms
-nmap --script ssh2-enum-algos -sV -p 22 10.10.201.2
-
-# Or use ssh with verbose mode to see negotiation
-ssh -vv user@10.10.201.2</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="info">
-                            <h4>Configuration Parameters Explained</h4>
-                            <ul>
-                                <li><strong>KexAlgorithms:</strong> Key exchange algorithms - methods for securely exchanging encryption keys</li>
-                                <li><strong>HostKeyAlgorithms:</strong> Algorithms used to verify the server's identity</li>
-                                <li><strong>PubkeyAcceptedKeyTypes:</strong> Algorithms accepted for public key authentication</li>
-                                <li><strong>Ciphers:</strong> Encryption algorithms used for the actual data transfer</li>
-                                <li><strong>MACs:</strong> Message Authentication Codes for verifying data integrity</li>
-                                <li><strong>+ prefix:</strong> Appends algorithms to the default list instead of replacing it</li>
-                            </ul>
                         </div>
 
                         <div class="warning">
                             <h4>⚠️ Security Warning</h4>
-                            <p><strong>Important:</strong> These algorithms are disabled by default in modern SSH clients because they have known security weaknesses:</p>
+                            <p><strong>Important:</strong> These algorithms are disabled by default because they have known security weaknesses:</p>
                             <ul>
-                                <li><strong>diffie-hellman-group1-sha1:</strong> Vulnerable to logjam attacks, uses weak 1024-bit key</li>
+                                <li><strong>diffie-hellman-group1-sha1:</strong> Vulnerable to logjam attacks</li>
                                 <li><strong>ssh-rsa with SHA-1:</strong> SHA-1 hash collisions have been demonstrated</li>
-                                <li><strong>Legacy ciphers:</strong> CBC-mode ciphers are vulnerable to certain attacks</li>
                             </ul>
-                            <p><strong>Only re-enable these if:</strong></p>
-                            <ul>
-                                <li>You're on a trusted, isolated network (not over the internet)</li>
-                                <li>You need to connect to legacy equipment that cannot be updated</li>
-                                <li>You understand and accept the security risks</li>
-                            </ul>
-                            <p><strong>Best practice:</strong> The proper long-term solution is to upgrade the SSH server to support modern algorithms.</p>
+                            <p><strong>Only re-enable these if:</strong> You're on a trusted network, connecting to legacy equipment that cannot be updated, and you understand the risks.</p>
                         </div>
 
                         <div class="success">
                             <h4>✓ Best Practices</h4>
                             <ul>
-                                <li>Use SSH config file instead of command-line options for regular connections</li>
-                                <li>Limit legacy algorithm support to specific hosts, not globally</li>
-                                <li>Document why you need legacy algorithm support (compliance, old hardware, etc.)</li>
-                                <li>Regularly check if legacy servers can be upgraded to modern SSH versions</li>
-                                <li>Use VPN or jump hosts when accessing legacy systems over untrusted networks</li>
-                                <li>Keep your SSH config file backed up and version controlled</li>
+                                <li>Use SSH config file for regular connections</li>
+                                <li>Limit legacy algorithm support to specific hosts</li>
+                                <li>Document why you need legacy support</li>
+                                <li>Use VPN when accessing legacy systems over untrusted networks</li>
                             </ul>
                         </div>
                     </div>
@@ -1105,90 +512,35 @@ ssh -vv user@10.10.201.2</code></pre>
                 <p>Additional useful commands will be added to this page. Check back regularly for updates including networking tools, monitoring commands, and more storage utilities.</p>
             </div>
 
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <footer>
+    <footer class="site-footer">
         <p>Useful Commands | Linux System Administration</p>
         <p style="opacity: 0.8;">© 2025 Darren Soothill. All rights reserved.</p>
         <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: <span id="lastUpdated"></span></p>
     </footer>
 
+    <!-- Main JavaScript -->
+    <script src="assets/js/main.js" defer></script>
+
+    <!-- Page-specific JavaScript -->
     <script>
-        // Display last updated date and time
-        const lastUpdated = new Date('2025-01-11T00:00:00');
-        document.getElementById('lastUpdated').textContent = lastUpdated.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }) + ' at ' + lastUpdated.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-
         function toggleCommand(header) {
-            // Toggle active class on header
             header.classList.toggle('active');
-
-            // Get the content div
             const content = header.nextElementSibling;
-
-            // Toggle active class on content
             content.classList.toggle('active');
         }
 
-        function copyCode(button) {
-            // Get the code element
-            const wrapper = button.parentElement;
-            const codeElement = wrapper.querySelector('code');
-            const codeText = codeElement.textContent;
-
-            // Copy to clipboard
-            navigator.clipboard.writeText(codeText).then(function() {
-                // Change button text and style
-                const originalText = button.innerHTML;
-                button.innerHTML = '✓ Copied!';
-                button.classList.add('copied');
-
-                // Reset button after 2 seconds
-                setTimeout(function() {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(function(err) {
-                // Fallback for older browsers
-                console.error('Failed to copy: ', err);
-
-                // Try fallback method
-                const textArea = document.createElement('textarea');
-                textArea.value = codeText;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-9999px';
-                document.body.appendChild(textArea);
-                textArea.select();
-
-                try {
-                    document.execCommand('copy');
-                    button.innerHTML = '✓ Copied!';
-                    button.classList.add('copied');
-
-                    setTimeout(function() {
-                        button.innerHTML = '📋 Copy';
-                        button.classList.remove('copied');
-                    }, 2000);
-                } catch (err) {
-                    button.innerHTML = '✗ Failed';
-                    setTimeout(function() {
-                        button.innerHTML = '📋 Copy';
-                    }, 2000);
-                }
-
-                document.body.removeChild(textArea);
+        // Display last updated date
+        document.addEventListener('DOMContentLoaded', function() {
+            const lastUpdated = new Date('2025-01-11T00:00:00');
+            document.getElementById('lastUpdated').textContent = lastUpdated.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
-        }
-
-        // All sections start collapsed by default
-        // Users can click to expand any section they want to view
+        });
     </script>
 </body>
 </html>

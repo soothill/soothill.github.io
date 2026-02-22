@@ -8,6 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <!-- Preconnect to external resources for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <!-- Google Fonts - Inter & Fira Code -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- SEO Meta Tags -->
     <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
     <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
@@ -37,360 +45,17 @@
     <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
     <meta name="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
 
-    <style>
-        :root {
-            --primary: #667eea;
-            --primary-light: #818cf8;
-            --secondary: #06b6d4;
-            --accent: #0ea5e9;
-            --bg-dark: #0f172a;
-            --bg-darker: #020617;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --border-light: #475569;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-            --shadow-lg: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            background-attachment: fixed;
-            font-size: 16px;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .site-header {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            color: var(--text-primary);
-            padding: 1.5rem 0;
-            box-shadow: var(--shadow-lg);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .site-header .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .site-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.5px;
-            transition: all 0.3s ease;
-        }
-
-        .site-title:hover {
-            transform: translateY(-2px);
-            color: var(--primary-light);
-        }
-
-        .site-nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-            margin: 0;
-        }
-
-        .site-nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        .site-nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary-light);
-            transition: width 0.3s ease;
-        }
-
-        .site-nav a:hover {
-            color: var(--text-primary);
-        }
-
-        .site-nav a:hover::after {
-            width: 100%;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 3rem auto;
-            background: var(--bg-card);
-            padding: 3rem;
-            box-shadow: var(--shadow-lg);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .site-footer {
-            background: var(--bg-darker);
-            color: var(--text-secondary);
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 4rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .site-footer p {
-            margin: 0.5rem 0;
-            opacity: 0.9;
-        }
-
-        h1 {
-            color: var(--text-primary);
-            font-size: 2.75rem;
-            margin-bottom: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            line-height: 1.2;
-        }
-
-        h2 {
-            color: var(--text-primary);
-            font-size: 2rem;
-            margin-top: 3rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            font-weight: 700;
-            border-bottom: 3px solid var(--border);
-            letter-spacing: -0.5px;
-        }
-
-        h3 {
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            margin: 2rem 0 1rem 0;
-            font-weight: 600;
-        }
-
-        h4 {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            margin: 1.5rem 0 0.75rem 0;
-            font-weight: 600;
-        }
-
-        p {
-            margin-bottom: 1.25rem;
-            color: var(--text-secondary);
-        }
-
-        a {
-            color: var(--primary-light);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--secondary);
-            text-decoration: underline;
-        }
-
-        pre {
-            background: var(--bg-darker);
-            color: #f8f8f2;
-            padding: 1.5rem;
-            border-radius: 12px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--primary);
-            box-shadow: var(--shadow-md);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            border: 1px solid var(--border);
-        }
-
-        code {
-            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-
-        p code, li code {
-            background: var(--bg-darker);
-            color: #fbbf24;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-weight: 500;
-            border: 1px solid var(--border);
-        }
-
-        .post-meta {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .post-meta time {
-            font-weight: 600;
-            color: var(--primary-light);
-        }
-
-        ul, ol {
-            margin: 1rem 0 1.5rem 2rem;
-        }
-
-        li {
-            margin-bottom: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        blockquote {
-            border-left: 4px solid var(--primary);
-            padding: 1rem 1.5rem;
-            margin: 1.5rem 0;
-            background: var(--bg-darker);
-            border-radius: 0 8px 8px 0;
-            font-style: italic;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--primary);
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            box-shadow: var(--shadow-sm);
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-
-        th {
-            background: var(--bg-darker);
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        tr:hover {
-            background: var(--bg-darker);
-        }
-
-        @media (max-width: 768px) {
-            body {
-                font-size: 15px;
-            }
-
-            .site-header .container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .site-nav ul {
-                flex-direction: column;
-                gap: 0.75rem;
-                margin-top: 1rem;
-            }
-
-            .container {
-                margin: 1.5rem;
-                padding: 1.5rem;
-                border-radius: 12px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            h3 {
-                font-size: 1.25rem;
-            }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Selection styling */
-        ::selection {
-            background: var(--primary);
-            color: var(--text-primary);
-        }
-
-        ::-moz-selection {
-            background: var(--primary);
-            color: var(--text-primary);
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-darker);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-light);
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
-    </style>
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css">
 </head>
 <body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <header class="site-header">
         <div class="container">
             <a href="{{ site.baseurl }}/" class="site-title">{{ site.title }}</a>
-            <nav class="site-nav">
+            <nav class="site-nav" aria-label="Main navigation">
                 <ul>
                     <li><a href="{{ site.baseurl }}/">Home</a></li>
                     <li><a href="{{ site.baseurl }}/blog/">Blog</a></li>
@@ -401,7 +66,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="main-content">
         {{ content }}
     </main>
 
@@ -410,24 +75,7 @@
         <p>{{ site.description }}</p>
     </footer>
 
-    <script>
-        // Obfuscated email link to prevent spam bots
-        (function() {
-            var link = document.getElementById('author-contact');
-            if (link) {
-                var user = 'darren';
-                var domain = 'soothill.com';
-                link.href = 'mailto:' + user + '@' + domain;
-                link.addEventListener('mouseenter', function() {
-                    this.style.color = 'var(--primary-light)';
-                    this.style.borderBottom = '1px solid var(--primary-light)';
-                });
-                link.addEventListener('mouseleave', function() {
-                    this.style.color = 'var(--text-primary)';
-                    this.style.borderBottom = '1px dotted var(--text-secondary)';
-                });
-            }
-        })();
-    </script>
+    <!-- Main JavaScript -->
+    <script src="{{ site.baseurl }}/assets/js/main.js" defer></script>
 </body>
 </html>
