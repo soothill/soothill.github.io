@@ -30,12 +30,26 @@ The tool follows a straightforward but effective approach:
 4. **Live Progress** - Shows real-time transfer rates (updated every 200ms)
 5. **Detailed Reporting** - Reports throughput, time-to-first-byte, and latency percentiles
 
-## Building s3bench
+## Get s3bench
+
+**GitHub Repository**: [https://github.com/soothill/s3bench](https://github.com/soothill/s3bench)
+
+You can:
+
+- **Clone the repository**:
+  ```bash
+  git clone https://github.com/soothill/s3bench.git
+  ```
+
+- **Download releases**: Visit [https://github.com/soothill/s3bench/releases](https://github.com/soothill/s3bench/releases) for pre-built binaries
+
+- **Browse the source code**: [https://github.com/soothill/s3bench](https://github.com/soothill/s3bench)
+
+## Building from Source
 
 Requires [Go 1.22+](https://go.dev/dl/):
 
 ```bash
-git clone https://github.com/soothill/s3bench.git
 cd s3bench
 go mod tidy
 go build -o s3bench .
