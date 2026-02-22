@@ -5,34 +5,35 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
 ---
 
 <div class="container">
-    <header style="text-align: center; margin-bottom: 4rem;">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #f1f5f9;">Soot & Silicon</h1>
-        <p style="font-size: 1.25rem; color: #cbd5e1; max-width: 600px; margin: 0 auto;">Where hardware meets software - Technical insights on storage, NVMe, SPDK, and enterprise infrastructure</p>
-    </header>
+    <section class="hero">
+        <h1>Soot & <span class="gradient-text">Silicon</span></h1>
+        <p>Where hardware meets software - Technical insights on storage, NVMe, SPDK, and enterprise infrastructure</p>
+    </section>
 
     <div class="posts-list">
         {% if site.posts.size > 0 %}
             {% for post in site.posts %}
-            <article class="post-preview" style="margin-bottom: 3rem; padding: 2rem; background: #1e293b; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); border: 1px solid #334155; transition: all 0.3s ease;">
-                <h2 style="margin-top: 0; margin-bottom: 1rem;">
-                    <a href="{{ post.url }}" style="color: #f1f5f9; text-decoration: none; transition: all 0.3s ease; display: inline-block;">{{ post.title }}</a>
+            <article class="post-preview reveal">
+                <h2>
+                    <a href="{{ post.url }}">{{ post.title }}</a>
                 </h2>
 
-                <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #334155;">
-                    <time datetime="{{ post.date | date_to_xmlschema }}" style="color: #818cf8; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+                <div class="post-meta">
+                    <time datetime="{{ post.date | date_to_xmlschema }}">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         {{ post.date | date: "%B %d, %Y" }}
                     </time>
                     {% if post.categories %}
-                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <div class="post-categories">
                         {% for category in post.categories %}
-                            <span style="background: linear-gradient(135deg, #667eea, #06b6d4); color: white; padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500;">{{ category }}</span>
+                            <span class="post-tag">{{ category }}</span>
                         {% endfor %}
                     </div>
                     {% endif %}
+                    <span class="reading-time" data-reading-time></span>
                 </div>
 
-                <div class="post-excerpt" style="font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 1.5rem;">
+                <div class="post-excerpt">
                     {% if post.description %}
                         {{ post.description }}
                     {% elsif post.excerpt %}
@@ -42,40 +43,27 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
                     {% endif %}
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                    <a href="{{ post.url }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #06b6d4); color: white; text-decoration: none; font-weight: 600; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);">
+                <div class="post-footer">
+                    <a href="{{ post.url }}" class="btn">
                         Read Article
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
 
                     {% if post.tags %}
-                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <div class="post-tags-list">
                         {% for tag in post.tags limit:3 %}
-                            <span style="background: #0f172a; color: #94a3b8; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; border: 1px solid #334155;">{{ tag }}</span>
+                            <span class="badge badge--internal">{{ tag }}</span>
                         {% endfor %}
                         {% if post.tags.size > 3 %}
-                            <span style="background: #0f172a; color: #94a3b8; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; border: 1px solid #334155;">+{{ post.tags.size | minus: 3 }} more</span>
+                            <span class="badge badge--internal">+{{ post.tags.size | minus: 3 }} more</span>
                         {% endif %}
                     </div>
                     {% endif %}
                 </div>
             </article>
-            <style>
-                .post-preview:hover {
-                    transform: translateY(-4px);
-                    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2) !important;
-                }
-                .post-preview h2 a:hover {
-                    color: #667eea !important;
-                }
-                .post-preview a[href*="Read"]:hover {
-                    transform: translateX(4px);
-                    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-                }
-            </style>
             {% endfor %}
         {% else %}
-            <div style="text-align: center; padding: 3rem; background: #f8f9fa; border-radius: 8px;">
+            <div class="section">
                 <h3>No posts yet</h3>
                 <p>Check back soon for new technical articles!</p>
             </div>
@@ -84,52 +72,170 @@ description: Technical articles and guides on storage, NVMe, SPDK, and enterpris
 
     <!-- Pagination -->
     {% if paginator.total_pages > 1 %}
-    <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 4rem; padding: 2rem; background: #1e293b; border-radius: 12px; border: 1px solid #334155;">
+    <nav class="pagination" aria-label="Pagination">
         {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path }}" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #06b6d4); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5); display: inline-flex; align-items: center; gap: 0.5rem;">
+            <a href="{{ paginator.previous_page_path }}" class="btn btn--outline">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 Previous
             </a>
         {% endif %}
 
-        <span style="padding: 0.75rem 1.5rem; background: #0f172a; border: 2px solid #667eea; border-radius: 8px; font-weight: 600; color: #818cf8;">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+        <span class="pagination__page">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
 
         {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path }}" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #06b6d4); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5); display: inline-flex; align-items: center; gap: 0.5rem;">
+            <a href="{{ paginator.next_page_path }}" class="btn btn--outline">
                 Next
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </a>
         {% endif %}
-    </div>
-    <style>
-        .pagination a:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.7) !important;
-        }
-    </style>
+    </nav>
     {% endif %}
 
     <!-- Categories/Archive -->
-    <aside style="margin-top: 4rem; padding: 2.5rem; background: #1e293b; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); border: 1px solid #334155;">
-        <h3 style="margin-top: 0; color: #f1f5f9; font-size: 1.75rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+    <aside class="section reveal">
+        <h3>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
             Browse by Category
         </h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        <div class="tags-list">
             {% assign categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
             {% for category in categories %}
                 {% if category != "" %}
-                <a href="{{ site.baseurl }}/categories/#{{ category | slugify }}" style="background: linear-gradient(135deg, #667eea, #06b6d4); color: white; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);">
+                <a href="{{ site.baseurl }}/categories/#{{ category | slugify }}" class="post-tag">
                     {{ category }}
                 </a>
                 {% endif %}
             {% endfor %}
         </div>
     </aside>
-    <style>
-        aside a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.7) !important;
-        }
-    </style>
 </div>
+
+<style>
+.posts-list {
+    margin-top: var(--spacing-lg);
+}
+
+.post-preview {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    transition: all var(--transition-base);
+}
+
+.post-preview:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+}
+
+.post-preview h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+}
+
+.post-preview h2 a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+.post-preview h2 a:hover {
+    color: var(--primary-light);
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--border);
+    font-size: 0.95rem;
+}
+
+.post-meta time {
+    color: var(--primary-light);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.post-categories {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+}
+
+.post-excerpt {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.post-tags-list {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.pagination__page {
+    padding: 0.75rem 1.5rem;
+    background: var(--bg-dark);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    color: var(--primary-light);
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.tags-list .post-tag {
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+.tags-list .post-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.7);
+}
+
+@media (max-width: 768px) {
+    .post-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .pagination {
+        flex-direction: column;
+    }
+}
+</style>
