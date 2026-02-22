@@ -4,123 +4,112 @@ A comprehensive list of improvements to give the website a more modern and dynam
 
 ---
 
-## 🔴 High Priority
+## 🔴 Phase 1 - COMPLETED ✅
 
 ### Visual & Design
 - [x] Extract CSS into separate file(s) for maintainability
 - [x] Add scroll-reveal animations using Intersection Observer
-- [x] Fix dark theme consistency in About page (currently uses light colors)
+- [x] Fix dark theme consistency in About page
 - [x] Load custom fonts properly (Inter, Fira Code via Google Fonts CDN)
 
 ### Code Quality
-- [x] Remove duplicate CSS across `index.html`, `resources.html`, and `default.html`
+- [x] Remove duplicate CSS across HTML files
 - [x] Consolidate email obfuscation script into single location
-- [x] Extract inline styles from `_layouts/post.html`
+- [x] Extract inline styles from layouts
+
+### Medium Priority Features
+- [x] Back-to-top button
+- [x] Table of contents for blog posts
+- [x] Copy-to-clipboard for code blocks
+- [x] Reading time indicators
+- [x] Dark/light mode toggle
+- [x] Mobile hamburger menu
+- [x] Ripple effects
+- [x] Staggered reveal animations
+- [x] Related posts section
+- [x] Social sharing buttons
+- [x] Client-side search
+- [x] Breadcrumb navigation
+- [x] Skip-to-content link
+- [x] Keyboard focus states
+- [x] ARIA labels
+- [x] Gradient text effects
+- [x] Reading progress bar
+- [x] Fluid typography
+
+### Lower Priority Features
+- [x] Animated gradient backgrounds
+- [x] Particle/geometric patterns
+- [x] Glassmorphism effects
+- [x] Border glow effects
+- [x] Parallax scrolling
+- [x] Noise/texture overlays
+- [x] Page transitions
+- [x] Skeleton loading states
+- [x] Loading spinners
+- [x] Service worker (PWA)
+- [x] Offline fallback page
+- [x] Lazy loading
+- [x] Resource hints
+- [x] Font optimization
+- [x] Print styles
+- [x] GitHub Actions minification
 
 ---
 
-## 🟡 Medium Priority
+## 🟡 Phase 2 - Additional Improvements
 
-### Animations & Micro-interactions
-- [x] Add back-to-top floating button with smooth scroll
-- [x] Implement table of contents for long blog posts
-- [x] Add copy-to-clipboard button for code blocks
-- [x] Add reading time indicators for blog posts
-- [x] Implement dark/light mode toggle with system preference detection
-- [x] Add animated hamburger menu for mobile navigation
-- [x] Implement ripple effects on button clicks
-- [x] Add staggered reveal animations for cards/grid items
+### Files Needing Modernization (still have inline CSS)
+- [ ] `blog/index.html` - Convert to centralized CSS/JS
+- [ ] `categories/index.html` - Convert to centralized CSS/JS
+- [ ] `documents/publications.html` - Convert to centralized CSS/JS
+- [ ] `changenvmeformat.html` - Convert to centralized CSS/JS (also uses light theme)
+- [ ] `spdknvmeof.html` - Convert to centralized CSS/JS
 
-### User Experience
-- [x] Add "Related Posts" section at end of blog posts
-- [x] Add social sharing buttons on blog posts
-- [x] Implement client-side search functionality for posts
-- [x] Add breadcrumb navigation
-- [x] Add skip-to-content link for accessibility
-- [x] Improve focus states for keyboard navigation
-- [x] Add proper ARIA labels throughout
+### PWA Enhancements
+- [ ] Create `manifest.json` for PWA installation
+- [ ] Add app icons (192x192, 512x512)
+- [ ] Add theme-color meta tag
 
-### Typography & Content
-- [x] Add text gradient effects on headings
-- [x] Implement reading progress indicator
-- [x] Use `clamp()` for fluid typography
+### SEO & Performance
+- [ ] Add Open Graph images for social sharing
+- [ ] Create sitemap.xml (automated)
+- [ ] Add structured data for articles (NewsArticle schema)
+- [ ] Add robots.txt if not present
 
----
+### Cleanup
+- [ ] Remove `oldindex.html` (unused file)
+- [ ] Review and remove any other unused files
+- [ ] Consolidate `navigation.html` if not used
 
-## 🟢 Lower Priority
-
-### Visual Enhancements
-- [x] Add animated gradient backgrounds with shifting colors
-- [x] Implement subtle particle/geometric patterns
-- [x] Add glassmorphism effects to cards
-- [x] Add border glow effects on card interaction
-- [x] Implement parallax scrolling on hero sections
-- [x] Add noise/texture overlays for depth
-
-### Technical Architecture
-- [x] Implement service worker for offline support (PWA)
-- [x] Add lazy loading for images
-- [x] Minify CSS/JS for production (via GitHub Actions)
-- [x] Add resource hints (preconnect, preload)
-- [x] Optimize font loading strategy
-- [x] Add print-friendly styles
-
-### Page Transitions
-- [x] Add smooth fade/slide transitions between pages
-- [x] Add skeleton loading states for content
-- [x] Add loading spinners for navigation
+### Content Improvements
+- [ ] Add RSS/Atom feed
+- [ ] Add newsletter signup option
+- [ ] Add "Back to Blog" link on posts
+- [ ] Add estimated reading time on blog index
 
 ---
 
 ## 📊 Progress Summary
 
-| Category | Total | Completed | Remaining |
-|----------|-------|-----------|-----------|
-| High Priority | 7 | 7 | 0 |
-| Medium Priority | 17 | 17 | 0 |
-| Lower Priority | 14 | 14 | 0 |
-| **Total** | **38** | **38** | **0** |
-
-🎉 **All tasks completed!**
+| Phase | Total | Completed | Remaining |
+|-------|-------|-----------|-----------|
+| Phase 1 | 38 | 38 | 0 |
+| Phase 2 | 17 | 0 | 17 |
+| **Total** | **55** | **38** | **17** |
 
 ---
 
-## 📝 Implementation Notes
-
-- Work through High Priority items first ✅
-- Test each change across different browsers
-- Ensure mobile responsiveness is maintained
-- Keep accessibility in mind for all changes
-- Update this file as progress is made
-
-### Files Created:
-- `assets/css/main.css` - Centralized CSS with modern features
-- `assets/js/main.js` - JavaScript with all dynamic functionality
-- `assets/js/search-index.json` - Jekyll-generated search index
-- `sw.js` - Service worker for PWA/offline support
-- `offline.html` - Offline fallback page
-
-### Files Updated:
-- `index.html` - Main homepage
-- `resources.html` - Resources page
-- `useful-commands.html` - Linux commands page
-- `_layouts/default.html` - Base Jekyll layout
-- `_layouts/post.html` - Blog post layout
-- `about/index.md` - Fixed dark theme consistency
-
-### GitHub Actions Setup:
-
-To enable the minification and deployment workflow:
-
-1. Go to repository **Settings** → **Pages**
-2. Under "Build and deployment", select **Source: GitHub Actions**
-3. The workflow will automatically run on every push to `main`
-
-The workflow (`.github/workflows/build.yml`) will:
-- Minify CSS using `csso`
-- Minify JavaScript using `terser`
-- Build the Jekyll site
-- Deploy to GitHub Pages
+## 📝 Files Updated in Phase 1:
+- `assets/css/main.css` - Centralized CSS
+- `assets/js/main.js` - Centralized JavaScript
+- `assets/js/search-index.json` - Jekyll search index
+- `sw.js` - Service worker
+- `offline.html` - Offline fallback
+- `.github/workflows/build.yml` - CI/CD workflow
+- `index.html`, `resources.html`, `useful-commands.html`
+- `_layouts/default.html`, `_layouts/post.html`
+- `about/index.md`
 
 ---
 

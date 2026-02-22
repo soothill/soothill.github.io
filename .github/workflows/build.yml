@@ -48,17 +48,8 @@ jobs:
           # Minify main.js
           if [ -f "assets/js/main.js" ]; then
             terser assets/js/main.js -o assets/js/main.min.js --compress --mangle
-            # Replace original with minified version
             mv assets/js/main.min.js assets/js/main.js
             echo "✓ Minified assets/js/main.js"
-          fi
-
-          # Minify search-index.json (it's JS too)
-          if [ -f "assets/js/search-index.json" ]; then
-            # Just remove whitespace from JSON
-            terser assets/js/search-index.json -o assets/js/search-index.min.json --compress --mangle false
-            mv assets/js/search-index.min.json assets/js/search-index.json
-            echo "✓ Minified assets/js/search-index.json"
           fi
 
           # Minify service worker
@@ -67,6 +58,8 @@ jobs:
             mv sw.min.js sw.js
             echo "✓ Minified sw.js"
           fi
+
+          # Note: search-index.json is a Jekyll template, not valid JS - skip minification
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
