@@ -36,14 +36,32 @@
     <meta name="twitter:title" content="Darren Soothill | Professional Portfolio">
     <meta name="twitter:description" content="Welcome to Darren Soothill's professional website.">
     
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Structured Data (JSON-LD) - Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Darren Soothill",
+      "@type": "WebSite",
+      "name": "Soot & Silicon",
+      "alternateName": "Darren Soothill",
       "url": "https://www.soothill.io",
-      "sameAs": []
+      "description": "Technical guides and insights on storage, NVMe, SPDK, and enterprise infrastructure",
+      "publisher": {
+        "@type": "Person",
+        "name": "Darren Soothill",
+        "url": "https://www.soothill.io",
+        "sameAs": [
+          "https://www.linkedin.com/in/darrensoothill",
+          "https://github.com/soothill",
+          "https://twitter.com/soothill"
+        ],
+        "jobTitle": "Storage Engineer",
+        "knowsAbout": ["NVMe", "SPDK", "Storage", "Linux", "RDMA", "High-Performance Computing"]
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.soothill.io/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
     </script>
 

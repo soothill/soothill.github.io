@@ -1,8 +1,25 @@
 ---
 layout: default
 title: About
-description: About Soot & Silicon - Where hardware meets software. Technical guides and resources for storage and enterprise infrastructure
+description: About Soot & Silicon - Where hardware meets software. Technical guides and resources for storage, NVMe, SPDK, and enterprise infrastructure
+keywords: [NVMe, SPDK, Storage, Linux, RDMA, Technical Blog, Enterprise Infrastructure]
 ---
+
+<!-- About Page Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Soot & Silicon",
+  "description": "Technical resource dedicated to enterprise storage, NVMe technologies, SPDK, and infrastructure solutions",
+  "url": "https://www.soothill.io/about/",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Soot & Silicon",
+    "description": "Technical guides and resources for storage and enterprise infrastructure"
+  }
+}
+</script>
 
 <div class="container">
     <h1>About <span class="gradient-text">Soot & Silicon</span></h1>

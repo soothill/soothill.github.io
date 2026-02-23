@@ -1,4 +1,26 @@
+# Robots.txt for soothill.io
+# https://www.soothill.io/
+
 User-agent: *
 Allow: /
 
+# Disallow admin/sensitive paths
+Disallow: /TODO.md
+Disallow: /HOWTO-ADD-POSTS.md
+Disallow: /SETUP-COMPLETE.md
+
+# Allow all search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Sitemap location
 Sitemap: https://www.soothill.io/sitemap.xml
+
+# Host preference
+Host: https://www.soothill.io

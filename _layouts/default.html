@@ -18,9 +18,18 @@
 
     <!-- SEO Meta Tags -->
     <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
-    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="description" content="{% if page.description %}{{ page.description | strip_html | escape }}{% else %}{{ site.description }}{% endif %}">
     <meta name="author" content="{{ site.author }}">
-    <meta name="keywords" content="{% if page.keywords %}{{ page.keywords }}{% else %}Soot & Silicon, NVMe, SPDK, Storage, Linux, RDMA, Technical Blog, Hardware, Software{% endif %}">
+    <meta name="keywords" content="{% if page.keywords %}{{ page.keywords }}{% elsif page.tags %}{{ page.tags | join: ', ' }}{% else %}Soot & Silicon, NVMe, SPDK, Storage, Linux, RDMA, Technical Blog, Hardware, Software{% endif %}">
+    
+    <!-- Canonical URL - Critical for SEO -->
+    <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+    
+    <!-- Robots Meta -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="{{ site.google_site_verification | default: 'your-verification-code' }}">
 
     <!-- Google tag (gtag.js) - Controlled by Cookiebot -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK" data-cookieconsent="statistics"></script>
@@ -31,19 +40,40 @@
       gtag('config', 'G-4KVJSXV6TK');
     </script>
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description | strip_html | escape }}{% else %}{{ site.description }}{% endif %}">
     <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
-    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:locale" content="en_GB">
     {% if page.image %}
     <meta property="og:image" content="{{ site.url }}{{ page.image }}">
+    <meta property="og:image:alt" content="{{ page.title | escape }}">
+    {% else %}
+    <meta property="og:image" content="{{ site.url }}/assets/images/og-default.png">
+    <meta property="og:image:alt" content="{{ site.title }}">
+    {% endif %}
+    {% if page.layout == 'post' %}
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+    <meta property="article:author" content="{{ site.author }}">
+    {% if page.categories %}<meta property="article:section" content="{{ page.categories.first }}">{% endif %}
+    {% for tag in page.tags limit:5 %}
+    <meta property="article:tag" content="{{ tag }}">
+    {% endfor %}
     {% endif %}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-    <meta name="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="twitter:site" content="@{{ site.twitter.username }}">
+    <meta name="twitter:creator" content="@{{ site.twitter.username }}">
+    <meta name="twitter:title" content="{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title }}{% endif %}">
+    <meta name="twitter:description" content="{% if page.description %}{{ page.description | strip_html | escape }}{% else %}{{ site.description }}{% endif %}">
+    {% if page.image %}
+    <meta name="twitter:image" content="{{ site.url }}{{ page.image }}">
+    {% else %}
+    <meta name="twitter:image" content="{{ site.url }}/assets/images/og-default.png">
+    {% endif %}
 
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="/assets/css/main.css">
