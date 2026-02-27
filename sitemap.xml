@@ -62,17 +62,20 @@ layout: null
   </url>
   {% endfor %}
 
-  <!-- Static Pages (if any) -->
+  <!-- Additional Pages (auto-discovered, excludes already-listed pages) -->
+  {% assign listed_urls = '/,/blog/,/categories/,/about/,/resources.html,/useful-commands.html' | split: ',' %}
   {% for page in site.pages %}
-    {% unless page.url contains '/404' or page.url contains '/index' %}
-      {% if page.layout != null %}
+    {% unless page.url contains '/404' or page.url contains '/index' or page.url contains 'sitemap' or page.url contains 'feed' %}
+      {% unless listed_urls contains page.url %}
+        {% if page.layout != null and page.sitemap != false %}
   <url>
     <loc>{{ site.url }}{{ page.url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-      {% endif %}
+        {% endif %}
+      {% endunless %}
     {% endunless %}
   {% endfor %}
 
