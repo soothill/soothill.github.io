@@ -7,15 +7,15 @@ description: "A practical series on running local large language models on AMD S
 <header class="series-hero">
   <div class="shell series-hero__inner">
     <div>
-      <p class="eyebrow"><span>Series 01</span><span>In progress / 2026</span></p>
+      <p class="eyebrow"><span>Series 01</span><span>Complete / 2026</span></p>
       <h1>Local LLMs<br>on <em>Strix Halo.</em></h1>
       <p class="series-hero__dek">A product investigation from the hardware up: model fit, real throughput and the small decisions that decide whether a powerful local AI machine is genuinely useful.</p>
     </div>
     <div class="series-spec" aria-label="Series scope">
       <div><span>Scope</span><strong>End to end</strong></div>
       <div><span>Platform</span><strong>Ubuntu / Linux</strong></div>
-      <div><span>Runtimes</span><strong>ROCm / Vulkan / CPU</strong></div>
-      <div><span>Measure</span><strong>Speed / power / fit</strong></div>
+      <div><span>Runtimes</span><strong>ROCm / Vulkan / vLLM</strong></div>
+      <div><span>Measure</span><strong>Speed / fit / stability</strong></div>
     </div>
   </div>
 </header>
@@ -26,48 +26,48 @@ description: "A practical series on running local large language models on AMD S
     <h2>Memory changes the product conversation.</h2>
   </div>
   <div>
-    <p>Strix Halo combines Zen 5 CPU cores, integrated RDNA 3.5 graphics and up to 128 GB of fast system memory. On the top configuration, AMD allows a large share of that memory to be assigned to graphics workloads.</p>
+    <p>Strix Halo combines Zen 5 CPU cores, integrated RDNA 3.5 graphics and up to 128 GB of fast system memory. On Linux, GPUVM and a large GTT aperture let supported runtimes address that shared memory without a huge fixed graphics partition.</p>
     <p>That does not automatically make it a great LLM product platform. Software support, memory bandwidth, prompt processing, power and thermals still matter. This series is about the gap between <em>can run</em>, <em>good to use</em> and <em>worth deploying</em>.</p>
-    <p class="source-note">Platform details are based on AMD’s published <a href="https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-ai-max-series/amd-ryzen-ai-max-plus-395.html">Ryzen AI Max+ 395 specifications</a>. Test-machine details will be recorded in each result.</p>
+    <p class="source-note">Platform details are based on AMD’s published <a href="https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-ai-max-series/amd-ryzen-ai-max-plus-395.html">Ryzen AI Max+ 395 specifications</a> and <a href="https://rocm.docs.amd.com/en/docs-7.2.0/how-to/system-optimization/strixhalo.html">Strix Halo Linux guidance</a>. Every article records its own test-machine and software context.</p>
   </div>
 </section>
 
 <section class="roadmap shell" aria-labelledby="roadmap-heading">
   <div class="section-heading">
-    <p class="eyebrow"><span>Publication roadmap</span><span>Updated as the work moves</span></p>
+    <p class="eyebrow"><span>Publication record</span><span>Six of six published</span></p>
     <h2 id="roadmap-heading">Six notes, one reproducible path.</h2>
   </div>
 
   <ol class="roadmap-list">
-    <li class="is-active">
+    <li>
       <div><span>01</span><small>Published</small></div>
       <h3><a href="{{ '/blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/' | relative_url }}">GMKtec EVO-X3: the baseline</a></h3>
       <p>A hardware inventory, provable firmware state and repeatable NVMe test from the theoretical link ceiling to a real model-file read.</p>
     </li>
     <li>
-      <div><span>02</span><small>Planned</small></div>
-      <h3>ROCm without folklore</h3>
-      <p>A clean install, the working versions, the unsupported corners and a recovery path when the stack moves.</p>
+      <div><span>02</span><small>Published</small></div>
+      <h3><a href="{{ '/blog/2026/08/03/rocm-on-strix-halo-without-folklore/' | relative_url }}">ROCm without folklore</a></h3>
+      <p>The tested Linux stack, shared-memory model, software provenance and a recovery path after an experimental failure.</p>
     </li>
     <li>
-      <div><span>03</span><small>Planned</small></div>
-      <h3>llama.cpp: Vulkan vs ROCm</h3>
-      <p>Prompt processing, generation speed, memory pressure and the flags that materially change behaviour.</p>
+      <div><span>03</span><small>Published</small></div>
+      <h3><a href="{{ '/blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/' | relative_url }}">llama.cpp: Vulkan vs ROCm</a></h3>
+      <p>Matched prompt processing, generation and API concurrency results that produce different winners for different workloads.</p>
     </li>
     <li>
-      <div><span>04</span><small>Planned</small></div>
-      <h3>Finding the useful quant</h3>
-      <p>Where model quality, context length and responsiveness meet for 30B, 70B and larger classes.</p>
+      <div><span>04</span><small>Published</small></div>
+      <h3><a href="{{ '/blog/2026/08/03/finding-the-useful-quant-strix-halo/' | relative_url }}">Finding the useful quant</a></h3>
+      <p>An eight-model sweep from 0.8B to 397B, separating what fits from what is fast, useful and properly qualified.</p>
     </li>
     <li>
-      <div><span>05</span><small>Planned</small></div>
-      <h3>The long-session test</h3>
-      <p>Sustained generation, temperatures, clocks, power draw and whether the first result survives hour two.</p>
+      <div><span>05</span><small>Published</small></div>
+      <h3><a href="{{ '/blog/2026/08/03/qwen35-122b-256k-long-session-test/' | relative_url }}">The long-session test</a></h3>
+      <p>A 101-minute 122B soak at nearly 256K context, including throughput drift, memory slope, thermals and API retention.</p>
     </li>
-    <li>
-      <div><span>06</span><small>Planned</small></div>
-      <h3>A local stack worth keeping</h3>
-      <p>The final everyday setup: models, runtime, API layer, remote access, backups and honest limitations.</p>
+    <li class="is-active">
+      <div><span>06</span><small>Published</small></div>
+      <h3><a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">A local stack worth keeping</a></h3>
+      <p>The final hardware, model, runtime and operating decisions — including the one service gap still left to close.</p>
     </li>
   </ol>
 </section>
@@ -75,7 +75,7 @@ description: "A practical series on running local large language models on AMD S
 <section class="test-contract shell">
   <div>
     <p class="eyebrow"><span>The test contract</span></p>
-    <h2>Every result will ship with its context.</h2>
+    <h2>Every result ships with its context.</h2>
   </div>
   <ul>
     <li><span>01</span>Exact model and quantisation</li>
@@ -88,7 +88,7 @@ description: "A practical series on running local large language models on AMD S
 </section>
 
 <aside class="series-subscribe shell">
-  <div><span>Series 01</span><h2>Want the next field note?</h2></div>
-  <p>There is no automated mailing list here. RSS stays quiet, portable and under your control.</p>
+  <div><span>Series 01</span><h2>Follow the next field note.</h2></div>
+  <p>This series is complete. RSS is the quiet, portable way to follow the next product investigation.</p>
   <a class="button button--solid" href="{{ '/feed.xml' | relative_url }}">Follow via RSS <span aria-hidden="true">↗</span></a>
 </aside>

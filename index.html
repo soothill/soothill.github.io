@@ -10,7 +10,7 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
     <h1>I shape infrastructure products <em>from the hardware up.</em></h1>
     <p class="hero-intro">I’m Darren Soothill, a Director of Product working across infrastructure, hardware and storage. This is where product direction meets the bench: the systems I test, the trade-offs I find and the details that change the roadmap.</p>
     <div class="hero-actions">
-      <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Follow the Strix Halo series <span aria-hidden="true">↗</span></a>
+      <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Read the Strix Halo series <span aria-hidden="true">↗</span></a>
       <a class="button button--quiet" href="{{ '/about/' | relative_url }}">How I work <span aria-hidden="true">→</span></a>
     </div>
   </div>
@@ -18,7 +18,7 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
   <div class="halo-plate" aria-label="Strix Halo local AI series preview">
     <div class="halo-plate__top">
       <span>Series / 01</span>
-      <span class="status-dot">In progress</span>
+      <span class="status-dot">Complete</span>
     </div>
     <div class="halo-plate__core">
       <span class="halo-plate__ghost">LOCAL</span>
@@ -55,8 +55,8 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
       <p class="feature-number">01</p>
       <h3>Local LLMs on Strix Halo</h3>
       <p>The product question is bigger than a headline benchmark. Local inference changes privacy, cost, latency and deployment — but only if the hardware and software form a system people can actually use.</p>
-      <p>I’m taking that question to the bench: what I installed, what broke, how I measured it and which engineering trade-offs deserve to shape the product decision.</p>
-      <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">See the series roadmap <span aria-hidden="true">↗</span></a>
+      <p>I took that question to the bench: what I installed, what broke, how I measured it and which engineering trade-offs deserve to shape the product decision.</p>
+      <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Read the six-part series <span aria-hidden="true">↗</span></a>
     </div>
 
     <ol class="series-index">
@@ -67,18 +67,28 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
       </li>
       <li>
         <span>02</span>
-        <div><strong>Choose the runtime</strong><p>ROCm, Vulkan and CPU paths without hand-waving.</p></div>
-        <small>Planned</small>
+        <div><strong><a href="{{ '/blog/2026/08/03/rocm-on-strix-halo-without-folklore/' | relative_url }}">ROCm without folklore</a></strong><p>The working Linux stack, its support boundary and a recovery runbook.</p></div>
+        <small>Published</small>
       </li>
       <li>
         <span>03</span>
-        <div><strong>Find the useful model</strong><p>Context, quality and speed across practical quantisations.</p></div>
-        <small>Planned</small>
+        <div><strong><a href="{{ '/blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/' | relative_url }}">Vulkan versus ROCm</a></strong><p>Matched prompt, generation and concurrency results across two models.</p></div>
+        <small>Published</small>
       </li>
       <li>
         <span>04</span>
-        <div><strong>Keep it honest</strong><p>Power, heat, sustained throughput and reproducible results.</p></div>
-        <small>Planned</small>
+        <div><strong><a href="{{ '/blog/2026/08/03/finding-the-useful-quant-strix-halo/' | relative_url }}">Find the useful quant</a></strong><p>Fit, context and speed from 0.8B to a 397B-class model.</p></div>
+        <small>Published</small>
+      </li>
+      <li>
+        <span>05</span>
+        <div><strong><a href="{{ '/blog/2026/08/03/qwen35-122b-256k-long-session-test/' | relative_url }}">Run the long-session test</a></strong><p>122B at a near-full 256K context for more than 100 minutes.</p></div>
+        <small>Published</small>
+      </li>
+      <li>
+        <span>06</span>
+        <div><strong><a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">Keep the useful stack</a></strong><p>The final product, runtime and operations decisions.</p></div>
+        <small>Published</small>
       </li>
     </ol>
   </div>

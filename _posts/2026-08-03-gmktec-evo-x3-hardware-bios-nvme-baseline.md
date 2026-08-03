@@ -201,4 +201,6 @@ This is the first layer of the Strix Halo series. It turns the EVO-X3 from a lis
 
 That is also the product lesson. Hardware does not become a product because its components are individually fast. It becomes a product when the defaults are explainable, the setup is recoverable and the performance survives the workload people bought it to run.
 
+Continue with [ROCm on Strix Halo, without the folklore](/blog/2026/08/03/rocm-on-strix-halo-without-folklore/), which qualifies the Linux software path and records how the machine recovers when an experimental backend fails.
+
 *Sources checked 3 August 2026: [GMKtec EVO-X3 specification](https://www.gmktec.com/products/gmktec-evo-x3-ai-mini-pc-amd-ryzen-ai-max-395), [AMD Ryzen AI Max+ 395 specification](https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html), [AMD Variable Graphics Memory overview](https://www.amd.com/en/blogs/2025/amd-ryzen-ai-max-395-processor-breakthrough-ai-.html), and the official [`fio` source and documentation](https://github.com/axboe/fio). Vendor performance claims are treated as claims until reproduced; the results above were measured directly on this unit with `fio-3.42`.*
