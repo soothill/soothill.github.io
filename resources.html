@@ -1,273 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Cookie Consent - Must be first to control other scripts -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
+---
+layout: default
+title: Resources
+description: "A focused directory of storage, HPC, Linux and local-AI resources used by Director of Product Darren Soothill."
+permalink: /resources.html
+---
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<header class="page-hero shell page-hero--compact">
+  <p class="eyebrow"><span>Working set</span><span>Resources</span></p>
+  <h1>Useful things,<br><em>kept close.</em></h1>
+  <p>Tools, specifications and communities I return to when a product question needs a technical answer.</p>
+</header>
 
-    <!-- Preconnect to external resources for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
+<section class="resource-directory shell" aria-labelledby="internal-resources">
+  <header class="resource-directory__heading">
+    <span>01</span>
+    <div><h2 id="internal-resources">On this site</h2><p>Practical references and the complete field-note archive.</p></div>
+  </header>
+  <div class="resource-grid">
+    <a class="resource-card" href="{{ '/useful-commands.html' | relative_url }}"><span>Reference</span><h3>Useful Linux commands</h3><p>FIO, SMART monitoring, SSH compatibility and storage testing examples.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/blog/' | relative_url }}"><span>Archive</span><h3>Field notes</h3><p>Product thinking and hands-on work across infrastructure, storage and local AI.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/series/strix-halo/' | relative_url }}"><span>Series 01</span><h3>Local LLMs on Strix Halo</h3><p>The live roadmap for setup, runtime, model fit, power and sustained testing.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://github.com/{{ site.github_username }}"><span>Code</span><h3>GitHub</h3><p>Tools, experiments and source code behind some of the work.</p><b aria-hidden="true">↗</b></a>
+  </div>
+</section>
 
-    <!-- Google Fonts - Inter & Fira Code -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<section class="resource-directory shell" aria-labelledby="storage-resources">
+  <header class="resource-directory__heading">
+    <span>02</span>
+    <div><h2 id="storage-resources">Storage &amp; systems</h2><p>Primary sources for the storage work.</p></div>
+  </header>
+  <div class="resource-grid">
+    <a class="resource-card" href="https://nvmexpress.org"><span>Specification</span><h3>NVM Express</h3><p>Standards and technical resources for NVMe and NVMe over Fabrics.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://spdk.io"><span>Framework</span><h3>SPDK</h3><p>User-space libraries and tools for high-performance storage applications.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://ceph.com"><span>Storage</span><h3>Ceph</h3><p>Open-source distributed object, block and file storage.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://daos.io"><span>HPC storage</span><h3>DAOS</h3><p>Distributed asynchronous object storage for large-scale systems.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://github.com/axboe/fio"><span>Benchmarking</span><h3>FIO</h3><p>The flexible I/O tester and the reference for repeatable storage workloads.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://io500.org"><span>Community</span><h3>IO500</h3><p>A benchmark and community view of high-performance storage systems.</p><b aria-hidden="true">↗</b></a>
+  </div>
+</section>
 
-    <title>Resources - Darren Soothill</title>
-
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Comprehensive collection of storage, HPC, and system administration resources including IO500, DAOS, SPDK, Ceph, NVMe Express, and useful Linux commands. Expert-curated links for storage professionals.">
-    <meta name="keywords" content="storage resources, HPC resources, IO500, DAOS, SPDK, Ceph storage, NVMe Express, system administration, distributed storage, object storage, block storage, high performance computing, storage benchmarking, Linux commands, enterprise storage, data center storage, Darren Soothill">
-    <meta name="author" content="Darren Soothill">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.darrensoothill.io/resources.html">
-
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Storage & HPC Resources - Darren Soothill">
-    <meta property="og:description" content="Expert-curated collection of storage and HPC resources including IO500, DAOS, SPDK, Ceph, and essential Linux commands for system administrators.">
-    <meta property="og:url" content="https://www.darrensoothill.io/resources.html">
-    <meta property="og:site_name" content="Darren Soothill">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Storage & HPC Resources - Darren Soothill">
-    <meta name="twitter:description" content="Expert-curated collection of storage and HPC resources including IO500, DAOS, SPDK, Ceph, and essential Linux commands.">
-
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "Storage & HPC Resources",
-      "description": "Comprehensive collection of storage, HPC, and system administration resources",
-      "author": {
-        "@type": "Person",
-        "name": "Darren Soothill"
-      },
-      "url": "https://www.darrensoothill.io/resources.html",
-      "mainEntity": {
-        "@type": "ItemList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "IO500",
-            "url": "https://io500.org"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "DAOS",
-            "url": "https://daos.io"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Ceph",
-            "url": "https://ceph.com"
-          }
-        ]
-      }
-    }
-    </script>
-
-    <!-- Google tag (gtag.js) - Controlled by Cookiebot -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK" data-cookieconsent="statistics"></script>
-    <script data-cookieconsent="statistics">
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4KVJSXV6TK');
-    </script>
-
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="assets/css/main.css">
-</head>
-<body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <header class="site-header">
-        <div class="container" style="background: transparent; border: none; box-shadow: none; padding: 0 2rem; margin: 0; max-width: 100%;">
-            <a href="/" class="site-title">Darren Soothill</a>
-            <nav class="site-nav" aria-label="Main navigation">
-                <ul>
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="/blog/">Blog</a></li>
-                    <li><a href="index.html#documents">Documents</a></li>
-                    <li><a href="resources.html">Resources</a></li>
-                    <li><a href="useful-commands.html">Useful Commands</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main id="main-content">
-        <div class="container">
-            <section class="hero">
-                <h1>Resources</h1>
-                <p>A curated collection of useful resources, tools, and external links for storage, HPC, and system administration</p>
-            </section>
-        </div>
-
-        <section class="section reveal">
-            <!-- Internal Resources -->
-            <h2 class="section__title">Internal Resources</h2>
-            <p class="section__description">Tools and documentation hosted on this site</p>
-
-            <div class="cards-grid">
-                <a href="useful-commands.html" class="card">
-                    <div class="card__icon">💻</div>
-                    <h3 class="card__title">Useful Commands <span class="badge badge--internal">Internal</span></h3>
-                    <p class="card__description">Collection of practical Linux commands for system administration, performance testing, and troubleshooting. Includes FIO examples, storage benchmarking, and more.</p>
-                    <span class="card__link">
-                        View Commands
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </span>
-                </a>
-
-                <a href="/blog/" class="card">
-                    <div class="card__icon">📝</div>
-                    <h3 class="card__title">Soot & Silicon Blog <span class="badge badge--internal">Internal</span></h3>
-                    <p class="card__description">Technical articles and guides on storage, NVMe, SPDK, and enterprise infrastructure. Where hardware meets software.</p>
-                    <span class="card__link">
-                        Read Blog
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </span>
-                </a>
-
-                <a href="https://github.com/soothill" target="_blank" rel="noopener noreferrer" class="card">
-                    <div class="card__icon">💻</div>
-                    <h3 class="card__title">GitHub Profile <span class="badge badge--external">External</span></h3>
-                    <p class="card__description">My GitHub repositories and open-source contributions. Find code samples, projects, and technical implementations.</p>
-                    <span class="card__link">
-                        Visit GitHub
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </span>
-                </a>
-            </div>
-        </section>
-
-        <section class="section reveal">
-            <!-- Storage & HPC Organizations -->
-            <h2 class="section__title">Storage & HPC Organizations</h2>
-            <p class="section__description">Leading organizations and initiatives in high-performance computing and storage</p>
-
-            <div class="cards-grid">
-                <a href="https://ceph.com" target="_blank" rel="noopener noreferrer" class="card">
-                    <div class="card__icon">🐙</div>
-                    <h3 class="card__title">Ceph <span class="badge badge--external">External</span></h3>
-                    <p class="card__description">Open-source, distributed storage system providing object, block, and file storage in a single unified system. Highly scalable and designed for reliability and performance.</p>
-                    <span class="card__link">
-                        Visit ceph.com
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </span>
-                </a>
-
-                <a href="https://daos.io" target="_blank" rel="noopener noreferrer" class="card">
-                    <div class="card__icon">💾</div>
-                    <h3 class="card__title">DAOS <span class="badge badge--external">External</span></h3>
-                    <p class="card__description">Distributed Asynchronous Object Storage - An open-source software-defined object store designed from the ground up for massively distributed Non-Volatile Memory (NVM).</p>
-                    <span class="card__link">
-                        Visit daos.io
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </span>
-                </a>
-
-                <a href="https://github.com/axboe/fio" target="_blank" rel="noopener noreferrer" class="card">
-                    <div class="card__icon">📊</div>
-                    <h3 class="card__title">FIO (GitHub) <span class="badge badge--external">External</span></h3>
-                    <p class="card__description">Flexible I/O Tester - Official GitHub repository. Versatile I/O workload generator and benchmarking tool for testing storage performance. Essential for storage testing and validation.</p>
-                    <span class="card__link">
-                        Visit GitHub
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </span>
-                </a>
-
-                <a href="https://io500.org" target="_blank" rel="noopener noreferrer" class="card">
-                    <div class="card__icon">🏆</div>
-                    <h3 class="card__title">IO500 <span class="badge badge--external">External</span></h3>
-                    <p class="card__description">The IO500 benchmark suite measures and ranks the I/O performance of high-performance computing storage systems. Essential resource for understanding storage performance in HPC environments.</p>
-                    <span class="card__link">
-                        Visit io500.org
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </span>
-                </a>
-
-                <a href="https://nvmexpress.org" target="_blank" rel="noopener noreferrer" class="card">
-                    <div class="card__icon">🔌</div>
-                    <h3 class="card__title">NVMe Express <span class="badge badge--external">External</span></h3>
-                    <p class="card__description">NVM Express consortium - Industry association defining and promoting NVMe technology. Access specifications, news, and educational resources.</p>
-                    <span class="card__link">
-                        Visit nvmexpress.org
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </span>
-                </a>
-
-                <a href="https://spdk.io" target="_blank" rel="noopener noreferrer" class="card">
-                    <div class="card__icon">⚡</div>
-                    <h3 class="card__title">SPDK <span class="badge badge--external">External</span></h3>
-                    <p class="card__description">Storage Performance Development Kit - Open source tools and libraries for high performance, scalable, user-mode storage applications.</p>
-                    <span class="card__link">
-                        Visit spdk.io
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </span>
-                </a>
-            </div>
-        </section>
-
-        <section class="section reveal">
-            <h2 class="section__title">Coming Soon</h2>
-            <p class="section__description">Additional resources and tools will be added regularly. Check back for updates on benchmarking tools, documentation, and community resources.</p>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <p>Resources | Darren Soothill</p>
-        <p style="opacity: 0.8;">© 2026 Darren Soothill. All rights reserved.</p>
-        <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: <span id="lastUpdated"></span></p>
-    </footer>
-
-    <!-- Main JavaScript -->
-    <script src="assets/js/main.js" defer></script>
-</body>
-</html>
+<section class="resource-directory shell" aria-labelledby="local-ai-resources">
+  <header class="resource-directory__heading">
+    <span>03</span>
+    <div><h2 id="local-ai-resources">Local AI</h2><p>Start with the runtime and silicon documentation, then measure.</p></div>
+  </header>
+  <div class="resource-grid">
+    <a class="resource-card" href="https://rocm.docs.amd.com"><span>Compute stack</span><h3>AMD ROCm docs</h3><p>Official installation, compatibility and optimisation documentation.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://github.com/ggml-org/llama.cpp"><span>Runtime</span><h3>llama.cpp</h3><p>Portable local inference with multiple CPU and GPU backends.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://huggingface.co/models"><span>Models</span><h3>Hugging Face Hub</h3><p>Model cards, weights and the metadata needed to understand what is being tested.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-ai-max-series/amd-ryzen-ai-max-plus-395.html"><span>Hardware</span><h3>Ryzen AI Max+ 395</h3><p>AMD’s official Strix Halo specifications and current driver links.</p><b aria-hidden="true">↗</b></a>
+  </div>
+</section>

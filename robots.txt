@@ -22,5 +22,5 @@ Allow: /
 # Sitemap location
 Sitemap: https://www.soothill.io/sitemap.xml
 
-# Host preference
-Host: https://www.soothill.io
+# Preferred host (supported by Bing and Yandex; canonical tags handle Google)
+Host: www.soothill.io

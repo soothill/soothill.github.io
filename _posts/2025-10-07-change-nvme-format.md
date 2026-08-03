@@ -256,10 +256,10 @@ sudo nvme smart-log /dev/nvme0 | grep "percentage_used"
 
 ## Important Warnings
 
-⚠️ **Data Loss:** Formatting destroys all data on the device
-⚠️ **No Undo:** Format operations cannot be reversed
-⚠️ **Device Compatibility:** Not all devices support all formats
-⚠️ **System Disruption:** Never format a device in use by the system
+- **Data loss:** Formatting destroys all data on the device.
+- **No undo:** Format operations cannot be reversed.
+- **Device compatibility:** Not all devices support all formats.
+- **System disruption:** Never format a device in use by the system.
 
 ## Additional Resources
 
@@ -276,7 +276,3 @@ Changing NVMe format is straightforward but requires careful attention to:
 - Post-format verification
 
 Always test the new configuration thoroughly before putting the device into production use.
-
----
-
-© 2025 Darren Soothill. All rights reserved.

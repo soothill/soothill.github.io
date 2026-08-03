@@ -1,153 +1,35 @@
 ---
 layout: default
-title: Categories
-description: Browse blog posts by category
+title: Topics
+description: Browse Soot / Silicon field notes by technical topic.
 ---
 
-<div class="container">
-    <section class="hero">
-        <h1>Browse by <span class="gradient-text">Category</span></h1>
-        <p>Explore technical articles organized by topic</p>
-    </section>
+<header class="page-hero shell page-hero--compact">
+  <p class="eyebrow"><span>Index</span><span>By topic</span></p>
+  <h1>Find a thread<br>and pull it.</h1>
+  <p>Every field note, grouped by the system or technology at its centre.</p>
+</header>
 
-    {% assign categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
-
-    <div class="categories-grid">
-        {% for category in categories %}
-            {% if category != "" %}
-            <section id="{{ category | slugify }}" class="category-section reveal">
-                <h2>{{ category }}</h2>
-
-                <div class="category-posts">
-                    {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category" %}
-
-                    {% for post in category_posts %}
-                    <article class="post-card">
-                        <h3>
-                            <a href="{{ post.url }}">{{ post.title }}</a>
-                        </h3>
-
-                        <div class="post-meta">
-                            <time datetime="{{ post.date | date_to_xmlschema }}">
-                                {{ post.date | date: "%B %d, %Y" }}
-                            </time>
-                            {% if post.author %}
-                            <span class="post-author">by {{ post.author }}</span>
-                            {% endif %}
-                        </div>
-
-                        <p class="post-excerpt">
-                            {% if post.description %}
-                                {{ post.description }}
-                            {% else %}
-                                {{ post.excerpt | strip_html | truncatewords: 30 }}
-                            {% endif %}
-                        </p>
-
-                        {% if post.tags %}
-                        <div class="post-tags">
-                            {% for tag in post.tags limit:5 %}
-                                <span class="badge badge--internal">{{ tag }}</span>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                    </article>
-                    {% endfor %}
-                </div>
-            </section>
-            {% endif %}
+{% assign categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+<div class="topic-index shell">
+  {% for category in categories %}
+    {% if category != '' %}
+    <section id="{{ category | slugify }}" class="topic-section">
+      <header>
+        <span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+        <h2>{{ category }}</h2>
+      </header>
+      <div>
+        {% assign category_posts = site.posts | where_exp: 'post', 'post.categories contains category' %}
+        {% for post in category_posts %}
+        <a class="topic-link" href="{{ post.url | relative_url }}">
+          <time>{{ post.date | date: '%Y' }}</time>
+          <strong>{{ post.title }}</strong>
+          <span aria-hidden="true">↗</span>
+        </a>
         {% endfor %}
-
-        {% if categories.size == 0 %}
-        <div class="section">
-            <h3>No categories yet</h3>
-            <p>Categories will appear here as you add blog posts.</p>
-        </div>
-        {% endif %}
-    </div>
+      </div>
+    </section>
+    {% endif %}
+  {% endfor %}
 </div>
-
-<style>
-.categories-grid {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xl);
-}
-
-.category-section {
-    scroll-margin-top: 100px;
-}
-
-.category-section h2 {
-    color: var(--primary-light);
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 3px solid var(--border);
-}
-
-.category-posts {
-    display: grid;
-    gap: var(--spacing-md);
-}
-
-.post-card {
-    padding: var(--spacing-lg);
-    background: var(--bg-dark);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--primary);
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-base);
-}
-
-.post-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-    border-color: var(--primary-light);
-}
-
-.post-card h3 {
-    margin-top: 0;
-    margin-bottom: var(--spacing-sm);
-}
-
-.post-card h3 a {
-    color: var(--primary-light);
-    text-decoration: none;
-    transition: color var(--transition-base);
-}
-
-.post-card h3 a:hover {
-    color: var(--secondary);
-    text-decoration: underline;
-}
-
-.post-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.post-meta time {
-    color: var(--primary-light);
-    font-weight: 600;
-}
-
-.post-author {
-    color: var(--text-muted);
-}
-
-.post-excerpt {
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-md);
-}
-
-.post-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs);
-}
-</style>

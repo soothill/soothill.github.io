@@ -1,0 +1,24 @@
+<header class="site-header" data-site-header>
+  <div class="shell header-inner">
+    <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="Soot slash Silicon home">
+      <span class="wordmark__device" aria-hidden="true">S/S</span>
+      <span class="wordmark__copy">
+        <strong>soothill.io</strong>
+        <small>Product / hardware / storage</small>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
+      <span>Menu</span>
+      <span class="nav-toggle__lines" aria-hidden="true"><i></i><i></i></span>
+    </button>
+
+    <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
+      <a href="{{ '/blog/' | relative_url }}">Field notes</a>
+      <a href="{{ '/series/strix-halo/' | relative_url }}">Strix Halo</a>
+      <a href="{{ '/about/' | relative_url }}">About</a>
+      <a href="{{ '/resources.html' | relative_url }}">Resources</a>
+      <a class="nav-contact" href="mailto:{{ site.email }}">Say hello <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+</header>

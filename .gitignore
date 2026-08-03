@@ -16,5 +16,9 @@ Gemfile.lock
 *.swp
 *~
 
+# Local sync-conflict copies of legacy site pages
+/useful-commands 2.html
+/documents/* 2.html
+
 # OS files
 Thumbs.db

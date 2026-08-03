@@ -3,7 +3,7 @@
  * Provides offline support and caching for PWA functionality
  */
 
-const CACHE_NAME = 'soot-silicon-v1';
+const CACHE_NAME = 'soot-silicon-v3-editorial';
 const OFFLINE_URL = '/offline.html';
 
 // Assets to cache on install
@@ -15,7 +15,9 @@ const PRECACHE_ASSETS = [
     '/assets/css/main.css',
     '/assets/js/main.js',
     '/blog/',
-    'https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap'
+    '/series/strix-halo/',
+    '/about/',
+    '/offline.html'
 ];
 
 // Install event - cache essential assets
@@ -108,51 +110,6 @@ self.addEventListener('fetch', (event) => {
                 return cachedResponse || fetchPromise;
             })
     );
-});
-
-// Background sync for form submissions
-self.addEventListener('sync', (event) => {
-    if (event.tag === 'contact-form-sync') {
-        event.waitUntil(syncContactForm());
-    }
-});
-
-async function syncContactForm() {
-    // Placeholder for form sync logic
-    console.log('[Service Worker] Syncing contact form...');
-}
-
-// Push notifications
-self.addEventListener('push', (event) => {
-    const options = {
-        body: event.data?.text() || 'New update available!',
-        icon: '/assets/images/icon-192.png',
-        badge: '/assets/images/badge-72.png',
-        vibrate: [100, 50, 100],
-        data: {
-            dateOfArrival: Date.now(),
-            primaryKey: 1
-        },
-        actions: [
-            { action: 'explore', title: 'View' },
-            { action: 'close', title: 'Close' }
-        ]
-    };
-
-    event.waitUntil(
-        self.registration.showNotification('Soot & Silicon', options)
-    );
-});
-
-// Notification click handler
-self.addEventListener('notificationclick', (event) => {
-    event.notification.close();
-
-    if (event.action === 'explore') {
-        event.waitUntil(
-            clients.openWindow('/')
-        );
-    }
 });
 
 // Message handler for cache management

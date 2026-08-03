@@ -49,126 +49,50 @@ You can:
 
 s3bench requires **Go 1.22 or later**. Here's how to install Go on different platforms:
 
-<div class="platform-selector" style="margin: 1.5rem 0;">
-<button class="platform-btn active" onclick="showPlatform('linux')" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px 0 0 8px; cursor: pointer; font-weight: 600;">Linux</button>
-<button class="platform-btn" onclick="showPlatform('macos')" style="background: var(--border); color: var(--text-primary); border: none; padding: 0.5rem 1rem; cursor: pointer; font-weight: 600;">macOS</button>
-<button class="platform-btn" onclick="showPlatform('windows')" style="background: var(--border); color: var(--text-primary); border: none; padding: 0.5rem 1rem; border-radius: 0 8px 8px 0; cursor: pointer; font-weight: 600;">Windows</button>
-</div>
+### Linux
 
-<div id="platform-linux" class="platform-content" style="background: var(--bg-darker); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-<h4 style="color: var(--primary-light); margin-top: 0;">🐧 Linux Installation</h4>
+Ubuntu or Debian:
 
-<h5 style="margin-top: 1rem;">Ubuntu/Debian</h5>
-<pre><code># Download and install Go 1.22
-wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
+```bash
+sudo apt update
+sudo apt install golang-go
+go version
+```
 
-# Add to PATH
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-source ~/.bashrc
+Fedora, RHEL or CentOS Stream:
 
-# Verify installation
-go version</code></pre>
-
-<h5 style="margin-top: 1rem;">Fedora/RHEL/CentOS</h5>
-<pre><code># Using dnf
+```bash
 sudo dnf install golang
+go version
+```
 
-# Or manually:
-wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-source ~/.bashrc</code></pre>
+Arch Linux:
 
-<h5 style="margin-top: 1rem;">Arch Linux</h5>
-<pre><code>sudo pacman -S go</code></pre>
-</div>
+```bash
+sudo pacman -S go
+go version
+```
 
-<div id="platform-macos" class="platform-content" style="display: none; background: var(--bg-darker); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-<h4 style="color: var(--primary-light); margin-top: 0;">🍎 macOS Installation</h4>
+If the distribution package is older than Go 1.22, use the signed archive and instructions from the official [Go downloads page](https://go.dev/dl/).
 
-<h5 style="margin-top: 1rem;">Using Homebrew (Recommended)</h5>
-<pre><code># Install via Homebrew
+### macOS
+
+With Homebrew:
+
+```bash
 brew install go
+go version
+```
 
-# Verify installation
-go version</code></pre>
+The official macOS package is also available from [go.dev/dl](https://go.dev/dl/).
 
-<h5 style="margin-top: 1rem;">Manual Installation</h5>
-<pre><code># Download from https://go.dev/dl/
-# Or use curl:
-curl -OL https://go.dev/dl/go1.22.0.darwin-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.22.0.darwin-amd64.tar.gz
+### Windows
 
-# Add to PATH (zsh)
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.zshrc
-source ~/.zshrc</code></pre>
-</div>
+Use the official Windows installer from [go.dev/dl](https://go.dev/dl/). After installation, open a new PowerShell window and verify the toolchain:
 
-<div id="platform-windows" class="platform-content" style="display: none; background: var(--bg-darker); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-<h4 style="color: var(--primary-light); margin-top: 0;">🪟 Windows Installation</h4>
-
-<h5 style="margin-top: 1rem;">Using Chocolatey</h5>
-<pre><code># Install via Chocolatey
-choco install golang
-
-# Verify installation
-go version</code></pre>
-
-<h5 style="margin-top: 1rem;">Using Scoop</h5>
-<pre><code># Install via Scoop
-scoop install go
-
-# Verify installation
-go version</code></pre>
-
-<h5 style="margin-top: 1rem;">Manual Installation</h5>
-<pre><code># Download the MSI installer from:
-# https://go.dev/dl/go1.22.0.windows-amd64.msi
-
-# Run the installer and follow prompts
-# Go will be added to PATH automatically
-
-# Open PowerShell and verify:
-go version</code></pre>
-</div>
-
-<script>
-function showPlatform(platform) {
-    // Hide all platform content
-    document.querySelectorAll('.platform-content').forEach(el => {
-        el.style.display = 'none';
-    });
-    
-    // Show selected platform
-    document.getElementById('platform-' + platform).style.display = 'block';
-    
-    // Update button styles
-    document.querySelectorAll('.platform-btn').forEach(btn => {
-        btn.style.background = 'var(--border)';
-        btn.style.color = 'var(--text-primary)';
-        btn.style.borderRadius = '0';
-    });
-    
-    // Highlight active button
-    event.target.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
-    event.target.style.color = 'white';
-    
-    // Set border radius based on position
-    const buttons = document.querySelectorAll('.platform-btn');
-    buttons[0].style.borderRadius = '8px 0 0 8px';
-    buttons[buttons.length - 1].style.borderRadius = '0 8px 8px 0';
-}
-</script>
-
-<style>
-.platform-content h5 {
-    margin-bottom: 0.5rem;
-}
-.platform-content pre {
-    margin-bottom: 1rem;
-}
-</style>
+```powershell
+go version
+```
 
 ## Building from Source
 

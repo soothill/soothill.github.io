@@ -1,139 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offline - Soot & Silicon</title>
-    <style>
-        :root {
-            --primary: #667eea;
-            --primary-light: #818cf8;
-            --secondary: #06b6d4;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border: #334155;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.7;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .offline-container {
-            text-align: center;
-            max-width: 500px;
-            background: var(--bg-card);
-            padding: 3rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-        }
-
-        .offline-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .retry-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .retry-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.7);
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-
-        .retry-button.loading .spinner {
-            display: block;
-        }
-
-        .retry-button.loading .button-text {
-            display: none;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f1efe8">
+  <title>Offline — Soot / Silicon</title>
+  <style>
+    :root { --paper:#f1efe8; --ink:#171815; --soft:#66665e; --soot:#11191a; --orange:#ee4f27; --acid:#d7ed5a; }
+    * { box-sizing:border-box; }
+    body { min-height:100vh; margin:0; padding:24px; display:grid; place-items:center; color:var(--ink); background:var(--paper); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(920px,100%); display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--ink); box-shadow:12px 12px 0 #ded8ca; }
+    .message { padding:clamp(32px,7vw,74px); background:#faf9f5; }
+    .label { margin:0 0 54px; color:var(--orange); font-family:ui-monospace,SFMono-Regular,monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
+    h1 { margin:0; font-family:Georgia,serif; font-size:clamp(48px,8vw,82px); font-weight:400; letter-spacing:-.055em; line-height:.9; }
+    p { max-width:420px; margin:28px 0; color:var(--soft); line-height:1.65; }
+    button { min-width:180px; padding:13px 16px; display:flex; justify-content:space-between; border:1px solid var(--ink); border-radius:0; color:white; background:var(--ink); font:700 12px inherit; cursor:pointer; }
+    button:hover { background:var(--orange); border-color:var(--orange); }
+    .system { min-height:500px; padding:28px; display:flex; flex-direction:column; justify-content:space-between; color:white; background:var(--soot); }
+    .mark { color:var(--acid); font-family:ui-monospace,SFMono-Regular,monospace; font-size:12px; }
+    .route { border-top:1px solid #455253; }
+    .route span { display:block; height:1px; margin-top:38px; background:var(--orange); }
+    .route span:nth-child(2) { width:72%; }
+    .route span:nth-child(3) { width:44%; }
+    .status { margin:0; color:#aab4b1; font-family:ui-monospace,SFMono-Regular,monospace; font-size:10px; text-transform:uppercase; }
+    .status::before { content:""; display:inline-block; width:7px; height:7px; margin-right:10px; border-radius:50%; background:var(--orange); }
+    @media(max-width:700px){ main{grid-template-columns:1fr;box-shadow:7px 7px 0 #ded8ca}.system{min-height:260px}.message{padding:42px 28px}.label{margin-bottom:38px} }
+  </style>
 </head>
 <body>
-    <div class="offline-container">
-        <div class="offline-icon">📡</div>
-        <h1>You're Offline</h1>
-        <p>It looks like you've lost your internet connection. Please check your network settings and try again.</p>
-        <button class="retry-button" onclick="retryConnection()">
-            <span class="button-text">Try Again</span>
-            <div class="spinner"></div>
-        </button>
-    </div>
-
-    <script>
-        function retryConnection() {
-            const button = document.querySelector('.retry-button');
-            button.classList.add('loading');
-            
-            // Try to reload the page
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-        }
-
-        // Auto-retry when connection is restored
-        window.addEventListener('online', () => {
-            window.location.reload();
-        });
-    </script>
+  <main>
+    <section class="message">
+      <p class="label">Soot / Silicon · connection state</p>
+      <h1>Off the<br>network.</h1>
+      <p>This field note is not in the local cache. Check the connection and try the route again.</p>
+      <button type="button" onclick="window.location.reload()"><span>Try again</span><span aria-hidden="true">↗</span></button>
+    </section>
+    <aside class="system" aria-hidden="true">
+      <span class="mark">S/S</span>
+      <div class="route"><span></span><span></span><span></span></div>
+      <p class="status">Network unavailable</p>
+    </aside>
+  </main>
+  <script>window.addEventListener('online',function(){window.location.reload();});</script>
 </body>
 </html>

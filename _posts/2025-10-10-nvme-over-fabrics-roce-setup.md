@@ -398,7 +398,3 @@ ping 172.16.10.10
 - RoCE requires proper network configuration - verify MTU settings match across all devices
 - Some NICs require firmware updates for RoCE support
 - Check that your NIC supports RDMA/RoCE (most modern Mellanox, Broadcom, Intel cards do)
-
----
-
-© 2025 Darren Soothill. All rights reserved.

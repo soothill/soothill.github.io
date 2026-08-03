@@ -1,5 +1,9 @@
 source "https://rubygems.org"
 
+# Ruby 3.4+ no longer bundles CSV in the standard library; keep local builds portable.
+gem "csv"
+gem "bigdecimal"
+
 # Jekyll and GitHub Pages
 gem "github-pages", group: :jekyll_plugins
 

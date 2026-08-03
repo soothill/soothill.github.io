@@ -401,7 +401,3 @@ chmod +x /opt/spdk/monitor_target.sh
 - [SPDK NVMe-oF Target Guide](https://spdk.io/doc/nvmf.html)
 - [SPDK GitHub Repository](https://github.com/spdk/spdk)
 - [NVMe Specifications](https://nvmexpress.org/)
-
----
-
-© 2025 Darren Soothill. All rights reserved.

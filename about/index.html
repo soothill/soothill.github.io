@@ -1,0 +1,44 @@
+---
+layout: default
+title: About Darren
+description: "About Director of Product Darren Soothill and his hands-on work across infrastructure, hardware, storage and local AI."
+---
+
+<header class="page-hero shell page-hero--about">
+  <p class="eyebrow"><span>About</span><span>{{ site.role }}</span></p>
+  <h1>Product direction,<br><em>close to the metal.</em></h1>
+  <p>I lead products in infrastructure, then go hands-on with the hardware and storage underneath them. That connection makes the strategy sharper and the trade-offs more honest.</p>
+</header>
+
+<section class="about-story shell">
+  <div class="about-story__aside">
+    <span class="portrait-type" aria-hidden="true">DS</span>
+    <dl>
+      <div><dt>Based</dt><dd>{{ site.location }}</dd></div>
+      <div><dt>Role</dt><dd>{{ site.role }}</dd></div>
+      <div><dt>Working on</dt><dd>Infrastructure / local AI</dd></div>
+      <div><dt>Writing since</dt><dd>2025</dd></div>
+    </dl>
+  </div>
+  <div class="about-story__copy">
+    <p class="lead">I work from the customer problem down to the system — and back up again.</p>
+    <p>As a Director of Product, my job is to set direction: understand the market, make the trade-offs visible and give teams a clear problem worth solving. In infrastructure, that work is inseparable from the machines. Capacity, latency, failure modes, cost and operational effort are product decisions as much as engineering details.</p>
+    <p>My hands-on background is strongest in hardware and storage. The archive covers NVMe, SPDK, RDMA and the practical Linux work needed to make high-performance systems behave. I use that depth to test assumptions early and to ask better questions of both customers and engineering teams.</p>
+    <p>Local AI is the current thread. Strix Halo puts an unusual amount of memory and GPU capability into one compact x86 system. I want to understand what that unlocks as a product platform: not just which models fit, but what it costs, how it operates and whether the experience remains good under sustained use.</p>
+    <p>Soot / Silicon is where I publish the evidence behind that thinking — including the commands, versions and failures.</p>
+    <div class="about-links">
+      <a href="https://github.com/{{ site.github_username }}">GitHub <span aria-hidden="true">↗</span></a>
+      <a href="{{ site.linkedin_url }}">LinkedIn <span aria-hidden="true">↗</span></a>
+      <a href="mailto:{{ site.email }}">Email <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="principles shell">
+  <p class="eyebrow"><span>Editorial principles</span></p>
+  <div class="principles-grid">
+    <div><span>01</span><h2>Problem before feature.</h2><p>Start with the change a customer needs, then decide what deserves to be built.</p></div>
+    <div><span>02</span><h2>Systems set the truth.</h2><p>Capacity, latency, power and operations define the real product boundary.</p></div>
+    <div><span>03</span><h2>Evidence changes direction.</h2><p>A roadmap should get sharper when new measurements or failures arrive.</p></div>
+  </div>
+</section>

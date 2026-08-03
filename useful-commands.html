@@ -1,546 +1,193 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Cookie Consent - Must be first to control other scripts -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
+---
+layout: default
+title: Useful Linux commands
+description: "A practical command reference for FIO storage benchmarking, SMART disk monitoring and carefully scoped SSH legacy compatibility."
+permalink: /useful-commands.html
+---
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<header class="page-hero shell page-hero--compact">
+  <p class="eyebrow"><span>Bench reference</span><span>Linux / storage</span></p>
+  <h1>Commands worth<br><em>keeping close.</em></h1>
+  <p>Copy-ready examples for storage testing, disk health and the awkward legacy systems that still need attention.</p>
+</header>
 
-    <!-- Preconnect to external resources for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
+<aside class="command-safety shell">
+  <span>Read before running</span>
+  <p>Device-level commands can destroy data. Replace example paths deliberately, confirm them with <code>lsblk</code>, and understand every flag before using <code>sudo</code>.</p>
+</aside>
 
-    <!-- Google Fonts - Inter & Fira Code -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<section class="command-reference shell" aria-label="Linux command reference">
+  <details class="command-accordion" open>
+    <summary>
+      <span>01 / Storage benchmark</span>
+      <h2>FIO — Flexible I/O Tester</h2>
+      <i aria-hidden="true"></i>
+    </summary>
+    <div class="command-accordion__body">
+      <p class="command-lead">FIO builds controlled I/O workloads for storage devices and files. The useful result is the one whose device, block size, queueing and cache behaviour match the question being asked.</p>
 
-    <title>Useful Commands - Darren Soothill</title>
-
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Essential Linux commands for system administrators including FIO benchmarking, Smartmontools disk health monitoring, SSH legacy algorithm fixes, storage testing, SMART monitoring setup, automated email alerts, and performance testing. Copy-paste ready commands with detailed explanations.">
-    <meta name="keywords" content="Linux commands, FIO commands, smartmontools, SMART monitoring, SSH legacy algorithms, disk health monitoring, storage benchmarking, NVMe testing, system administration commands, Darren Soothill">
-    <meta name="author" content="Darren Soothill">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.darrensoothill.io/useful-commands.html">
-
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Useful Linux Commands - FIO, Smartmontools, SSH & Storage Testing - Darren Soothill">
-    <meta property="og:description" content="Practical Linux commands for system administrators. Includes FIO benchmarking, Smartmontools SMART monitoring with automated alerts, SSH legacy algorithm fixes, and storage testing commands.">
-    <meta property="og:url" content="https://www.darrensoothill.io/useful-commands.html">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Useful Linux Commands - FIO, Smartmontools, SSH & Storage Testing">
-    <meta name="twitter:description" content="Essential Linux commands for system administrators with FIO benchmarking, Smartmontools disk health monitoring, SSH connection fixes, and storage testing.">
-
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "TechArticle",
-      "headline": "Useful Linux Commands for System Administration",
-      "description": "Collection of practical Linux commands for system administrators including FIO benchmarking, Smartmontools disk health monitoring with automated email alerts, SSH legacy algorithm fixes, and storage testing",
-      "author": {
-        "@type": "Person",
-        "name": "Darren Soothill"
-      },
-      "datePublished": "2025-01-11",
-      "dateModified": "2025-10-19",
-      "url": "https://www.darrensoothill.io/useful-commands.html",
-      "keywords": "Linux, FIO, smartmontools, SMART monitoring, SSH, storage benchmarking, system administration"
-    }
-    </script>
-
-    <!-- Google tag (gtag.js) - Controlled by Cookiebot -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK" data-cookieconsent="statistics"></script>
-    <script data-cookieconsent="statistics">
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4KVJSXV6TK');
-    </script>
-
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="assets/css/main.css">
-
-    <!-- Page-specific styles -->
-    <style>
-        /* Expandable Command Sections */
-        .command-item {
-            background: var(--bg-dark);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-lg);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: all var(--transition-base);
-        }
-
-        .command-item:hover {
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
-            border-color: var(--primary-light);
-            transform: translateY(-2px);
-        }
-
-        .command-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            transition: all var(--transition-base);
-        }
-
-        .command-header:hover {
-            filter: brightness(1.1);
-        }
-
-        .command-header h2 {
-            color: white;
-            margin: 0;
-            padding: 0;
-            border: none;
-            font-size: 1.5rem;
-        }
-
-        .command-header .toggle-icon {
-            font-size: 1.5rem;
-            font-weight: bold;
-            transition: transform var(--transition-base);
-        }
-
-        .command-header.active .toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        .command-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }
-
-        .command-content.active {
-            max-height: 10000px;
-        }
-
-        .command-content-inner {
-            padding: 2rem;
-        }
-
-        .subsection {
-            margin-bottom: 2.5rem;
-        }
-
-        /* Info, Warning, Success boxes */
-        .warning {
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.05) 100%);
-            border-left: 4px solid #ffc107;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-        }
-
-        .warning h4 {
-            color: #ffc107;
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-        }
-
-        .info {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%);
-            border-left: 4px solid var(--secondary);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-        }
-
-        .info h4 {
-            color: var(--secondary);
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-        }
-
-        .info ul {
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .info li {
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-        }
-
-        .success {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
-            border-left: 4px solid #10b981;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .success h4 {
-            color: #10b981;
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-        }
-
-        .success ul {
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .success li {
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-        }
-
-        .intro {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
-            border-left: 4px solid var(--primary-light);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-        }
-
-        .intro h2 {
-            color: var(--primary-light);
-            margin-bottom: 0.5rem;
-            border: none;
-            padding: 0;
-            font-size: 1.5rem;
-        }
-    </style>
-</head>
-<body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <header class="site-header">
-        <div class="container" style="background: transparent; border: none; box-shadow: none; padding: 0 2rem; margin: 0; max-width: 100%;">
-            <a href="/" class="site-title">Darren Soothill</a>
-            <nav class="site-nav" aria-label="Main navigation">
-                <ul>
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="index.html#documents">Documents</a></li>
-                    <li><a href="resources.html">Resources</a></li>
-                    <li><a href="useful-commands.html">Useful Commands</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main id="main-content">
-        <div class="container">
-            <section class="hero">
-                <h1>Useful <span class="gradient-text">Commands</span></h1>
-                <p>A collection of practical Linux commands for system administration and testing</p>
-            </section>
-        </div>
-
-        <section class="section reveal">
-            <div class="intro">
-                <h2>About This Page</h2>
-                <p>This page contains a curated collection of useful Linux commands for system administration, performance testing, and troubleshooting. Click on any command section below to expand and view detailed examples and explanations.</p>
-            </div>
-
-            <!-- FIO Command -->
-            <div class="command-item">
-                <div class="command-header" onclick="toggleCommand(this)">
-                    <h2>FIO (Flexible I/O Tester)</h2>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="command-content">
-                    <div class="command-content-inner">
-                        <p>FIO is a versatile tool for benchmarking and testing storage devices. It provides comprehensive I/O performance testing capabilities with extensive configuration options.</p>
-
-                        <div class="subsection">
-                            <h3>Installation</h3>
-                            <pre><code># Install FIO on Ubuntu/Debian
+      <h3>Install</h3>
+      <pre><code># Ubuntu / Debian
 sudo apt update
 sudo apt install fio
 
-# Install FIO on RHEL/CentOS
-sudo yum install fio
+# RHEL / CentOS / Fedora
+sudo dnf install fio
 
-# Verify installation
 fio --version</code></pre>
-                        </div>
 
-                        <div class="subsection">
-                            <h3>Fill a Disk</h3>
-                            <p>Use FIO to fill a disk with data for testing purposes.</p>
+      <h3>Sequentially fill a device</h3>
+      <div class="danger-note">
+        <strong>Destructive operation</strong>
+        <p>These commands permanently overwrite the target device. Verify the path, unmount every partition and confirm that no required data remains.</p>
+      </div>
+      <pre><code># 1 MiB sequential writes across the entire device
+sudo fio \
+  --name=filltest \
+  --filename=/dev/nvme0n1 \
+  --rw=write \
+  --bs=1M \
+  --direct=1 \
+  --size=100% \
+  --numjobs=1</code></pre>
 
-                            <h4>Sequential Write (Fastest)</h4>
-                            <pre><code># Fill entire disk with sequential writes
-sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=1M --direct=1 --size=100% --numjobs=1
+      <h3>Random-read baseline</h3>
+      <pre><code>sudo fio \
+  --name=randread \
+  --filename=/dev/nvme0n1 \
+  --rw=randread \
+  --bs=4k \
+  --direct=1 \
+  --numjobs=4 \
+  --time_based \
+  --runtime=60</code></pre>
 
-# Fill with larger block size for maximum speed
-sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=write --bs=4M --direct=1 --size=100% --numjobs=1</code></pre>
+      <h3>Mixed workload</h3>
+      <pre><code># 70% reads / 30% writes
+sudo fio \
+  --name=mixed \
+  --filename=/dev/nvme0n1 \
+  --rw=randrw \
+  --rwmixread=70 \
+  --bs=4k \
+  --direct=1 \
+  --numjobs=4 \
+  --time_based \
+  --runtime=60</code></pre>
 
-                            <h4>Random Write (More Realistic)</h4>
-                            <pre><code># Fill disk with random data (more realistic workload)
-sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=1
+      <div class="parameter-grid" aria-label="FIO parameter guide">
+        <div><code>--filename</code><p>The device or file under test.</p></div>
+        <div><code>--rw</code><p>The I/O pattern: read, write, randread or randwrite.</p></div>
+        <div><code>--bs</code><p>The block size used for each operation.</p></div>
+        <div><code>--direct=1</code><p>Bypasses the operating-system page cache.</p></div>
+        <div><code>--numjobs</code><p>The number of parallel workers.</p></div>
+        <div><code>--runtime</code><p>The sustained test duration in seconds.</p></div>
+      </div>
+    </div>
+  </details>
 
-# Fill with multiple jobs for parallel writes
-sudo fio --name=filltest --filename=/dev/nvme0n1 --rw=randwrite --bs=4k --direct=1 --size=100% --numjobs=4</code></pre>
+  <details class="command-accordion">
+    <summary>
+      <span>02 / Disk health</span>
+      <h2>Smartmontools — SMART monitoring</h2>
+      <i aria-hidden="true"></i>
+    </summary>
+    <div class="command-accordion__body">
+      <p class="command-lead">Smartmontools reads health, error and self-test information from supported storage devices. Treat SMART as evidence, not a guarantee: a healthy status does not replace redundancy or backups.</p>
 
-                            <div class="warning">
-                                <h4>⚠️ Data Loss Warning</h4>
-                                <p><strong>CRITICAL:</strong> The commands above will <strong>PERMANENTLY OVERWRITE ALL DATA</strong> on the specified device. Always double-check the device path before running these commands.</p>
-                            </div>
-
-                            <div class="info">
-                                <h4>FIO Parameters Explained</h4>
-                                <ul>
-                                    <li><strong>--name:</strong> Job name for identification in output</li>
-                                    <li><strong>--filename:</strong> Device or file to test</li>
-                                    <li><strong>--rw:</strong> I/O pattern - write, randwrite, read, randread</li>
-                                    <li><strong>--bs:</strong> Block size - 4k, 1M, etc.</li>
-                                    <li><strong>--direct:</strong> Use direct I/O (1 = bypass OS cache)</li>
-                                    <li><strong>--size:</strong> Amount of data - 100%, 50G, etc.</li>
-                                    <li><strong>--numjobs:</strong> Number of parallel jobs</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="subsection">
-                            <h3>Additional FIO Examples</h3>
-
-                            <h4>Random Read Performance Test</h4>
-                            <pre><code># Test random read performance
-sudo fio --name=randread --filename=/dev/nvme0n1 --rw=randread --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
-
-                            <h4>Mixed Workload Test</h4>
-                            <pre><code># 70% read, 30% write mixed workload
-sudo fio --name=mixed --filename=/dev/nvme0n1 --rw=randrw --rwmixread=70 --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60</code></pre>
-                        </div>
-
-                        <div class="success">
-                            <h4>✓ Best Practices</h4>
-                            <ul>
-                                <li>Always verify device paths using <code>lsblk</code> before running write operations</li>
-                                <li>Unmount any mounted partitions before testing</li>
-                                <li>Use <code>--direct=1</code> to bypass OS cache for accurate results</li>
-                                <li>Start with small test sizes before running full disk operations</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Smartmontools Command -->
-            <div class="command-item">
-                <div class="command-header" onclick="toggleCommand(this)">
-                    <h2>Smartmontools - Disk Health Monitoring</h2>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="command-content">
-                    <div class="command-content-inner">
-                        <p>Smartmontools is a suite of utilities for monitoring and analyzing the health of storage devices using SMART (Self-Monitoring, Analysis and Reporting Technology).</p>
-
-                        <div class="subsection">
-                            <h3>Installation</h3>
-                            <pre><code># Install on Ubuntu/Debian
+      <h3>Install</h3>
+      <pre><code># Ubuntu / Debian
 sudo apt update
 sudo apt install smartmontools
 
-# Install on RHEL/CentOS
-sudo yum install smartmontools
+# RHEL / CentOS / Fedora
+sudo dnf install smartmontools
 
-# Verify installation
 smartctl --version</code></pre>
-                        </div>
 
-                        <div class="subsection">
-                            <h3>Setting Up Automatic Monitoring</h3>
-                            <p>Configure smartd to automatically detect all devices and send email alerts.</p>
-
-                            <h4>Configure smartd Daemon</h4>
-                            <pre><code># Backup original configuration
-sudo cp /etc/smartd.conf /etc/smartd.conf.backup
-
-# Edit configuration file
-sudo nano /etc/smartd.conf</code></pre>
-
-                            <h4>Add Configuration</h4>
-                            <pre><code># Monitor all devices, run short self-test daily, long test weekly
-# Send email alerts on any SMART errors
-DEVICESCAN -a -o on -S on -s (S/../.././02|L/../../6/03) -m darren@soothill.com -M exec /usr/share/smartmontools/smartd-runner</code></pre>
-
-                            <h4>Enable and Start smartd</h4>
-                            <pre><code># Enable smartd to start on boot
-sudo systemctl enable smartd
-
-# Start smartd service
-sudo systemctl start smartd
-
-# Check service status
-sudo systemctl status smartd</code></pre>
-                        </div>
-
-                        <div class="subsection">
-                            <h3>Manual Device Testing</h3>
-                            <pre><code># Check if SMART is available and enabled
+      <h3>Inspect a device</h3>
+      <pre><code># Device identity and SMART support
 sudo smartctl -i /dev/sda
 
-# Check overall health status
+# Overall health assessment
 sudo smartctl -H /dev/sda
 
-# View all SMART attributes
+# All SMART attributes
 sudo smartctl -A /dev/sda
 
-# Start a short self-test
+# Error log and prior self-tests
+sudo smartctl -l error /dev/sda
+sudo smartctl -l selftest /dev/sda</code></pre>
+
+      <h3>Run self-tests</h3>
+      <pre><code># Short test
 sudo smartctl -t short /dev/sda
 
-# Start a long self-test
+# Extended test
 sudo smartctl -t long /dev/sda
 
-# View self-test results
+# Read the result after the stated completion time
 sudo smartctl -l selftest /dev/sda</code></pre>
-                        </div>
 
-                        <div class="success">
-                            <h4>✓ Best Practices</h4>
-                            <ul>
-                                <li>Test email functionality with <code>-M test</code> before relying on alerts</li>
-                                <li>Use <code>-M diminishing</code> to avoid alert fatigue</li>
-                                <li>Schedule long tests during off-peak hours</li>
-                                <li>Monitor smartd logs: <code>sudo journalctl -u smartd</code></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <h3>Enable the monitoring daemon</h3>
+      <pre><code>sudo systemctl enable --now smartd
+sudo systemctl status smartd
+sudo journalctl -u smartd</code></pre>
 
-            <!-- SSH Connection Fix -->
-            <div class="command-item">
-                <div class="command-header" onclick="toggleCommand(this)">
-                    <h2>SSH Connection Fix - Legacy Algorithms</h2>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="command-content">
-                    <div class="command-content-inner">
-                        <p>Fix SSH connection issues with legacy servers that use outdated key exchange and host key algorithms.</p>
+      <div class="practice-note">
+        <strong>Operating practice</strong>
+        <p>Schedule extended tests away from peak workloads, test alert delivery before relying on it, and investigate attribute trends rather than waiting for a binary failure flag.</p>
+      </div>
+    </div>
+  </details>
 
-                        <div class="subsection">
-                            <h3>Common Error Messages</h3>
-                            <pre><code>Unable to negotiate with 10.10.201.2 port 22: no matching key exchange method found.
-Their offer: diffie-hellman-group1-sha1,diffie-hellman-group14-sha1
+  <details class="command-accordion">
+    <summary>
+      <span>03 / Compatibility</span>
+      <h2>SSH — scoped legacy algorithms</h2>
+      <i aria-hidden="true"></i>
+    </summary>
+    <div class="command-accordion__body">
+      <p class="command-lead">Modern OpenSSH disables weak algorithms for good reason. Re-enable them only for equipment that cannot be upgraded, only on trusted paths, and only for the specific host that needs them.</p>
 
-Unable to negotiate with 10.10.201.2 port 22: no matching host key type found.
+      <h3>Typical negotiation errors</h3>
+      <pre><code>Unable to negotiate with 10.10.201.2 port 22:
+no matching key exchange method found.
+Their offer: diffie-hellman-group14-sha1
+
+Unable to negotiate with 10.10.201.2 port 22:
+no matching host key type found.
 Their offer: ssh-rsa</code></pre>
-                        </div>
 
-                        <div class="subsection">
-                            <h3>Quick Fix (One-time Connection)</h3>
-                            <pre><code>ssh -oKexAlgorithms=+diffie-hellman-group14-sha1 -oHostKeyAlgorithms=+ssh-rsa user@10.10.201.2</code></pre>
+      <h3>One-time connection</h3>
+      <pre><code>ssh \
+  -oKexAlgorithms=+diffie-hellman-group14-sha1 \
+  -oHostKeyAlgorithms=+ssh-rsa \
+  user@10.10.201.2</code></pre>
 
-                            <h4>Alternative with Additional Legacy Support</h4>
-                            <pre><code>ssh -oKexAlgorithms=+diffie-hellman-group14-sha1,diffie-hellman-group1-sha1 \
-    -oHostKeyAlgorithms=+ssh-rsa \
-    -oPubkeyAcceptedKeyTypes=+ssh-rsa \
-    user@10.10.201.2</code></pre>
-                        </div>
-
-                        <div class="subsection">
-                            <h3>Permanent Fix (SSH Config)</h3>
-                            <p>Add to <code>~/.ssh/config</code>:</p>
-                            <pre><code># For specific host
-Host 10.10.201.2
-    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
+      <h3>Host-specific configuration</h3>
+      <pre><code># ~/.ssh/config
+Host legacy-appliance
+    HostName 10.10.201.2
+    User user
+    KexAlgorithms +diffie-hellman-group14-sha1
     HostKeyAlgorithms +ssh-rsa
-    PubkeyAcceptedKeyTypes +ssh-rsa
+    PubkeyAcceptedAlgorithms +ssh-rsa</code></pre>
 
-# For entire subnet
-Host 10.10.201.*
-    KexAlgorithms +diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
-    HostKeyAlgorithms +ssh-rsa
-    PubkeyAcceptedKeyTypes +ssh-rsa</code></pre>
-
-                            <h4>Create SSH Config File</h4>
-                            <pre><code># Create .ssh directory if it doesn't exist
-mkdir -p ~/.ssh
+      <pre><code>mkdir -p ~/.ssh
 chmod 700 ~/.ssh
+chmod 600 ~/.ssh/config
+ssh legacy-appliance</code></pre>
 
-# Create or edit config file
-nano ~/.ssh/config
+      <div class="danger-note danger-note--security">
+        <strong>Security boundary</strong>
+        <p>SHA-1-based RSA and old Diffie-Hellman groups have known weaknesses. Never enable them globally. Record the exception, isolate the device and remove the override when the equipment is replaced.</p>
+      </div>
+    </div>
+  </details>
+</section>
 
-# Set proper permissions
-chmod 600 ~/.ssh/config</code></pre>
-                        </div>
-
-                        <div class="warning">
-                            <h4>⚠️ Security Warning</h4>
-                            <p><strong>Important:</strong> These algorithms are disabled by default because they have known security weaknesses:</p>
-                            <ul>
-                                <li><strong>diffie-hellman-group1-sha1:</strong> Vulnerable to logjam attacks</li>
-                                <li><strong>ssh-rsa with SHA-1:</strong> SHA-1 hash collisions have been demonstrated</li>
-                            </ul>
-                            <p><strong>Only re-enable these if:</strong> You're on a trusted network, connecting to legacy equipment that cannot be updated, and you understand the risks.</p>
-                        </div>
-
-                        <div class="success">
-                            <h4>✓ Best Practices</h4>
-                            <ul>
-                                <li>Use SSH config file for regular connections</li>
-                                <li>Limit legacy algorithm support to specific hosts</li>
-                                <li>Document why you need legacy support</li>
-                                <li>Use VPN when accessing legacy systems over untrusted networks</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Placeholder for future commands -->
-            <div class="info">
-                <h4>📌 More Commands Coming Soon</h4>
-                <p>Additional useful commands will be added to this page. Check back regularly for updates including networking tools, monitoring commands, and more storage utilities.</p>
-            </div>
-
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <p>Useful Commands | Linux System Administration</p>
-        <p style="opacity: 0.8;">© 2026 Darren Soothill. All rights reserved.</p>
-        <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem;">Last Updated: <span id="lastUpdated"></span></p>
-    </footer>
-
-    <!-- Main JavaScript -->
-    <script src="assets/js/main.js" defer></script>
-
-    <!-- Page-specific JavaScript -->
-    <script>
-        function toggleCommand(header) {
-            header.classList.toggle('active');
-            const content = header.nextElementSibling;
-            content.classList.toggle('active');
-        }
-
-        // Display last updated date
-        document.addEventListener('DOMContentLoaded', function() {
-            const lastUpdated = new Date('2025-01-11T00:00:00');
-            document.getElementById('lastUpdated').textContent = lastUpdated.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        });
-    </script>
-</body>
-</html>
+<aside class="reference-end shell">
+  <p>Found a safer or more representative version of one of these commands?</p>
+  <a class="text-link" href="mailto:{{ site.email }}?subject=Useful%20commands%20update">Send an update <span aria-hidden="true">↗</span></a>
+</aside>

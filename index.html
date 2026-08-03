@@ -1,192 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Cookie Consent - Must be first to control other scripts -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
+---
+layout: default
+title: Home
+description: "Director of Product Darren Soothill writes about infrastructure products from the hardware up: storage systems, local AI and what real testing teaches."
+---
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<section class="home-hero shell">
+  <div class="home-hero__copy">
+    <p class="eyebrow"><span>{{ site.role }}</span><span>{{ site.location }}</span></p>
+    <h1>I shape infrastructure products <em>from the hardware up.</em></h1>
+    <p class="hero-intro">I’m Darren Soothill, a Director of Product working across infrastructure, hardware and storage. This is where product direction meets the bench: the systems I test, the trade-offs I find and the details that change the roadmap.</p>
+    <div class="hero-actions">
+      <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Follow the Strix Halo series <span aria-hidden="true">↗</span></a>
+      <a class="button button--quiet" href="{{ '/about/' | relative_url }}">How I work <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
 
-    <!-- Preconnect to external resources for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
+  <div class="halo-plate" aria-label="Strix Halo local AI series preview">
+    <div class="halo-plate__top">
+      <span>Series / 01</span>
+      <span class="status-dot">In progress</span>
+    </div>
+    <div class="halo-plate__core">
+      <span class="halo-plate__ghost">LOCAL</span>
+      <div>
+        <p>Current focus</p>
+        <h2>Strix<br>Halo</h2>
+      </div>
+      <span class="core-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </div>
+    <div class="halo-plate__readout">
+      <div><span>01</span><p>Setup that can be repeated</p></div>
+      <div><span>02</span><p>Throughput in context</p></div>
+      <div><span>03</span><p>Thermals over time</p></div>
+    </div>
+  </div>
+</section>
 
-    <!-- Google Fonts - Inter & Fira Code -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<div class="signal-strip">
+  <div class="shell signal-strip__inner">
+    <span>Current product lens</span>
+    <p>Local AI on AMD Strix Halo</p>
+    <p>Capability · cost · experience · sustained performance</p>
+  </div>
+</div>
 
-    <title>Darren Soothill | Professional Portfolio & Resources</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Welcome to Darren Soothill's professional website. Access important documents, resources, and information.">
-    <meta name="keywords" content="Darren Soothill, professional portfolio, documents, resources">
-    <meta name="author" content="Darren Soothill">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.soothill.io">
-    
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Darren Soothill | Professional Portfolio">
-    <meta property="og:description" content="Welcome to Darren Soothill's professional website. Access important documents, resources, and information.">
-    <meta property="og:url" content="https://www.soothill.io">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Darren Soothill | Professional Portfolio">
-    <meta name="twitter:description" content="Welcome to Darren Soothill's professional website.">
-    
-    <!-- Structured Data (JSON-LD) - Organization -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Soot & Silicon",
-      "alternateName": "Darren Soothill",
-      "url": "https://www.soothill.io",
-      "description": "Technical guides and insights on storage, NVMe, SPDK, and enterprise infrastructure",
-      "publisher": {
-        "@type": "Person",
-        "name": "Darren Soothill",
-        "url": "https://www.soothill.io",
-        "sameAs": [
-          "https://www.linkedin.com/in/darrensoothill",
-          "https://github.com/soothill",
-          "https://twitter.com/soothill"
-        ],
-        "jobTitle": "Storage Engineer",
-        "knowsAbout": ["NVMe", "SPDK", "Storage", "Linux", "RDMA", "High-Performance Computing"]
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.soothill.io/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
+<section class="feature shell" aria-labelledby="series-heading">
+  <div class="section-heading">
+    <p class="eyebrow"><span>Product question / 01</span><span>Local AI / 2026</span></p>
+    <h2 id="series-heading">When does local AI become a useful product choice?</h2>
+  </div>
 
-    <!-- Google tag (gtag.js) - Controlled by Cookiebot -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KVJSXV6TK" data-cookieconsent="statistics"></script>
-    <script data-cookieconsent="statistics">
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4KVJSXV6TK');
-    </script>
+  <div class="feature-grid">
+    <div class="feature-story">
+      <p class="feature-number">01</p>
+      <h3>Local LLMs on Strix Halo</h3>
+      <p>The product question is bigger than a headline benchmark. Local inference changes privacy, cost, latency and deployment — but only if the hardware and software form a system people can actually use.</p>
+      <p>I’m taking that question to the bench: what I installed, what broke, how I measured it and which engineering trade-offs deserve to shape the product decision.</p>
+      <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">See the series roadmap <span aria-hidden="true">↗</span></a>
+    </div>
 
-    <!-- Google Custom Search -->
-    <script async src="https://cse.google.com/cse.js?cx=723d8f7fe590e4eba"></script>
+    <ol class="series-index">
+      <li>
+        <span>01</span>
+        <div><strong><a href="{{ '/blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/' | relative_url }}">GMKtec EVO-X3 baseline</a></strong><p>Hardware, firmware state and NVMe performance measured as one Linux system.</p></div>
+        <small>Published</small>
+      </li>
+      <li>
+        <span>02</span>
+        <div><strong>Choose the runtime</strong><p>ROCm, Vulkan and CPU paths without hand-waving.</p></div>
+        <small>Planned</small>
+      </li>
+      <li>
+        <span>03</span>
+        <div><strong>Find the useful model</strong><p>Context, quality and speed across practical quantisations.</p></div>
+        <small>Planned</small>
+      </li>
+      <li>
+        <span>04</span>
+        <div><strong>Keep it honest</strong><p>Power, heat, sustained throughput and reproducible results.</p></div>
+        <small>Planned</small>
+      </li>
+    </ol>
+  </div>
+</section>
 
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="assets/css/main.css">
-</head>
-<body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+<section class="latest shell" aria-labelledby="latest-heading">
+  <div class="latest__intro">
+    <p class="eyebrow"><span>The archive</span></p>
+    <h2 id="latest-heading">Recent field notes</h2>
+    <p>The technical detail behind product decisions: storage, Linux and the bits between a specification sheet and a working system.</p>
+    <a class="text-link" href="{{ '/blog/' | relative_url }}">View every note <span aria-hidden="true">→</span></a>
+  </div>
 
-    <header class="site-header">
-        <div class="container" style="background: transparent; border: none; box-shadow: none; padding: 0 2rem; margin: 0; max-width: 100%;">
-            <a href="/" class="site-title">Darren Soothill</a>
-            <nav class="site-nav" aria-label="Main navigation">
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="/blog/">Blog</a></li>
-                    <li><a href="#documents">Documents</a></li>
-                    <li><a href="resources.html">Resources</a></li>
-                    <li><a href="useful-commands.html">Useful Commands</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    
-    <main id="main-content">
-        <div class="container">
-            <section class="hero" id="home">
-                <h1>Welcome to <span class="gradient-text">Darren Soothill's</span> Website</h1>
-                <p>Your central hub for professional documents and resources</p>
-            </section>
-        </div>
+  <div class="article-list article-list--home">
+    {% for post in site.posts limit: 4 %}
+    <a class="article-row" href="{{ post.url | relative_url }}">
+      <div class="article-row__meta">
+        <span>{{ post.date | date: '%Y.%m.%d' }}</span>
+        <span>{{ post.categories.first | default: 'Field note' }}</span>
+      </div>
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.description | default: post.excerpt | strip_html | truncatewords: 22 }}</p>
+      <span class="article-row__arrow" aria-hidden="true">↗</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
 
-        <section class="section" id="documents">
-            <h2 class="section__title">Document Library</h2>
-            <p class="section__description">Click on any document below to access the full content</p>
-            
-            <div class="cards-grid">
-                <a href="/documents/resume.html" class="card reveal">
-                    <div class="card__icon">📄</div>
-                    <h3 class="card__title">Resume/CV</h3>
-                    <p class="card__description">Professional background, experience, and qualifications</p>
-                    <span class="card__link">View Document →</span>
-                </a>
-                
-                <a href="/documents/portfolio.html" class="card reveal stagger-1">
-                    <div class="card__icon">💼</div>
-                    <h3 class="card__title">Portfolio</h3>
-                    <p class="card__description">Showcase of projects and achievements</p>
-                    <span class="card__link">View Document →</span>
-                </a>
-                
-                <a href="/documents/publications.html" class="card reveal stagger-2">
-                    <div class="card__icon">📚</div>
-                    <h3 class="card__title">Publications</h3>
-                    <p class="card__description">Articles, papers, and written works</p>
-                    <span class="card__link">View Document →</span>
-                </a>
-                
-                <a href="/documents/certifications.html" class="card reveal stagger-3">
-                    <div class="card__icon">🎓</div>
-                    <h3 class="card__title">Certifications</h3>
-                    <p class="card__description">Professional credentials and qualifications</p>
-                    <span class="card__link">View Document →</span>
-                </a>
-                
-                <a href="resources.html" class="card reveal stagger-4">
-                    <div class="card__icon">🔗</div>
-                    <h3 class="card__title">Resources</h3>
-                    <p class="card__description">Curated collection of storage, HPC, and system administration resources</p>
-                    <span class="card__link">View Resources →</span>
-                </a>
-                
-                <a href="/documents/contact-info.html" class="card reveal stagger-5">
-                    <div class="card__icon">📧</div>
-                    <h3 class="card__title">Contact Information</h3>
-                    <p class="card__description">Get in touch and connect</p>
-                    <span class="card__link">View Contact →</span>
-                </a>
-            </div>
-        </section>
-        
-        <section class="section reveal" id="contact">
-            <h2 class="section__title">Contact Information</h2>
-            <div style="text-align: center; padding: 2rem;">
-                <div style="margin-bottom: 1.5rem;">
-                    <strong style="font-size: 1.1rem; color: var(--primary-light);">Email:</strong><br>
-                    <a id="email-link" href="mailto:darren@soothill.com" data-email style="color: var(--secondary); text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
-                        darren@soothill.com
-                    </a>
-                </div>
-                <div>
-                    <strong style="font-size: 1.1rem; color: var(--primary-light);">LinkedIn:</strong><br>
-                    <a href="https://www.linkedin.com/in/darrensoothill" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); text-decoration: none; font-size: 1.1rem; padding: 0.5rem; display: inline-block;">
-                        linkedin.com/in/darrensoothill
-                    </a>
-                </div>
-            </div>
-        </section>
+<section class="method shell">
+  <p class="eyebrow"><span>How I work</span><span>Direction ↔ detail</span></p>
+  <blockquote>“Good product direction starts with the customer problem — and survives contact with the hardware.”</blockquote>
+  <div class="method-grid">
+    <div><span>01</span><h3>Start with the outcome</h3><p>Who needs the product, what must change for them and which constraint is real.</p></div>
+    <div><span>02</span><h3>Get close to the system</h3><p>Hardware, storage paths, versions and topology reveal the actual trade space.</p></div>
+    <div><span>03</span><h3>Bring evidence back</h3><p>Measurements and rough edges turn assumptions into roadmap decisions.</p></div>
+  </div>
+</section>
 
-        <section class="section" id="search">
-            <h2 class="section__title">Search</h2>
-            <div class="gcse-search"></div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <p style="margin-bottom: 0.5rem; opacity: 0.8; font-size: 0.9rem;">Last updated: <span id="last-updated"></span></p>
-        <p>&copy; 2026 Darren Soothill. All rights reserved.</p>
-    </footer>
-
-    <!-- Main JavaScript -->
-    <script src="assets/js/main.js" defer></script>
-</body>
-</html>
+<section class="contact-band">
+  <div class="shell contact-band__inner">
+    <p>Comparing notes on local AI or storage?</p>
+    <a href="mailto:{{ site.email }}">darren@soothill.com <span aria-hidden="true">↗</span></a>
+  </div>
+</section>

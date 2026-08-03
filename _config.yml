@@ -1,6 +1,6 @@
 # Jekyll Configuration for GitHub Pages Blog
-title: "Soot & Silicon"
-description: "Technical guides and insights on storage, NVMe, SPDK, and enterprise infrastructure - where hardware meets software"
+title: "Soot / Silicon"
+description: "Product thinking from the hardware up — field notes on infrastructure, storage systems and local AI by Director of Product Darren Soothill."
 author: "Darren Soothill"
 email: "darren@soothill.com"
 url: "https://www.soothill.io"
@@ -12,7 +12,6 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-  - jekyll-sitemap
 
 # Permalink structure for blog posts
 permalink: /blog/:year/:month/:day/:title/
@@ -35,12 +34,23 @@ defaults:
 # Exclude files from processing
 exclude:
   - README.md
+  - HOWTO-ADD-POSTS.md
+  - SETUP-COMPLETE.md
+  - TODO.md
   - Gemfile
   - Gemfile.lock
   - node_modules
   - vendor
+  # Local sync-conflict copies of legacy pages. Keep them out of the built site
+  # so crawlers can only reach the canonical editorial pages.
+  - "useful-commands 2.html"
+  - "documents/certifications 2.html"
+  - "documents/contact-info 2.html"
+  - "documents/portfolio 2.html"
+  - "documents/publications 2.html"
+  - "documents/resume 2.html"
 
-# Google Analytics (update with your tracking ID)
+# Analytics
 google_analytics: G-4KVJSXV6TK
 
 # SEO settings
@@ -52,6 +62,15 @@ social:
   name: Darren Soothill
   links:
     - https://github.com/soothill
+    - https://www.linkedin.com/in/darrensoothill
+
+# Editorial settings
+tagline: "Product direction, grounded in real systems."
+location: "London, UK"
+role: "Director of Product"
+github_username: soothill
+linkedin_url: "https://www.linkedin.com/in/darrensoothill"
+social_image: "/assets/images/og-default.png"
 
 # Pagination
 paginate: 10

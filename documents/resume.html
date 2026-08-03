@@ -1,61 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="1e68391f-38dc-4335-b7ab-794dd9aa4e59" data-blockingmode="auto" type="text/javascript"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <title>Resume/CV - Darren Soothill</title>
-    <meta name="description" content="Professional resume and CV for Darren Soothill - Storage and HPC specialist.">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#667eea">
-</head>
-<body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <header class="site-header">
-        <div class="container" style="background: transparent; border: none; box-shadow: none; padding: 0 2rem; margin: 0; max-width: 100%;">
-            <a href="../index.html" class="site-title">Darren Soothill</a>
-            <nav class="site-nav"><ul>
-                <li><a href="../index.html#home">Home</a></li>
-                <li><a href="../index.html#documents">Documents</a></li>
-                <li><a href="../resources.html">Resources</a></li>
-                <li><a href="../useful-commands.html">Useful Commands</a></li>
-                <li><a href="../index.html#contact">Contact</a></li>
-            </ul></nav>
-        </div>
-    </header>
-    <main id="main-content">
-        <div class="container">
-            <section class="hero">
-                <h1>Resume / <span class="gradient-text">CV</span></h1>
-                <p>Professional background, experience, and qualifications</p>
-            </section>
-        </div>
-        <section class="section reveal">
-            <h2>Professional Summary</h2>
-            <p>Experienced storage and HPC specialist with expertise in NVMe, SPDK, RDMA, and enterprise infrastructure. Passionate about high-performance computing and cutting-edge storage technologies.</p>
-            <h2>Contact</h2>
-            <p><strong>Email:</strong> <a href="mailto:darren@soothill.com">darren@soothill.com</a></p>
-            <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/darrensoothill" target="_blank" rel="noopener noreferrer">linkedin.com/in/darrensoothill</a></p>
-            <h2>Skills</h2>
-            <div class="tags-list">
-                <span class="post-tag">NVMe</span>
-                <span class="post-tag">SPDK</span>
-                <span class="post-tag">RDMA/RoCE</span>
-                <span class="post-tag">Linux</span>
-                <span class="post-tag">Storage Systems</span>
-                <span class="post-tag">HPC</span>
-                <span class="post-tag">Python</span>
-                <span class="post-tag">Bash</span>
-            </div>
-        </section>
-    </main>
-    <footer class="site-footer">
-        <p>&copy; 2026 Darren Soothill. All rights reserved.</p>
-    </footer>
-    <script src="../assets/js/main.js" defer></script>
-</body>
-</html>
+---
+layout: default
+title: Professional profile
+description: "Professional profile for Darren Soothill, a Director of Product working across infrastructure, hardware, storage systems and local AI."
+permalink: /documents/resume.html
+---
+
+<header class="document-hero shell">
+  <p class="eyebrow"><span>Professional profile</span><span>{{ site.role }}</span></p>
+  <h1>Direction at product level.<br><em>Depth at system level.</em></h1>
+  <p>I lead infrastructure products with a hands-on understanding of the hardware, storage and operational constraints underneath them.</p>
+</header>
+
+<section class="profile-sheet shell">
+  <aside>
+    <span class="profile-monogram" aria-hidden="true">DS</span>
+    <dl>
+      <div><dt>Role</dt><dd>{{ site.role }}</dd></div>
+      <div><dt>Based</dt><dd>{{ site.location }}</dd></div>
+      <div><dt>Focus</dt><dd>Infrastructure products</dd></div>
+      <div><dt>Contact</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd></div>
+    </dl>
+  </aside>
+  <div class="profile-sheet__body">
+    <section>
+      <p class="document-label">Profile</p>
+      <p class="document-lead">I connect customer and market needs with the reality of building and operating complex systems.</p>
+      <p>My product work spans strategy, discovery, prioritisation and the trade-offs required to move infrastructure products from an attractive idea to something dependable. A background in storage and high-performance systems means I can work directly with the technical detail when it changes the product decision.</p>
+    </section>
+
+    <section>
+      <p class="document-label">What I bring</p>
+      <div class="capability-list">
+        <div><span>01</span><h2>Product direction</h2><p>Turn customer problems and market context into a clear product narrative, priorities and measurable outcomes.</p></div>
+        <div><span>02</span><h2>Technical judgement</h2><p>Interrogate system constraints early: capacity, latency, cost, failure modes, operations and hardware fit.</p></div>
+        <div><span>03</span><h2>Cross-functional clarity</h2><p>Create a shared decision frame across customers, commercial teams and engineering.</p></div>
+        <div><span>04</span><h2>Hands-on evidence</h2><p>Prototype, benchmark and document the details that distinguish a plausible roadmap from a credible one.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="document-label">Technical domains</p>
+      <div class="expertise-tags">
+        <span>Infrastructure products</span><span>Storage systems</span><span>NVMe / NVMe-oF</span><span>SPDK</span><span>RDMA / RoCE</span><span>Object storage</span><span>Linux</span><span>Performance engineering</span><span>Local AI</span><span>Strix Halo</span>
+      </div>
+    </section>
+
+    <div class="document-actions">
+      <a href="{{ site.linkedin_url }}">LinkedIn <span aria-hidden="true">↗</span></a>
+      <a href="https://github.com/{{ site.github_username }}">GitHub <span aria-hidden="true">↗</span></a>
+      <a href="mailto:{{ site.email }}">Email <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
