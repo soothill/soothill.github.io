@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Finding the useful quant: what fits is not what wins"
+seo_title: "Strix Halo quantisation: 0.8B to 397B"
 date: 2026-08-03 11:00:00 +0100
+last_modified_at: 2026-08-03 18:00:00 +0100
 permalink: /blog/2026/08/03/finding-the-useful-quant-strix-halo/
 categories: [local-ai, benchmarks, product]
 tags: [quantization, qwen3-5, gguf, mixture-of-experts, strix-halo]

@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "The long-session test: 122B at a 256K context"
+seo_title: "Qwen3.5 122B at 256K: a 101-minute soak"
 date: 2026-08-03 12:00:00 +0100
+last_modified_at: 2026-08-03 18:00:00 +0100
 permalink: /blog/2026/08/03/qwen35-122b-256k-long-session-test/
 categories: [local-ai, benchmarks, reliability]
 tags: [qwen3-5, long-context, soak-test, memory, lemonade, strix-halo]

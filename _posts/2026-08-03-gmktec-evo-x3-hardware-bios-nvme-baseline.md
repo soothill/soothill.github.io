@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "GMKtec EVO-X3: the hardware, BIOS and NVMe baseline"
+seo_title: "GMKtec EVO-X3: BIOS and NVMe performance"
 date: 2026-08-03
+last_modified_at: 2026-08-03 18:00:00 +0100
 permalink: /blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/
 categories: [hardware, local-ai, storage]
 tags: [gmktec, evo-x3, strix-halo, ryzen-ai-max, bios, nvme, pcie-4]

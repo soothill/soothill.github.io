@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "A local LLM stack worth keeping"
+seo_title: "My Strix Halo local LLM stack"
 date: 2026-08-03 13:00:00 +0100
+last_modified_at: 2026-08-03 18:00:00 +0100
 permalink: /blog/2026/08/03/local-llm-stack-worth-keeping/
 categories: [local-ai, product, operations]
 tags: [strix-halo, lemonade, llama-cpp, rocm, vulkan, local-llm]

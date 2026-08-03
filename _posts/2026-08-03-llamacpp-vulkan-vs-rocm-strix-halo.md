@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "llama.cpp on Strix Halo: Vulkan versus ROCm"
+seo_title: "llama.cpp: Vulkan vs ROCm on Strix Halo"
 date: 2026-08-03 10:00:00 +0100
+last_modified_at: 2026-08-03 18:00:00 +0100
 permalink: /blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/
 categories: [local-ai, benchmarks, software]
 tags: [llama-cpp, vulkan, rocm, strix-halo, qwen3-coder, qwen3-5]

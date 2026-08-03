@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "ROCm on Strix Halo, without the folklore"
+seo_title: "ROCm on Strix Halo: setup and recovery"
 date: 2026-08-03 09:00:00 +0100
+last_modified_at: 2026-08-03 18:00:00 +0100
 permalink: /blog/2026/08/03/rocm-on-strix-halo-without-folklore/
 categories: [local-ai, linux, software]
 tags: [rocm, strix-halo, gfx1151, llama-cpp, lemonade, linux]
