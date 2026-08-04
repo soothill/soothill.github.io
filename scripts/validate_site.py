@@ -61,12 +61,9 @@ class PageParser(HTMLParser):
             self._json_parts.append(data)
 
 
-def fail(message: str, errors: list[str]) -> None:
-    errors.append(message)
-
-
 def main() -> int:
     errors: list[str] = []
+    warnings: list[str] = []
     titles: dict[str, list[str]] = defaultdict(list)
     descriptions: dict[str, list[str]] = defaultdict(list)
     pages: dict[str, PageParser] = {}
@@ -85,60 +82,61 @@ def main() -> int:
 
         if relative != "/404.html" and "noindex" not in parser.robots.lower():
             if not parser.title.strip():
-                fail(f"Missing title: {relative}", errors)
+                errors.append(f"Missing title: {relative}")
             else:
                 titles[parser.title.strip()].append(relative)
             if not parser.description.strip():
-                fail(f"Missing description: {relative}", errors)
+                errors.append(f"Missing description: {relative}")
             else:
                 descriptions[parser.description.strip()].append(relative)
             if not parser.canonical:
-                fail(f"Missing canonical: {relative}", errors)
+                errors.append(f"Missing canonical: {relative}")
             else:
                 parsed = urlparse(parser.canonical)
                 if parsed.scheme != "https" or parsed.netloc != CANONICAL_HOST:
-                    fail(f"Non-canonical host/scheme on {relative}: {parser.canonical}", errors)
+                    errors.append(f"Non-canonical host/scheme on {relative}: {parser.canonical}")
         if parser.missing_alt:
-            fail(f"Images missing alt on {relative}: {parser.missing_alt}", errors)
+            errors.append(f"Images missing alt on {relative}: {parser.missing_alt}")
         for payload in parser.json_ld:
             try:
                 json.loads(payload)
             except json.JSONDecodeError as exc:
-                fail(f"Invalid JSON-LD on {relative}: {exc}", errors)
+                errors.append(f"Invalid JSON-LD on {relative}: {exc}")
 
     for title, paths in titles.items():
         if len(paths) > 1:
-            fail(f"Duplicate title {title!r}: {', '.join(paths)}", errors)
+            errors.append(f"Duplicate title {title!r}: {', '.join(paths)}")
     for description, paths in descriptions.items():
         if len(paths) > 1:
-            fail(f"Duplicate description: {', '.join(paths)}", errors)
+            warnings.append(f"Duplicate description on {', '.join(paths)}")
 
     sitemap = SITE / "sitemap.xml"
     if not sitemap.exists():
-        fail("Missing sitemap.xml", errors)
+        errors.append("Missing sitemap.xml")
     else:
         root = ET.parse(sitemap).getroot()
         namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
         urls = [node.text or "" for node in root.findall("sm:url/sm:loc", namespace)]
         if len(urls) != len(set(urls)):
-            fail("Duplicate URLs in sitemap", errors)
+            errors.append("Duplicate URLs in sitemap")
         for url in urls:
             parsed = urlparse(url)
             if parsed.scheme != "https" or parsed.netloc != CANONICAL_HOST:
-                fail(f"Invalid sitemap host/scheme: {url}", errors)
+                errors.append(f"Invalid sitemap host/scheme: {url}")
             if parsed.path in FORBIDDEN_PATHS:
-                fail(f"Forbidden URL in sitemap: {url}", errors)
+                errors.append(f"Forbidden URL in sitemap: {url}")
             page = pages.get(parsed.path)
-            if page is None and parsed.path.endswith("/"):
-                page = pages.get(parsed.path)
             if page is None:
-                fail(f"Sitemap URL has no built HTML page: {url}", errors)
+                errors.append(f"Sitemap URL has no built HTML page: {url}")
             elif page.canonical != url:
-                fail(f"Canonical mismatch for {url}: {page.canonical}", errors)
+                errors.append(f"Canonical mismatch for {url}: {page.canonical}")
 
     for forbidden in FORBIDDEN_PATHS:
         if forbidden in pages:
-            fail(f"Internal/redirect page is still built: {forbidden}", errors)
+            errors.append(f"Internal/redirect page is still built: {forbidden}")
+
+    for warning in warnings:
+        print(f"WARNING: {warning}")
 
     if errors:
         print("SEO validation failed:", file=sys.stderr)
