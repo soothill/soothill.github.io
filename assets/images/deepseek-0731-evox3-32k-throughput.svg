@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" role="img" aria-labelledby="deepseek-0731-evox3-32k-throughput-title deepseek-0731-evox3-32k-throughput-desc">
+<title id="deepseek-0731-evox3-32k-throughput-title">32K exact-prefill performance over time</title>
+<desc id="deepseek-0731-evox3-32k-throughput-desc">8 uncached requests · 4.09 hours · evox3</desc>
+<rect width="1000" height="540" fill="#faf9f5"/>
+<text x="92" y="44" fill="#171815" font-family="Manrope,Arial,sans-serif" font-size="25" font-weight="700">32K exact-prefill performance over time</text>
+<text x="92" y="72" fill="#5e5e56" font-family="DM Mono,monospace" font-size="13">8 uncached requests · 4.09 hours · evox3</text>
+<line x1="92" y1="456.00" x2="958" y2="456.00" stroke="#c9c5b9" stroke-width="1"/>
+<text x="78" y="460.00" text-anchor="end" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">16.7</text>
+<line x1="92" y1="388.00" x2="958" y2="388.00" stroke="#c9c5b9" stroke-width="1"/>
+<text x="78" y="392.00" text-anchor="end" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">17.1</text>
+<line x1="92" y1="320.00" x2="958" y2="320.00" stroke="#c9c5b9" stroke-width="1"/>
+<text x="78" y="324.00" text-anchor="end" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">17.5</text>
+<line x1="92" y1="252.00" x2="958" y2="252.00" stroke="#c9c5b9" stroke-width="1"/>
+<text x="78" y="256.00" text-anchor="end" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">17.9</text>
+<line x1="92" y1="184.00" x2="958" y2="184.00" stroke="#c9c5b9" stroke-width="1"/>
+<text x="78" y="188.00" text-anchor="end" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">18.3</text>
+<line x1="92" y1="116.00" x2="958" y2="116.00" stroke="#c9c5b9" stroke-width="1"/>
+<text x="78" y="120.00" text-anchor="end" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">18.7</text>
+<line x1="92.00" y1="116" x2="92.00" y2="456" stroke="#c9c5b9" stroke-width="1" opacity="0.5"/>
+<text x="92.00" y="481" text-anchor="middle" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">0.3h</text>
+<line x1="265.20" y1="116" x2="265.20" y2="456" stroke="#c9c5b9" stroke-width="1" opacity="0.5"/>
+<text x="265.20" y="481" text-anchor="middle" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">1.0h</text>
+<line x1="438.40" y1="116" x2="438.40" y2="456" stroke="#c9c5b9" stroke-width="1" opacity="0.5"/>
+<text x="438.40" y="481" text-anchor="middle" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">1.7h</text>
+<line x1="611.60" y1="116" x2="611.60" y2="456" stroke="#c9c5b9" stroke-width="1" opacity="0.5"/>
+<text x="611.60" y="481" text-anchor="middle" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">2.4h</text>
+<line x1="784.80" y1="116" x2="784.80" y2="456" stroke="#c9c5b9" stroke-width="1" opacity="0.5"/>
+<text x="784.80" y="481" text-anchor="middle" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">3.1h</text>
+<line x1="958.00" y1="116" x2="958.00" y2="456" stroke="#c9c5b9" stroke-width="1" opacity="0.5"/>
+<text x="958.00" y="481" text-anchor="middle" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">3.8h</text>
+<path d="M 92.00 288.41 L 215.76 283.59 L 339.45 285.21 L 463.17 285.10 L 586.88 284.36 L 710.57 284.42 L 834.28 284.86 L 958.00 285.46" fill="none" stroke="#ee4f27" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="92.00" cy="288.41" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<circle cx="215.76" cy="283.59" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<circle cx="339.45" cy="285.21" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<circle cx="463.17" cy="285.10" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<circle cx="586.88" cy="284.36" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<circle cx="710.57" cy="284.42" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<circle cx="834.28" cy="284.86" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<circle cx="958.00" cy="285.46" r="4" fill="#faf9f5" stroke="#ee4f27" stroke-width="2"/>
+<line x1="92" y1="94" x2="116" y2="94" stroke="#ee4f27" stroke-width="4"/>
+<text x="124" y="98" fill="#171815" font-family="Manrope,Arial,sans-serif" font-size="12">32K request</text>
+<text x="525.00" y="502" text-anchor="middle" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">Elapsed test time</text>
+<text x="24" y="286.00" text-anchor="middle" transform="rotate(-90 24 286.00)" fill="#5e5e56" font-family="DM Mono,monospace" font-size="11">Prefill throughput (tokens/s)</text>
+<text x="92" y="528" fill="#8b8a80" font-family="DM Mono,monospace" font-size="10">Source: retained evox3 telemetry; ROCm 7.14.0.</text>
+</svg>
