@@ -3,7 +3,7 @@ layout: post
 title: "DeepSeek V4 Flash 0731 on evox3: the repeat that changed deployment"
 seo_title: "DeepSeek V4 Flash 0731 on ROCm 7.14: a measured 10× experiment"
 date: 2026-08-04 14:00:00 +0100
-last_modified_at: 2026-08-04 14:00:00 +0100
+last_modified_at: 2026-08-04 16:48:00 +0100
 permalink: /blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/
 categories: [local-ai, benchmarks, engineering]
 tags: [deepseek-v4, rocm, lemonade, strix-halo, long-context]
@@ -76,6 +76,24 @@ The registered model is `DeepSeek-V4-Flash-0731-ROCmFP3-MIX`. The 10.8GB [DSpark
 
 The lifecycle boundary is tested too: Lemonade unloaded the attached container cleanly, reloaded the exact profile in 23 seconds, and returned exact `OK` from a short post-reload smoke test. I left the model loaded and healthy on `evox3`.
 
-The useful result is therefore more nuanced than “10× faster”. DeepSeek V4 Flash 0731 now loads and runs under Lemonade on `evox3`; the sparse path established a compelling performance ceiling; repeated requests exposed a correctness boundary; and the production default moved back to the slower exact path. That is the optimization outcome I would rather operate—and publish.
+## I looked for memory leakage
+
+I then kept the exact profile in one Lemonade process for a 28-minute allocation soak. The sequence was 100 identical short requests, a 256→1K→2K→4K→8K context ramp, the same sizes in reverse with a second 8K request, another 100 short requests, and a 30-second idle settle. One-second telemetry produced 1,623 samples. All **209/209** responses were exact `OK`.
+
+| Signal | Start | Worst observed | Final | Result |
+| --- | ---: | ---: | ---: | --- |
+| Available RAM | 23.489GiB | 23.290GiB minimum | 23.720GiB | +236.8MiB vs start |
+| Container cgroup | 97.060GiB | +6.75MiB | +5.36MiB | bounded |
+| GTT | 519.7MiB | 565.7MiB | 565.7MiB | one 46MiB high-water step |
+| Swap free | 7.538GiB | no decrease | +3.92MiB | no new swap consumption |
+| Short-request median | 22.1136 tok/s | — | 22.0802 tok/s | -0.151% |
+
+The first and second 8K requests measured 20.8234 and 20.8270 tok/s. GTT did not grow on the second run or during the final 100 requests. That makes the retained 46MiB look like a bounded context-workspace high-water allocation, not a per-request leak.
+
+I followed with six complete Lemonade unload/reload cycles. After every unload and ten-second settle, container cgroup memory was zero and GTT was exactly 18,620,416 bytes. Unloaded available RAM ended 97.2MiB higher in cycle six than cycle one. Every reload became ready and returned exact `OK`; median unload and load times were 2.510s and 22.212s.
+
+Across **215 requests and 32.16 minutes**, I found no monotonic memory-loss signal or orphaned container. That is bounded evidence, not proof that a leak cannot emerge during an overnight or multi-day service lifetime. The earlier same-process 32K→16K qualification covers larger context; this soak deliberately prioritised repeated allocation and lifecycle boundaries up to 8K.
+
+The useful result is therefore more nuanced than “10× faster”. DeepSeek V4 Flash 0731 now loads and runs under Lemonade on `evox3`; the sparse path established a compelling performance ceiling; repeated requests exposed a correctness boundary; the production default moved back to the slower exact path; and the retained service showed no leak signal in a focused 215-request soak. That is the optimization outcome I would rather operate—and publish.
 
 For the host and runtime choices behind this deployment, see [ROCm on Strix Halo without folklore](/blog/2026/08/03/rocm-on-strix-halo-without-folklore/).
