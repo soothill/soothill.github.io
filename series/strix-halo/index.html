@@ -5,6 +5,8 @@ description: "A practical series on running local large language models on AMD S
 schema_type: CollectionPage
 ---
 
+{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
+
 <header class="series-hero">
   <div class="shell series-hero__inner">
     <div>
@@ -35,8 +37,8 @@ schema_type: CollectionPage
 
 <section class="roadmap shell" aria-labelledby="roadmap-heading">
   <div class="section-heading">
-    <p class="eyebrow"><span>Publication record</span><span>Six of six published</span></p>
-    <h2 id="roadmap-heading">Six notes, one reproducible path.</h2>
+    <p class="eyebrow"><span>Publication record</span><span>{{ strix_halo_posts.size }} of {{ strix_halo_posts.size }} published</span></p>
+    <h2 id="roadmap-heading">{{ strix_halo_posts.size }} notes, one reproducible path.</h2>
   </div>
 
   <ol class="roadmap-list">
@@ -65,10 +67,15 @@ schema_type: CollectionPage
       <h3><a href="{{ '/blog/2026/08/03/qwen35-122b-256k-long-session-test/' | relative_url }}">The long-session test</a></h3>
       <p>A 101-minute 122B soak at nearly 256K context, including throughput drift, memory slope, thermals and API retention.</p>
     </li>
-    <li class="is-active">
+    <li>
       <div><span>06</span><small>Published</small></div>
       <h3><a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">A local stack worth keeping</a></h3>
       <p>The final hardware, model, runtime and operating decisions — including the one service gap still left to close.</p>
+    </li>
+    <li class="is-active">
+      <div><span>07</span><small>Published</small></div>
+      <h3><a href="{{ '/blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/' | relative_url }}">DeepSeek V4 Flash 0731 on evox3</a></h3>
+      <p>A failed first deployment, a 10× sparse-prefill experiment and the repeat-stable ROCm 7.14 profile retained under Lemonade.</p>
     </li>
   </ol>
 </section>

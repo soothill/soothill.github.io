@@ -4,6 +4,8 @@ title: Home
 description: "Director of Product Darren Soothill writes about infrastructure products from the hardware up: storage systems, local AI and what real testing teaches."
 ---
 
+{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
+
 <section class="home-hero shell">
   <div class="home-hero__copy">
     <p class="eyebrow"><span>{{ site.role }}</span><span>{{ site.location }}</span></p>
@@ -56,7 +58,7 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
       <h3>Local LLMs on Strix Halo</h3>
       <p>The product question is bigger than a headline benchmark. Local inference changes privacy, cost, latency and deployment — but only if the hardware and software form a system people can actually use.</p>
       <p>I took that question to the bench: what I installed, what broke, how I measured it and which engineering trade-offs deserve to shape the product decision.</p>
-      <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Read the six-part series <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Read the {{ strix_halo_posts.size }}-part series <span aria-hidden="true">↗</span></a>
     </div>
 
     <ol class="series-index">
@@ -88,6 +90,11 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
       <li>
         <span>06</span>
         <div><strong><a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">Keep the useful stack</a></strong><p>The final product, runtime and operations decisions.</p></div>
+        <small>Published</small>
+      </li>
+      <li>
+        <span>07</span>
+        <div><strong><a href="{{ '/blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/' | relative_url }}">DeepSeek V4 Flash 0731 on evox3</a></strong><p>A failed first load, a measured 10× experiment and the repeat test that changed deployment.</p></div>
         <small>Published</small>
       </li>
     </ol>

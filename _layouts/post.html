@@ -31,10 +31,11 @@ layout: default
   </header>
 
   {% if page.series %}
+  {% assign series_posts = site.posts | where: "series", page.series %}
   <aside class="article-endnote" aria-label="Series navigation">
     <p class="eyebrow"><span>{{ page.series }}</span></p>
     <h2>Part of the complete Strix Halo investigation.</h2>
-    <p>See the six-part test path, methodology and reading order on the series page.</p>
+    <p>See the {{ series_posts.size }}-part test path, methodology and reading order on the series page.</p>
     <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Open the complete series <span aria-hidden="true">→</span></a>
   </aside>
   {% endif %}
