@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import xml.etree.ElementTree as ET
 from collections import defaultdict
@@ -14,6 +15,7 @@ from urllib.parse import urlparse
 SITE = Path(sys.argv[1] if len(sys.argv) > 1 else "_site")
 CANONICAL_HOST = "www.soothill.io"
 FORBIDDEN_PATHS = {"/SETUP-COMPLETE/", "/HOWTO-ADD-POSTS/", "/TODO/", "/blog/categories/"}
+OWNERSHIP_FILE = re.compile(r"^/google[0-9a-f]+\.html$")
 
 
 class PageParser(HTMLParser):
@@ -79,6 +81,10 @@ def main() -> int:
         if relative.endswith("/index.html"):
             relative = relative[: -len("index.html")]
         pages[relative] = parser
+
+        # Search-engine ownership files intentionally contain only a verification token.
+        if OWNERSHIP_FILE.match(relative):
+            continue
 
         if relative != "/404.html" and "noindex" not in parser.robots.lower():
             if not parser.title.strip():
