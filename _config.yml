@@ -72,9 +72,8 @@ github_username: soothill
 linkedin_url: "https://www.linkedin.com/in/darrensoothill"
 social_image: "/assets/images/og-default.png"
 
-# Pagination
-paginate: 10
-paginate_path: "/blog/page:num/"
+# The field-notes archive renders site.posts directly, so it intentionally has
+# one canonical index rather than duplicate paginated copies.
 
 # Date format
 date_format: "%B %d, %Y"
