@@ -3,17 +3,17 @@ layout: post
 title: "DeepSeek V4 Flash 0731 on evox3: the repeat that changed deployment"
 seo_title: "DeepSeek V4 Flash 0731 on ROCm 7.14: a measured 10× experiment"
 date: 2026-08-04 14:00:00 +0100
-last_modified_at: 2026-08-04 16:48:00 +0100
+last_modified_at: 2026-08-04 22:30:00 +0100
 permalink: /blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/
 categories: [local-ai, benchmarks, engineering]
 tags: [deepseek-v4, rocm, lemonade, strix-halo, long-context]
 author: Darren Soothill
 series: "Local LLMs on Strix Halo"
 series_order: 7
-description: "DeepSeek V4 Flash 0731 on evox3 and ROCm 7.14: a failed first load, a measured 10× sparse-prefill result, and the repeat test that kept it out of production."
+description: "DeepSeek V4 Flash 0731 on evox3 and ROCm 7.14: a measured 10× experiment, the repeat that changed deployment, and a four-hour 32K thermal soak."
 ---
 
-> **Test record:** I measured the pinned DeepSeek V4 Flash 0731 target on `evox3`, an AMD Ryzen AI MAX+ 395 system with 128GB physical memory, using ROCm 7.14.0. A sparse four-expert experiment processed 32,512 prompt tokens at **146.65 tok/s**, 10.06 times the first working configuration, and completed a one-pass 130,816-token run at **110.22 tok/s**. Repeated requests were not answer-stable, so I did not deploy that fast path as the default.
+> **Test record:** I measured the pinned DeepSeek V4 Flash 0731 target on `evox3`, an AMD Ryzen AI MAX+ 395 system with 128GB physical memory, using ROCm 7.14.0. A sparse four-expert experiment processed 32,512 prompt tokens at **146.65 tok/s**, 10.06 times the first working configuration, and completed a one-pass 130,816-token run at **110.22 tok/s**. Repeated requests were not answer-stable, so I did not deploy that fast path as the default. The exact production profile then completed a 4.09-hour, fully saturated 32K soak without a leak, performance decline or thermal fault.
 
 The first deployment did not produce a slow benchmark. It did not load.
 
@@ -94,6 +94,40 @@ I followed with six complete Lemonade unload/reload cycles. After every unload a
 
 Across **215 requests and 32.16 minutes**, I found no monotonic memory-loss signal or orphaned container. That is bounded evidence, not proof that a leak cannot emerge during an overnight or multi-day service lifetime. The earlier same-process 32K→16K qualification covers larger context; this soak deliberately prioritised repeated allocation and lifecycle boundaries up to 8K.
 
-The useful result is therefore more nuanced than “10× faster”. DeepSeek V4 Flash 0731 now loads and runs under Lemonade on `evox3`; the sparse path established a compelling performance ceiling; repeated requests exposed a correctness boundary; the production default moved back to the slower exact path; and the retained service showed no leak signal in a focused 215-request soak. That is the optimization outcome I would rather operate—and publish.
+## Four hours at the 32K production limit
+
+The allocation test answered the repeated-request question, but it did not hold the production profile at maximum context or full GPU load for hours. I therefore followed it with eight back-to-back, uncached 32,512-token requests using exact prefill and all six routed experts. The load phase ran for **4.089 hours**, followed by a 60-second idle settle. All **8/8** requests returned HTTP 200 and exact `OK`.
+
+| Signal | Sustained result | What changed over time |
+| --- | ---: | --- |
+| 32K prefill | 17.6716 tok/s median | second half was 0.017% faster |
+| GPU busy | 99.92% mean | every post-warmup sample ≥95% |
+| GPU SCLK | 2,898MHz mean | 2,895MHz fifth percentile |
+| PPT power | 98.4W mean | 101.0W p95; 105.1W maximum |
+| GPU edge temperature | 69.6°C mean | 71°C p95; 73°C maximum |
+
+The eight results ranged from 17.6511 to 17.6799 tok/s, with a coefficient of variation of only 0.045%. A fitted trend was slightly positive at +0.0024 tok/s per hour. In other words, this run contains no sign of progressive prefill degradation.
+
+![Eight uncached 32K exact-prefill requests on evox3 remain tightly grouped around 17.67 tokens per second over 4.09 hours.](/assets/images/deepseek-0731-evox3-32k-throughput.svg)
+
+*Prefill throughput remained flat across all eight production-profile requests.*
+
+The first request raised GTT by **190MiB**, from 515.7 to 705.7MiB, as the 32K workspace reached its high-water mark. GTT was then byte-for-byte flat: its late 30-minute median equalled the median after that first request. Container cgroup memory differed by only **1.08MiB** between the post-first-request and late medians. Available RAM fluctuated in both directions and was 10.7MiB higher late in the run than just after the first request. Swap free increased by 8.30MiB; VRAM changed by 4KiB.
+
+![Memory change from the first active sample on evox3: GTT allocates about 190 MiB during the first 32K request and then plateaus; container memory stays effectively flat while available RAM fluctuates.](/assets/images/deepseek-0731-evox3-memory-over-time.svg)
+
+*The retained GTT allocation is a bounded workspace plateau, not request-by-request growth.*
+
+One-second telemetry recorded 14,490 GPU samples. GPU busy averaged 99.92%, package power averaged 98.4W and the edge temperature averaged 69.6°C. Temperature peaked at 73°C, comfortably below the 90°C safety cutoff, while the clock held near 2.9GHz.
+
+![One-second evox3 telemetry shows GPU busy near 100 percent, package power near 98 watts and edge temperature near 70 degrees Celsius across the full 32K soak.](/assets/images/deepseek-0731-evox3-thermal-over-time.svg)
+
+*The GPU stayed saturated without a rising temperature trend or clock collapse.*
+
+ECC correctable, deferred and uncorrectable counts did not change. Kernel and server logs contained no GPU fault, reset, OOM, segmentation fault or thermal-throttle report. PROCHOT, sustained-power, slow-package-power, GPU-thermal and SoC-thermal counters remained zero. For completeness, the [SMU residency counters](https://github.com/torvalds/linux/blob/31996e14bd59840692d6c1c6e41ef878b77a2967/drivers/gpu/drm/amd/pm/swsmu/inc/pmfw_if/smu14_driver_if_v14_0_0.h) recorded 1.977ms of fast-package-power residency and 1.208ms of core-thermal residency when converted using the [3,579,545Hz PM timer](https://github.com/torvalds/linux/blob/31996e14bd59840692d6c1c6e41ef878b77a2967/include/acpi/actypes.h). Across 4.089 hours, neither coincided with throughput or clock loss.
+
+So this longer test found **no memory leak, performance degradation or thermal problem** under sustained 32K production load. It remains bounded evidence: four hours cannot rule out a failure that needs days to emerge.
+
+The useful result is therefore more nuanced than “10× faster”. DeepSeek V4 Flash 0731 now loads and runs under Lemonade on `evox3`; the sparse path established a compelling performance ceiling; repeated requests exposed a correctness boundary; the production default moved back to the slower exact path; and that exact service stayed stable through both a 215-request allocation test and a 4.09-hour saturated 32K soak. That is the optimization outcome I would rather operate—and publish.
 
 For the host and runtime choices behind this deployment, see [ROCm on Strix Halo without folklore](/blog/2026/08/03/rocm-on-strix-halo-without-folklore/).
