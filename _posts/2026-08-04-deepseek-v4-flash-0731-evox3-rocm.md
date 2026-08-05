@@ -3,7 +3,7 @@ layout: post
 title: "DeepSeek V4 Flash 0731 on evox3: the repeat that changed deployment"
 seo_title: "DeepSeek V4 Flash 0731 on ROCm 7.14: a measured 10× experiment"
 date: 2026-08-04 14:00:00 +0100
-last_modified_at: 2026-08-05 04:08:00 +0100
+last_modified_at: 2026-08-05 04:24:00 +0100
 permalink: /blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/
 categories: [local-ai, benchmarks, engineering]
 tags: [deepseek-v4, rocm, lemonade, strix-halo, long-context]
@@ -78,7 +78,7 @@ The lifecycle boundary is tested too: Lemonade unloaded the attached container c
 
 ## I looked for memory leakage
 
-I then kept the exact profile in one Lemonade process for a 28-minute allocation soak. The sequence was 100 identical short requests, a 256→1K→2K→4K→8K context ramp, the same sizes in reverse with a second 8K request, another 100 short requests, and a 30-second idle settle. One-second telemetry produced 1,623 samples. All **209/209** responses were exact `OK`.
+I then kept the exact profile in one Lemonade process for a 28-minute allocation soak. The sequence was 100 identical short requests, a 256→1K→2K→4K→8K context ramp, followed by 4K→2K→1K→8K, another 100 short requests, and a 30-second idle settle. One-second telemetry produced 1,623 samples. All **209/209** responses were exact `OK`.
 
 | Signal | Start | Worst observed | Final | Result |
 | --- | ---: | ---: | ---: | --- |
