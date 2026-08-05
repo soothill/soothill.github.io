@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" role="img" aria-labelledby="deepseek-0731-evox3-32k-throughput-title deepseek-0731-evox3-32k-throughput-desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540" role="img" aria-labelledby="deepseek-0731-evox3-32k-throughput-title deepseek-0731-evox3-32k-throughput-desc">
 <title id="deepseek-0731-evox3-32k-throughput-title">32K exact-prefill performance over time</title>
 <desc id="deepseek-0731-evox3-32k-throughput-desc">8 uncached requests · 4.09 hours · evox3</desc>
 <rect width="1000" height="540" fill="#faf9f5"/>
