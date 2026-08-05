@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" role="img" aria-labelledby="deepseek-0731-evox3-memory-over-time-title deepseek-0731-evox3-memory-over-time-desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540" role="img" aria-labelledby="deepseek-0731-evox3-memory-over-time-title deepseek-0731-evox3-memory-over-time-desc">
 <title id="deepseek-0731-evox3-memory-over-time-title">Memory change during the 32K soak</title>
 <desc id="deepseek-0731-evox3-memory-over-time-desc">Change from the first active sample; a leak would appear as sustained one-way growth</desc>
 <rect width="1000" height="540" fill="#faf9f5"/>
