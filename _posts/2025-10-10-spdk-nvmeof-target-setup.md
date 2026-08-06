@@ -2,20 +2,21 @@
 layout: post
 title: "SPDK NVMe-oF Target Setup Guide for Ubuntu with RDMA"
 date: 2025-10-10
-categories: [Storage, SPDK, NVMe]
+last_modified_at: 2026-08-06
+categories: [storage, spdk, nvme]
 tags: [spdk, nvme-of, rdma, ubuntu, storage, high-performance]
 author: Darren Soothill
-description: "Complete step-by-step guide to configure SPDK NVMe over Fabrics target on Ubuntu Linux with RDMA transport for high-performance storage."
+description: "A lab-focused guide to building SPDK v26.05 and configuring an NVMe over Fabrics target on Ubuntu with RDMA, explicit host access and a persistent JSON configuration."
 keywords: "SPDK, NVMe-oF, RDMA, Ubuntu, Linux, storage configuration, high-performance"
 ---
 
-Step-by-step guide to configure SPDK NVMe over Fabrics target on Ubuntu Linux with RDMA transport. Includes installation, configuration, systemd setup, and troubleshooting for high-performance storage.
+This lab guide configures an SPDK NVMe over Fabrics target on Ubuntu with an RDMA transport, a disposable memory-backed block device and an explicitly authorised host. It pins SPDK `v26.05` so the commands and JSON schema have a reproducible version boundary.
 
 ## Introduction
 
-This guide walks you through setting up an NVMe over Fabrics (NVMe-oF) target using the Storage Performance Development Kit (SPDK) on Ubuntu Linux. The configuration uses RDMA (Remote Direct Memory Access) as the transport protocol for high-performance, low-latency storage access.
+The configuration uses RDMA (Remote Direct Memory Access) as the transport. The memory-backed example proves the software and network path without risking a real drive; adapting it to physical NVMe storage requires a separate maintenance plan.
 
-**Note:** This guide assumes you have RDMA-capable network hardware (InfiniBand or RoCE) properly installed in your system.
+**Scope:** this is a starting point for a controlled lab, not a production architecture. It assumes an RDMA-capable adapter and driver, a tested InfiniBand or RoCE fabric, and a client whose NVMe host NQN is known. On RoCE, validate lossless-network design, PFC/ECN policy, VLAN isolation and MTU end to end rather than treating one host setting as sufficient.
 
 ## 1. Prerequisites and System Setup
 
@@ -33,7 +34,6 @@ sudo apt-get install -y \
   libnuma-dev \
   libpcap-dev \
   python3 \
-  python3-pip \
   rdma-core \
   libibverbs-dev \
   librdmacm-dev \
@@ -63,10 +63,12 @@ EOF
 
 ### Configure Hugepages
 
-SPDK requires hugepages for optimal performance:
+SPDK uses hugepages for DMA-backed memory. Reserve them persistently and check that the allocation succeeded:
 
 ```bash
-echo 2048 | sudo tee /proc/sys/vm/nr_hugepages
+echo 'vm.nr_hugepages = 2048' | sudo tee /etc/sysctl.d/80-spdk-hugepages.conf
+sudo sysctl --system
+grep -E 'HugePages_Total|HugePages_Free|Hugepagesize' /proc/meminfo
 ```
 
 **Important:** Adjust the hugepage count based on your system's RAM and requirements. Each 2MB hugepage requires 2MB of system memory.
@@ -76,36 +78,37 @@ echo 2048 | sudo tee /proc/sys/vm/nr_hugepages
 ### Clone SPDK Repository
 
 ```bash
-cd /opt
-sudo git clone https://github.com/spdk/spdk
-cd spdk
-sudo git submodule update --init
+sudo install -d -o "$USER" -g "$(id -gn)" /opt/spdk
+git clone --branch v26.05 --depth 1 https://github.com/spdk/spdk /opt/spdk
+cd /opt/spdk
+git submodule update --init --recursive
+git describe --tags --always
 ```
 
-### Install Python Dependencies
+### Install SPDK Dependencies
 
 ```bash
-sudo pip3 install -r scripts/pkgdep/requirements.txt
+cd /opt/spdk
+sudo scripts/pkgdep.sh --rdma
 ```
+
+Using SPDK's dependency script avoids writing directly into Ubuntu's externally managed system Python with `sudo pip`.
 
 ### Configure and Build
 
 ```bash
 # Configure SPDK with RDMA support
-sudo ./configure --with-rdma
+./configure --with-rdma
 
 # Build SPDK (using all available CPU cores)
-sudo make -j$(nproc)
-
-# Setup SPDK environment (hugepages and drivers)
-sudo scripts/setup.sh
+make -j"$(nproc)"
 ```
 
-**Tip:** The build process may take 10-15 minutes depending on your system.
+Do not run `scripts/setup.sh` unqualified on a storage host: depending on its environment, it can bind supported PCIe devices to a userspace driver. The malloc-backed example needs the hugepage reservation above, not ownership of a physical NVMe controller.
 
 ## 3. Configuration
 
-### Option A: JSON Configuration File
+### JSON Configuration File
 
 Create a declarative configuration file for the NVMe-oF target:
 
@@ -147,10 +150,17 @@ cat << 'EOF' | sudo tee /opt/spdk/nvmf_target.json
           "method": "nvmf_create_subsystem",
           "params": {
             "nqn": "nqn.2024-10.io.spdk:cnode1",
-            "allow_any_host": true,
+            "allow_any_host": false,
             "serial_number": "SPDK00000000000001",
             "model_number": "SPDK_Controller1",
             "max_namespaces": 32
+          }
+        },
+        {
+          "method": "nvmf_subsystem_add_host",
+          "params": {
+            "nqn": "nqn.2024-10.io.spdk:cnode1",
+            "host": "nqn.2014-08.org.nvmexpress:uuid:REPLACE-WITH-CLIENT-HOST-NQN"
           }
         },
         {
@@ -182,22 +192,39 @@ cat << 'EOF' | sudo tee /opt/spdk/nvmf_target.json
 EOF
 ```
 
-**Customization Required:** Replace `192.168.1.100` with your RDMA interface IP address.
+**Customisation required:** replace `192.168.1.100` with the RDMA interface address and replace the sample host NQN with the exact value from `/etc/nvme/hostnqn` on the client. Generate a unique subsystem NQN for your environment rather than reusing the example unchanged.
 
 ### Using Real NVMe Devices
 
-For production environments, replace malloc bdevs with actual NVMe devices:
+Do not export a controller that the target host is mounting or otherwise using; concurrent host and SPDK access can corrupt data. In a maintenance window, identify the controller by PCI address, back up its data, stop every consumer and bind only that validated controller to SPDK. Then replace the `bdev_malloc_create` entry in the JSON with a version-matched `bdev_nvme_attach_controller` entry and change the namespace's `bdev_name` to the resulting namespace bdev, normally `Nvme0n1`.
 
 ```bash
-# Find your NVMe device PCIe address
-lspci | grep -i nvme
+# Record stable device and PCI identities before changing driver ownership
+sudo nvme list
+lspci -Dnn | grep -i 'non-volatile memory'
 
-# Example: Attach NVMe device at PCIe address 0000:01:00.0
-$SPDK_DIR/scripts/rpc.py -s $RPC_SOCK bdev_nvme_attach_controller \
-  -b Nvme0 \
-  -t PCIe \
-  -a 0000:01:00.0
+# Review which devices SPDK would claim before applying a driver change
+cd /opt/spdk
+sudo scripts/setup.sh status
+
+# Example only: bind exactly one validated controller and leave hugepages unchanged
+sudo env PCI_ALLOWED="0000:01:00.0" SKIP_HUGE=yes scripts/setup.sh
 ```
+
+The corresponding bdev entry in `nvmf_target.json` is:
+
+```json
+{
+  "method": "bdev_nvme_attach_controller",
+  "params": {
+    "trtype": "pcie",
+    "name": "Nvme0",
+    "traddr": "0000:01:00.0"
+  }
+}
+```
+
+Change the namespace `bdev_name` from `Malloc0` to `Nvme0n1` after confirming the name returned by SPDK. The [SPDK system-configuration documentation](https://spdk.io/doc/system_configuration.html) describes device binding. Keep `PCI_ALLOWED` explicit; if it is empty, `setup.sh` can bind every compatible device. A physical-device deployment must also repeat the allowlisted binding before the service starts after each reboot.
 
 ## 4. Systemd Service Configuration
 
@@ -207,13 +234,13 @@ $SPDK_DIR/scripts/rpc.py -s $RPC_SOCK bdev_nvme_attach_controller \
 cat << 'EOF' | sudo tee /etc/systemd/system/spdk-nvmf-target.service
 [Unit]
 Description=SPDK NVMe-oF Target
-After=network.target
+Wants=network-online.target
+After=network-online.target
 
 [Service]
 Type=simple
-ExecStartPre=/opt/spdk/scripts/setup.sh
-ExecStart=/opt/spdk/build/bin/nvmf_tgt -m 0x3 -s 512
-ExecStartPost=/opt/spdk/setup_nvmf_target.sh
+ExecStart=/opt/spdk/build/bin/nvmf_tgt -m 0x3 -s 512 -c /opt/spdk/nvmf_target.json
+LimitMEMLOCK=infinity
 Restart=on-failure
 RestartSec=10
 
@@ -221,6 +248,8 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 ```
+
+If a physical controller is later added, use a reviewed, device-specific preparation step before this service starts; do not replace it with a command that can claim every compatible NVMe controller.
 
 ### Enable and Start Service
 
@@ -252,14 +281,14 @@ network:
     ens1f0:  # Replace with your RDMA interface name
       addresses:
         - 192.168.1.100/24
-      mtu: 9000
+      mtu: 9000  # Use only when the complete path has been configured and tested at this MTU
       optional: true
 EOF
 
 sudo netplan apply
 ```
 
-**Important:** Replace `ens1f0` with your actual RDMA interface name and adjust the IP address accordingly.
+**Important:** replace `ens1f0` with the verified RDMA interface and adjust the address. An MTU of 9000 is optional and works only when the host, switches and client use a compatible end-to-end MTU; otherwise retain the network's proven value.
 
 ### Verify RDMA Setup
 
@@ -321,20 +350,22 @@ sudo nvme disconnect -n nqn.2024-10.io.spdk:cnode1
 
 ```bash
 cat << 'EOF' > /opt/spdk/monitor_target.sh
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 RPC_SOCK="/var/tmp/spdk.sock"
 
 echo "=== Block Devices ==="
-/opt/spdk/scripts/rpc.py -s $RPC_SOCK bdev_get_bdevs
+/opt/spdk/scripts/rpc.py -s "$RPC_SOCK" bdev_get_bdevs
 
-echo -e "\n=== NVMe-oF Subsystems ==="
-/opt/spdk/scripts/rpc.py -s $RPC_SOCK nvmf_get_subsystems
+printf '\n=== NVMe-oF Subsystems ===\n'
+/opt/spdk/scripts/rpc.py -s "$RPC_SOCK" nvmf_get_subsystems
 
-echo -e "\n=== Transport Statistics ==="
-/opt/spdk/scripts/rpc.py -s $RPC_SOCK nvmf_get_stats
+printf '\n=== Transport Statistics ===\n'
+/opt/spdk/scripts/rpc.py -s "$RPC_SOCK" nvmf_get_stats
 
-echo -e "\n=== Connected Hosts ==="
-/opt/spdk/scripts/rpc.py -s $RPC_SOCK nvmf_subsystem_get_qpairs
+printf '\n=== Connected Hosts ===\n'
+/opt/spdk/scripts/rpc.py -s "$RPC_SOCK" nvmf_subsystem_get_qpairs \
+  nqn.2024-10.io.spdk:cnode1
 EOF
 
 chmod +x /opt/spdk/monitor_target.sh
@@ -370,18 +401,19 @@ chmod +x /opt/spdk/monitor_target.sh
 - Verify RDMA connectivity: `ibstat`
 - Check firewall rules allow RDMA traffic
 - Ensure IP addresses match between configuration and network setup
-- Verify the target is listening: `netstat -an | grep 4420`
+- Query `nvmf_get_subsystems`, then run `nvme discover` from the authorised client; a TCP socket listing is not an authoritative check for an RDMA listener
 
 ### Performance Issues
 
 - Increase the number of hugepages
 - Adjust CPU core mask in the service file
 - Tune RDMA transport parameters in the configuration
-- Enable MTU 9000 (jumbo frames) on RDMA interfaces
+- Tune queue depth, CPU placement and transport parameters one change at a time against a recorded workload
+- For RoCE, validate end-to-end MTU and the fabric's congestion and loss-management configuration
 
 ## Production Considerations
 
-- **Security:** Change `allow_any_host: true` to specific host authentication for production
+- **Access:** Keep `allow_any_host` disabled and authorise only known host NQNs; add authentication where the chosen transport, SPDK release and threat model support it
 - **Storage:** Use real NVMe devices instead of malloc bdevs
 - **Performance:** Adjust CPU masks and memory allocation based on workload
 - **Network:** Ensure dedicated RDMA network with proper MTU settings
@@ -399,5 +431,6 @@ chmod +x /opt/spdk/monitor_target.sh
 
 - [SPDK Documentation](https://spdk.io/doc/)
 - [SPDK NVMe-oF Target Guide](https://spdk.io/doc/nvmf.html)
+- [SPDK application options and JSON configuration](https://spdk.io/doc/app_overview.html)
 - [SPDK GitHub Repository](https://github.com/spdk/spdk)
 - [NVMe Specifications](https://nvmexpress.org/)

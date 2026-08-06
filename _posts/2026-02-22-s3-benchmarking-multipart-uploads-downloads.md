@@ -1,24 +1,25 @@
 ---
 layout: post
-title: "S3 Benchmarking: Multipart Upload & Download Testing with s3bench"
+title: "S3 Benchmarking: Parallel Ranged Downloads with s3bench"
 date: 2026-02-22
+last_modified_at: 2026-08-06
 categories: [storage, benchmarking, s3, aws]
 tags: [s3, benchmarking, multipart, throughput, aws, minio, go]
 author: Darren Soothill
-description: "A comprehensive guide to benchmarking S3 multipart download performance using s3bench - a Go tool for measuring throughput against AWS S3 and S3-compatible storage systems."
+description: "A practical guide to benchmarking parallel S3 ranged-download performance with s3bench, a Go tool for measuring throughput against AWS S3 and compatible object stores."
 ---
 
-When working with object storage at scale, understanding your throughput characteristics is critical. Whether you're using AWS S3, MinIO, Ceph, or any S3-compatible storage, multipart operations are the key to achieving high performance. In this post, I'll introduce **s3bench**, a command-line tool I've developed for benchmarking download throughput with configurable concurrency and chunk sizes.
+When working with object storage at scale, understanding download throughput matters. Whether the endpoint is AWS S3, MinIO, Ceph or another S3-compatible store, parallel byte-range requests can expose the limits of the client, network and storage path. This post introduces **s3bench**, a command-line tool I developed to benchmark downloads with configurable concurrency and chunk sizes.
 
-## Why Multipart Operations Matter
+## Why Parallel Range Requests Matter
 
-S3 multipart downloads (and uploads) allow you to parallelize data transfer across multiple connections. Instead of downloading a 10GB file as a single stream, you can:
+S3 defines a Multipart Upload API, but there is no equivalent “multipart download” API. For downloads, s3bench sends concurrent `GetObject` requests with HTTP `Range` headers. Instead of reading a 10GiB object as a single stream, it can:
 
 1. Split the object into chunks using HTTP `Range` headers
 2. Download multiple chunks concurrently
-3. Reassemble the complete file
+3. Write the chunks in order when `--output` is used, or discard them when measuring the transfer path alone
 
-This approach can dramatically improve throughput, especially for large objects and high-latency connections.
+This approach can improve throughput for large objects and high-latency paths. It is not guaranteed to do so: the optimum depends on the endpoint, link, client CPU and service limits.
 
 ## How s3bench Works
 
@@ -32,7 +33,7 @@ The tool follows a straightforward but effective approach:
 
 ## Get s3bench
 
-**GitHub Repository**: [https://github.com/soothill/s3bench](https://github.com/soothill/s3bench)
+**GitHub repository:** [soothill/s3bench](https://github.com/soothill/s3bench)
 
 You can:
 
@@ -41,9 +42,9 @@ You can:
   git clone https://github.com/soothill/s3bench.git
   ```
 
-- **Download releases**: Visit [https://github.com/soothill/s3bench/releases](https://github.com/soothill/s3bench/releases) for pre-built binaries
+- **Download releases**: Visit the [release page](https://github.com/soothill/s3bench/releases) for pre-built binaries
 
-- **Browse the source code**: [https://github.com/soothill/s3bench](https://github.com/soothill/s3bench)
+- **Browse the source code**: The behaviour described here was checked against commit [`49344ec`](https://github.com/soothill/s3bench/tree/49344ec0ce2ce533256ddef8e78c7b157a54068a)
 
 ## Installing Go
 
@@ -115,7 +116,7 @@ go build -o s3bench .
   --discard
 ```
 
-The `--discard` flag is crucial for pure throughput benchmarking—it prevents local disk I/O from becoming the bottleneck.
+Use `--discard` when the question is specifically about the network and object-store path; it prevents local disk I/O from becoming the bottleneck. Use `--output` when the end-to-end download path, including the destination filesystem, is what matters.
 
 ## Key Features
 
@@ -125,12 +126,12 @@ Instead of remembering byte values, use intuitive presets:
 
 | Preset | Size |
 |--------|------|
-| XS | 1 MB |
-| S | 4 MB |
-| M | 8 MB |
-| L | 64 MB |
-| XL | 256 MB |
-| XXL | 1 GB |
+| XS | 1 MiB |
+| S | 4 MiB |
+| M | 8 MiB |
+| L | 64 MiB |
+| XL | 256 MiB |
+| XXL | 1 GiB |
 
 ```bash
 ./s3bench --chunk-size L --bucket mybucket --key bigfile.bin --discard
@@ -165,6 +166,8 @@ This produces a comparison report:
           32     3      1367.9     1401.5     1423.0 <-- best
           64     3      1389.2     1398.1     1412.7
 ```
+
+The tool currently labels binary units as `MB` and `GB`; its calculations divide by powers of two, so those values are MiB/s and GiB/s in IEC terminology.
 
 ### S3-Compatible Storage
 
@@ -219,9 +222,11 @@ For scripting and automation:
   | jq '.[] | {workers: .Concurrency, mean_mb_s: .Aggregate.mean_throughput_mb_s}'
 ```
 
+**Known interface caveat:** in commit `49344ec`, duration fields such as `total_time_ms` and `ttfb_ms` are serialised from Go's `time.Duration` without conversion. Their numeric values are nanoseconds despite the `_ms` suffix. Convert them before use—for example, divide by `1,000,000` for milliseconds—and pin the tool revision in automated reports until the schema is corrected.
+
 ## Tuning Recommendations
 
-Based on extensive testing, here are my recommendations:
+Use these as starting points, then retain the settings and conditions with the result:
 
 ### 1. Use Concurrency Sweep
 Run `--concurrency 4,8,16,32,64` to find your saturation point. Throughput will plateau when you've hit your network or storage ceiling.
@@ -231,17 +236,17 @@ Run `--concurrency 4,8,16,32,64` to find your saturation point. Throughput will 
 - **Larger chunks + fewer workers** = potential worker idle time
 - **Sweet spot**: Start with `--chunk-size L --concurrency 16` and sweep from there
 
-### 3. Multiple Runs for Accuracy
-Use `--runs 3` or more. The first run often shows slower results due to cold caches on the storage side.
+### 3. Use Multiple Runs and Record the Conditions
+Use `--runs 3` or more and report the spread, not only the best result. A slower first run might reflect DNS, connection setup, TLS, a client-side cache or an object-store cache; do not attribute it to storage without evidence.
 
-### 4. Always Use Discard Mode for Throughput Testing
-When measuring network/storage throughput, use `--discard` to eliminate local disk I/O as a variable.
+### 4. Match the Output Mode to the Question
+Use `--discard` for network and object-store throughput. Use `--output` when validating the complete path to local storage, and verify the resulting object separately if integrity is part of the test.
 
 ### 5. Test from the Right Location
 Results are only meaningful when measured from where your workload actually runs. For example:
 - EC2 instance in the same region as the bucket (for AWS)
 - Same network segment as your MinIO deployment
-- Not from your laptop over VPN!
+- Avoid a laptop over VPN unless that path is the workload you intend to measure
 
 ## All Command-Line Options
 
@@ -263,13 +268,11 @@ Results are only meaningful when measured from where your workload actually runs
 
 ## Conclusion
 
-Multipart operations are essential for high-performance object storage access. With s3bench, you can:
+Parallel ranged GETs are one useful way to test high-throughput object access. With s3bench, you can:
 
 - Find optimal concurrency settings
 - Compare different storage backends
 - Validate network infrastructure
-- Benchmark before and after optimizations
+- Benchmark before and after optimisations
 
-The tool is open source under the MIT license. Check out the [GitHub repository](https://github.com/soothill/s3bench) for the full source code and documentation.
-
-Happy benchmarking!
+The tool is open source under the MIT licence. See the [GitHub repository](https://github.com/soothill/s3bench) for the source code, current documentation and release status.

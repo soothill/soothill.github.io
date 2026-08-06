@@ -163,7 +163,7 @@ fio --name=rand-read-qd1 \
   --group_reporting
 ```
 
-The [`fio` documentation](https://github.com/axboe/fio/blob/master/HOWTO.rst) defines `direct=1` as non-buffered I/O and `io_uring` as Linux native asynchronous I/O. Each result was saved as JSON alongside the exact job options. That matters because a queue-depth-one latency figure and a deep-queue throughput figure describe different products, even when both are labelled “4K random read”.
+The [`fio-3.42` documentation](https://github.com/axboe/fio/blob/fio-3.42/HOWTO.rst) defines `direct=1` as non-buffered I/O and `io_uring` as Linux native asynchronous I/O. Each result was saved as JSON alongside the exact job options. That matters because a queue-depth-one latency figure and a deep-queue throughput figure describe different products, even when both are labelled “4K random read”.
 
 The sequential write test writes 64GiB and therefore consumes a small part of the SSD's finite write endurance. The file can be deleted after the test once its exact path has been checked:
 

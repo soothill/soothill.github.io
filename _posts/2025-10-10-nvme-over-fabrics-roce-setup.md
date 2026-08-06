@@ -2,14 +2,17 @@
 layout: post
 title: "NVMe-oF with RoCE Configuration Guide - Ubuntu Server"
 date: 2025-10-10
-categories: [Storage, NVMe, Linux]
-tags: [nvme-of, roce, rdma, ubuntu, storage-configuration, enterprise-storage]
+last_modified_at: 2026-08-06
+categories: [storage, nvme, linux]
+tags: [nvme-of, roce, rdma, ubuntu, storage-configuration, linux]
 author: Darren Soothill
-description: "Complete guide for configuring NVMe over Fabrics (NVMe-oF) with RoCE (RDMA over Converged Ethernet) on Ubuntu Server. Step-by-step persistent configuration for enterprise storage."
+description: "A lab-focused guide to configuring a persistent Linux NVMe over Fabrics target with RoCE, stable device identities, host access control and explicit network prerequisites."
 keywords: "NVMe-oF, NVMe over Fabrics, RoCE, RDMA, Ubuntu Server, nvmet, nvmetcli, storage configuration"
 ---
 
-Complete setup for Ubuntu Server with persistent configuration across reboots. This guide covers exporting `/dev/nvme0n1`, `/dev/sdb`, and `/dev/sdc` over RDMA using interface `ens16` at `172.16.10.10:4420`.
+This guide builds a persistent Linux kernel NVMe-oF target for a controlled lab. The example uses interface `ens16` at `172.16.10.10:4420`, stable `/dev/disk/by-id/...` device paths and an explicit client host NQN.
+
+> **Data-safety boundary:** an exported block device must not be mounted, used as swap, held by LVM/RAID or accessed by another application on the target. Concurrent local and remote access can corrupt data. Replace every sample identifier, validate the resolved devices and test with disposable storage before adapting this configuration.
 
 ## Configuration Summary
 
@@ -17,20 +20,11 @@ Complete setup for Ubuntu Server with persistent configuration across reboots. T
 - **Interface:** ens16
 - **Transport:** RDMA (RoCE)
 - **Port:** 4420
-- **Exported Devices:** /dev/nvme0n1, /dev/sdb, /dev/sdc
+- **Exported devices:** three site-specific `/dev/disk/by-id/...` paths
 - **Subsystem NQN:** nqn.2025-01.com.example:nvme-target
+- **Authorised host NQN:** value read from `/etc/nvme/hostnqn` on the client
 
-## Table of Contents
-
-1. [Prerequisites and Package Installation](#1-prerequisites-and-package-installation)
-2. [Kernel Modules Configuration](#2-kernel-modules-configuration)
-3. [Network Configuration](#3-network-configuration)
-4. [NVMe Target Configuration](#4-nvme-target-configuration-script)
-5. [Systemd Service Setup](#5-systemd-service-setup)
-6. [RoCE Optimization](#6-roce-optimization-settings)
-7. [Verification and Testing](#7-verification-and-testing)
-8. [Client Configuration](#8-client-configuration)
-9. [Troubleshooting](#9-troubleshooting)
+The page generates its contents list from the headings below, so section links remain in step with the article.
 
 ## 1. Prerequisites and Package Installation
 
@@ -103,58 +97,97 @@ sudo netplan apply
 ip addr show ens16
 ```
 
-**Note:** The MTU is set to 9000 (Jumbo frames) for better RDMA performance. Ensure your network infrastructure supports this.
+**Note:** use MTU 9000 only when the client, target and every switch port on the path have been configured and tested for it. A mismatched MTU causes failures; jumbo frames are not a substitute for correct RoCE fabric design.
 
 ## 4. NVMe Target Configuration Script
 
-Create a script to configure the NVMe-oF target with three exported devices:
+First read the client's host NQN:
+
+```bash
+cat /etc/nvme/hostnqn
+```
+
+Then create the target script. Replace all three device IDs and the client host NQN before running it:
 
 ```bash
 sudo tee /usr/local/bin/setup-nvmet.sh <<'EOF'
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 SUBSYSTEM_NQN="nqn.2025-01.com.example:nvme-target"
+HOST_NQN="nqn.2014-08.org.nvmexpress:uuid:REPLACE-WITH-CLIENT-HOST-NQN"
 RDMA_IP="172.16.10.10"
 RDMA_PORT="4420"
+PORT_ID="1"
+DEVICES=(
+  "/dev/disk/by-id/nvme-REPLACE_WITH_DEVICE_1"
+  "/dev/disk/by-id/REPLACE_WITH_DEVICE_2"
+  "/dev/disk/by-id/REPLACE_WITH_DEVICE_3"
+)
 
-# Wait for configfs to be available
-sleep 2
+CONFIGFS="/sys/kernel/config/nvmet"
+SUBSYSTEM_DIR="${CONFIGFS}/subsystems/${SUBSYSTEM_NQN}"
+PORT_DIR="${CONFIGFS}/ports/${PORT_ID}"
+HOST_DIR="${CONFIGFS}/hosts/${HOST_NQN}"
+
+[[ -d "${CONFIGFS}" ]] || { echo "nvmet configfs is not mounted" >&2; exit 1; }
+[[ ! -e "${SUBSYSTEM_DIR}" && ! -e "${PORT_DIR}" ]] || {
+  echo "Target configuration already exists; inspect or clean it up first" >&2
+  exit 1
+}
+
+for device in "${DEVICES[@]}"; do
+  [[ -L "${device}" ]] || { echo "Stable device link not found: ${device}" >&2; exit 1; }
+  resolved="$(readlink -f "${device}")"
+  [[ -b "${resolved}" ]] || { echo "Not a block device: ${device}" >&2; exit 1; }
+
+  while read -r node; do
+    if findmnt -rn -S "${node}" >/dev/null; then
+      echo "Refusing mounted device or child: ${node}" >&2
+      exit 1
+    fi
+    if swapon --noheadings --raw --output NAME | grep -Fxq "${node}"; then
+      echo "Refusing active swap device or child: ${node}" >&2
+      exit 1
+    fi
+    kernel_name="$(lsblk -ndo KNAME "${node}")"
+    if find "/sys/class/block/${kernel_name}/holders" -mindepth 1 -maxdepth 1 -print -quit | grep -q .; then
+      echo "Refusing device held by another block layer: ${node}" >&2
+      exit 1
+    fi
+  done < <(lsblk -nrpo NAME "${resolved}")
+done
 
 # Create subsystem
-mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}
-echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/attr_allow_any_host
+mkdir "${SUBSYSTEM_DIR}"
+echo 0 > "${SUBSYSTEM_DIR}/attr_allow_any_host"
 
-# Create namespace 1 for /dev/nvme0n1
-mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/1
-echo /dev/nvme0n1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/1/device_path
-echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/1/enable
+# Authorise one client host NQN
+mkdir "${HOST_DIR}"
+ln -s "${HOST_DIR}" "${SUBSYSTEM_DIR}/allowed_hosts/${HOST_NQN}"
 
-# Create namespace 2 for /dev/sdb
-mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/2
-echo /dev/sdb > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/2/device_path
-echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/2/enable
-
-# Create namespace 3 for /dev/sdc
-mkdir -p /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/3
-echo /dev/sdc > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/3/device_path
-echo 1 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/3/enable
+# Create one namespace per validated stable device path
+for index in "${!DEVICES[@]}"; do
+  nsid="$((index + 1))"
+  namespace_dir="${SUBSYSTEM_DIR}/namespaces/${nsid}"
+  mkdir "${namespace_dir}"
+  echo "${DEVICES[$index]}" > "${namespace_dir}/device_path"
+  echo 1 > "${namespace_dir}/enable"
+done
 
 # Create port
-mkdir -p /sys/kernel/config/nvmet/ports/1
-echo rdma > /sys/kernel/config/nvmet/ports/1/addr_trtype
-echo ipv4 > /sys/kernel/config/nvmet/ports/1/addr_adrfam
-echo ${RDMA_IP} > /sys/kernel/config/nvmet/ports/1/addr_traddr
-echo ${RDMA_PORT} > /sys/kernel/config/nvmet/ports/1/addr_trsvcid
+mkdir "${PORT_DIR}"
+echo rdma > "${PORT_DIR}/addr_trtype"
+echo ipv4 > "${PORT_DIR}/addr_adrfam"
+echo "${RDMA_IP}" > "${PORT_DIR}/addr_traddr"
+echo "${RDMA_PORT}" > "${PORT_DIR}/addr_trsvcid"
 
 # Link subsystem to port
-ln -s /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN} \
-      /sys/kernel/config/nvmet/ports/1/subsystems/${SUBSYSTEM_NQN}
+ln -s "${SUBSYSTEM_DIR}" "${PORT_DIR}/subsystems/${SUBSYSTEM_NQN}"
 
 echo "NVMe-oF Target configured on ens16 (${RDMA_IP}:${RDMA_PORT})"
-echo "Exported devices:"
-echo "  Namespace 1: /dev/nvme0n1"
-echo "  Namespace 2: /dev/sdb"
-echo "  Namespace 3: /dev/sdc"
+printf 'Authorised host: %s\n' "${HOST_NQN}"
+printf 'Exported device: %s\n' "${DEVICES[@]}"
 EOF
 
 # Make script executable
@@ -165,32 +198,53 @@ sudo chmod +x /usr/local/bin/setup-nvmet.sh
 
 ```bash
 sudo tee /usr/local/bin/cleanup-nvmet.sh <<'EOF'
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 SUBSYSTEM_NQN="nqn.2025-01.com.example:nvme-target"
+HOST_NQN="nqn.2014-08.org.nvmexpress:uuid:REPLACE-WITH-CLIENT-HOST-NQN"
+PORT_ID="1"
+CONFIGFS="/sys/kernel/config/nvmet"
+SUBSYSTEM_DIR="${CONFIGFS}/subsystems/${SUBSYSTEM_NQN}"
+PORT_DIR="${CONFIGFS}/ports/${PORT_ID}"
+HOST_DIR="${CONFIGFS}/hosts/${HOST_NQN}"
 
 # Remove subsystem link from port
-rm -f /sys/kernel/config/nvmet/ports/1/subsystems/${SUBSYSTEM_NQN} 2>/dev/null
+rm -f "${PORT_DIR}/subsystems/${SUBSYSTEM_NQN}"
 
 # Disable and remove namespaces
 for ns in 1 2 3; do
-    if [ -d "/sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/${ns}" ]; then
-        echo 0 > /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/${ns}/enable 2>/dev/null
-        rmdir /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN}/namespaces/${ns} 2>/dev/null
+    namespace_dir="${SUBSYSTEM_DIR}/namespaces/${ns}"
+    if [[ -d "${namespace_dir}" ]]; then
+        echo 0 > "${namespace_dir}/enable"
+        rmdir "${namespace_dir}"
     fi
 done
 
+# Remove host access link and host object
+rm -f "${SUBSYSTEM_DIR}/allowed_hosts/${HOST_NQN}"
+
 # Remove port
-rmdir /sys/kernel/config/nvmet/ports/1 2>/dev/null
+if [[ -d "${PORT_DIR}" ]]; then
+  rmdir "${PORT_DIR}"
+fi
 
 # Remove subsystem
-rmdir /sys/kernel/config/nvmet/subsystems/${SUBSYSTEM_NQN} 2>/dev/null
+if [[ -d "${SUBSYSTEM_DIR}" ]]; then
+  rmdir "${SUBSYSTEM_DIR}"
+fi
+
+if [[ -d "${HOST_DIR}" ]]; then
+  rmdir "${HOST_DIR}"
+fi
 
 echo "NVMe-oF Target cleaned up"
 EOF
 
 sudo chmod +x /usr/local/bin/cleanup-nvmet.sh
 ```
+
+Use the same subsystem and host NQNs in both scripts. If setup stops after creating only part of the configfs tree, inspect it and run the cleanup script before retrying; the setup script deliberately refuses to overwrite pre-existing state.
 
 ## 5. Systemd Service Setup
 
@@ -200,7 +254,7 @@ Create a systemd service to ensure the configuration persists across reboots:
 sudo tee /etc/systemd/system/nvmet.service <<'EOF'
 [Unit]
 Description=NVMe-oF Target Configuration
-After=network-online.target sys-kernel-config.mount systemd-networkd.service
+After=network-online.target sys-kernel-config.mount
 Wants=network-online.target
 Requires=sys-kernel-config.mount
 
@@ -227,28 +281,19 @@ sudo systemctl start nvmet.service
 sudo systemctl status nvmet.service
 ```
 
-## 6. RoCE Optimization Settings
+## 6. RoCE Network Prerequisites
 
-Apply system-level optimizations for RDMA performance:
+The socket-buffer and TCP sysctls sometimes copied into RoCE guides do not tune the NVMe/RDMA data path. RoCE performance and reliability depend on the NIC, driver and complete Ethernet fabric. Record the negotiated link, MTU and RDMA state first:
 
 ```bash
-sudo tee /etc/sysctl.d/99-rdma.conf <<EOF
-# Increase socket buffer sizes for RDMA
-net.core.rmem_max = 268435456
-net.core.wmem_max = 268435456
-net.ipv4.tcp_rmem = 4096 87380 134217728
-net.ipv4.tcp_wmem = 4096 65536 134217728
-
-# Enable TCP timestamps
-net.ipv4.tcp_timestamps = 1
-
-# Increase max connections
-net.core.somaxconn = 4096
-EOF
-
-# Apply sysctl settings
-sudo sysctl -p /etc/sysctl.d/99-rdma.conf
+ip -details link show ens16
+ethtool ens16
+ethtool -i ens16
+rdma link show
+ibv_devinfo
 ```
+
+For a converged Ethernet deployment, design and verify PFC/ECN, queue mapping, VLAN isolation and congestion behaviour across both hosts and every switch hop. Apply vendor-specific settings only after confirming the exact adapter, firmware, driver and switch configuration. Benchmark before and after each change and keep a recovery path.
 
 ## 7. Verification and Testing
 
@@ -366,35 +411,43 @@ sudo dmesg | tail -50
 ### RDMA Devices Not Found
 
 ```bash
-# Check if RDMA stack is running
-sudo systemctl status rdma-core
-
-# List RDMA devices
+# rdma-core is a package; inspect devices, links, driver and kernel messages
 ibv_devices
 rdma link show
-
-# Verify NIC supports RoCE
-lspci | grep -i ethernet
 ethtool -i ens16
+sudo journalctl -k -b | grep -Ei 'rdma|roce|infiniband'
 ```
+
+The presence of an Ethernet adapter or the `rdma-core` package does not prove RoCE capability. Confirm the exact adapter, firmware and driver support in the vendor's compatibility documentation.
 
 ### Target Not Accessible from Client
 
 ```bash
-# Check if port is listening
-sudo ss -tulpn | grep 4420
+# Inspect the kernel target configuration
+sudo find /sys/kernel/config/nvmet -maxdepth 5 -type f -print
 
 # Verify firewall rules
 sudo ufw status
-sudo iptables -L -n
 
 # Test network connectivity
 ping 172.16.10.10
 ```
 
+`ss` reports TCP and UDP sockets; it is not an authoritative check for an RDMA CM listener. Validate the configfs listener and run `nvme discover` from the authorised client.
+
 ## Important Notes
 
-- Ensure all devices (`/dev/nvme0n1`, `/dev/sdb`, `/dev/sdc`) exist before starting the service
-- RoCE requires proper network configuration - verify MTU settings match across all devices
+- Resolve and record every `/dev/disk/by-id/...` link before starting; do not use enumeration-dependent names such as `/dev/sdb` in a persistent target
+- Keep exported devices unmounted and outside swap, LVM, RAID and every other local storage consumer
+- Keep `attr_allow_any_host` disabled and add only the required host NQNs
+- RoCE requires an end-to-end network design; verify MTU, PFC/ECN and congestion behaviour across the complete path
 - Some NICs require firmware updates for RoCE support
-- Check that your NIC supports RDMA/RoCE (most modern Mellanox, Broadcom, Intel cards do)
+- Confirm support against the exact adapter model, firmware and driver rather than inferring it from the vendor name
+
+This configuration demonstrates a single-path lab target. A production design also needs an availability model, multipathing and failure testing, monitoring, change control, access policy and a documented recovery procedure.
+
+## Additional Resources
+
+- [Linux NVMe subsystem documentation](https://docs.kernel.org/nvme/index.html)
+- [Red Hat guidance on RoCE network design](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/working_with_distributed_workloads/configuring-roce-networking-for-distributed-llm-deployments_distributed-llm-roce)
+- [NVMe specifications](https://nvmexpress.org/specifications/)

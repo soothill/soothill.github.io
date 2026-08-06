@@ -27,10 +27,16 @@ schema_type: AboutPage
     <p>My hands-on background is strongest in hardware and storage. The archive covers NVMe, SPDK, RDMA and the practical Linux work needed to make high-performance systems behave. I use that depth to test assumptions early and to ask better questions of both customers and engineering teams.</p>
     <p>Local AI is the current thread. Strix Halo puts an unusual amount of memory and GPU capability into one compact x86 system. I want to understand what that unlocks as a product platform: not just which models fit, but what it costs, how it operates and whether the experience remains good under sustained use.</p>
     <p>Soot / Silicon is where I publish the evidence behind that thinking — including the commands, versions and failures.</p>
-    <div class="about-links">
+    <nav class="about-links" aria-label="Professional pages">
+      <a href="{{ '/documents/resume.html' | relative_url }}">Professional profile <span aria-hidden="true">↗</span></a>
+      <a href="{{ '/documents/portfolio.html' | relative_url }}">Selected work <span aria-hidden="true">↗</span></a>
+      <a href="{{ '/documents/publications.html' | relative_url }}">Publications <span aria-hidden="true">↗</span></a>
+      <a href="{{ '/documents/certifications.html' | relative_url }}">Expertise <span aria-hidden="true">↗</span></a>
+      <a href="{{ '/documents/contact-info.html' | relative_url }}">Contact <span aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="about-links" aria-label="External profiles">
       <a href="https://github.com/{{ site.github_username }}">GitHub <span aria-hidden="true">↗</span></a>
       <a href="{{ site.linkedin_url }}">LinkedIn <span aria-hidden="true">↗</span></a>
-      <a href="mailto:{{ site.email }}">Email <span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </section>

@@ -1,26 +1,31 @@
 ---
 layout: post
-title: "How to Change NVMe Format - Complete Guide"
+title: "Changing an NVMe LBA Format Safely on Linux"
 date: 2025-10-07
-categories: [Storage, NVMe]
+last_modified_at: 2026-08-06
+categories: [storage, nvme]
 tags: [nvme, storage, format, linux, block-size]
 author: Darren Soothill
-description: "Complete guide on changing NVMe format, including block size modification and namespace management."
+description: "A safety-first guide to inspecting and changing a supported NVMe LBA format, with separate notes on namespace management and secure erase."
 keywords: "NVMe, format, block size, namespace, storage, Linux"
 ---
 
-A comprehensive guide to changing NVMe device formats, adjusting block sizes, and managing namespaces on Linux systems.
+This guide explains how to inspect and change an NVMe namespace's logical block format on Linux. The examples are deliberately conservative: format and namespace-management commands are destructive, controller-specific operations that should be rehearsed on a disposable device before they are used on important storage.
 
 ## Overview
 
-NVMe devices support multiple format configurations, including different block sizes (512B, 4KB, etc.) and metadata settings. This guide covers how to safely change these formats.
+Some NVMe devices expose multiple LBA formats, such as 512-byte and 4096-byte logical blocks with different metadata layouts. Support varies by controller and namespace; many consumer drives do not support namespace management, and a familiar LBA format number on one device may mean something different on another.
+
+Before formatting, inspect the controller's Format NVM Attributes (`fna`) in `nvme id-ctrl -H`. Some controllers apply a format to every namespace rather than only the device node supplied on the command line.
 
 ## Prerequisites
 
 - NVMe device installed in your system
 - Root or sudo access
 - nvme-cli tools installed
-- **WARNING:** Formatting will destroy all data on the device
+- A verified backup and restore plan
+- Confirmation that the target is not the boot device and is not mounted, in swap, LVM, RAID or another storage stack
+- **WARNING:** formatting destroys the namespace's data and filesystem metadata
 
 ## Installation
 
@@ -79,12 +84,15 @@ LBA Format  1 : Metadata Size: 0   bytes - Data Size: 4096 bytes - Relative Perf
 
 ### Backup Your Data
 
-**CRITICAL:** Always backup data before formatting!
+**CRITICAL:** back up the data and test the restore before formatting. Do not image a live, changing filesystem and assume the result is consistent. Unmount or otherwise quiesce every filesystem and storage layer first.
 
 ```bash
-# Example backup (if filesystem is mounted)
+# Example raw image after every filesystem on the namespace is unmounted
 sudo dd if=/dev/nvme0n1 of=/path/to/backup.img bs=4M status=progress
+sync
 ```
+
+A file-level backup or storage snapshot is often easier to validate and restore than a raw image. Whichever method you choose, keep the backup on a different device.
 
 ### Format Command Syntax
 
@@ -101,7 +109,7 @@ sudo nvme format /dev/nvme0n1 --lbaf=<format_id>
 ### Example: Change to 4KB Block Size
 
 ```bash
-# Format to 4KB blocks (typically lbaf=1)
+# Substitute the LBAF index that this device reports for 4096-byte data
 sudo nvme format /dev/nvme0n1 --lbaf=1 --ses=1
 
 # Verify the format
@@ -111,9 +119,11 @@ sudo nvme id-ns /dev/nvme0n1 -H | grep "in use"
 ### Example: Change to 512B Block Size
 
 ```bash
-# Format to 512B blocks (typically lbaf=0)
+# Substitute the LBAF index that this device reports for 512-byte data
 sudo nvme format /dev/nvme0n1 --lbaf=0 --ses=1
 ```
+
+The indices above match only the sample output. Always derive the index from `nvme id-ns -H` on the actual namespace before running the command.
 
 ## Advanced: Namespace Management
 
@@ -130,15 +140,18 @@ sudo nvme delete-ns /dev/nvme0 -n 1
 # Create namespace with specific block size
 sudo nvme create-ns /dev/nvme0 --nsze=<size_in_blocks> --ncap=<capacity> --flbas=<format>
 
-# Example: Create 100GB namespace with 4KB blocks
+# Example: Create a 100GiB namespace with 4096-byte logical blocks
 sudo nvme create-ns /dev/nvme0 --nsze=26214400 --ncap=26214400 --flbas=1
 ```
+
+`26,214,400 × 4096` bytes is 100GiB (107.37GB), not 100GB. Confirm the selected `flbas` value and the controller's namespace-management capability before deleting an existing namespace.
 
 ### Attach Namespace
 
 ```bash
-# Attach namespace to controller
-sudo nvme attach-ns /dev/nvme0 -n 1 -c 0
+# Discover the controller identifiers, then attach using the required CNTLID
+sudo nvme list-ctrl /dev/nvme0
+sudo nvme attach-ns /dev/nvme0 -n 1 -c <controller_id>
 ```
 
 ## Verification
@@ -149,21 +162,28 @@ sudo nvme attach-ns /dev/nvme0 -n 1 -c 0
 # Check current format
 sudo nvme id-ns /dev/nvme0n1 -H | grep -A5 "LBA Format"
 
-# Check block size
-sudo blockdev --getbsz /dev/nvme0n1
+# Check logical and physical sector sizes
+sudo blockdev --getss /dev/nvme0n1
+sudo blockdev --getpbsz /dev/nvme0n1
 
 # Verify device is ready
 sudo nvme list
 ```
 
-### Test the Device
+### Test Through a Disposable File
+
+After recreating and mounting a filesystem, test through a disposable file. Writing directly to `/dev/nvme0n1` would overwrite the partition table or filesystem metadata.
 
 ```bash
-# Write test pattern
-sudo dd if=/dev/zero of=/dev/nvme0n1 bs=1M count=100 status=progress
+# Example only: substitute the actual test mount point
+sudo dd if=/dev/zero of=/mnt/nvme-test/format-check.bin \
+  bs=1M count=100 conv=fsync status=progress
 
 # Read test
-sudo dd if=/dev/nvme0n1 of=/dev/null bs=1M count=100 status=progress
+sudo dd if=/mnt/nvme-test/format-check.bin of=/dev/null \
+  bs=1M status=progress
+
+sudo rm -- /mnt/nvme-test/format-check.bin
 ```
 
 ## Troubleshooting
@@ -193,15 +213,21 @@ sudo mdadm --detail --scan
 
 **Solutions:**
 ```bash
-# Detach namespace first
-sudo nvme detach-ns /dev/nvme0 -n 1 -c 0
+# Discover the controller ID, then detach the namespace from that controller
+sudo nvme list-ctrl /dev/nvme0
+sudo nvme detach-ns /dev/nvme0 -n 1 -c <controller_id>
 
 # Then delete
 sudo nvme delete-ns /dev/nvme0 -n 1
 
-# Reset NVMe subsystem (last resort)
+# Reset this controller if the command's recovery guidance requires it
 sudo nvme reset /dev/nvme0
+
+# A subsystem reset is a distinct, wider operation; use it only when required
+sudo nvme subsystem-reset /dev/nvme0
 ```
+
+Do not treat the two reset commands as interchangeable. A subsystem reset can affect every controller in the NVMe subsystem.
 
 ### Performance After Format
 
@@ -220,8 +246,8 @@ sudo mkfs.ext4 -b 4096 /dev/nvme0n1
 
 1. **Always backup data** before any format operation
 2. **Verify supported formats** using `nvme id-ns` before formatting
-3. **Use 4KB blocks** for modern systems (better performance)
-4. **Align filesystems** to match the LBA format
+3. **Choose the LBA format for the workload and compatibility requirements**; 4096-byte LBAs are not universally faster
+4. **Create normally aligned partitions and filesystems** after the format change
 5. **Test after formatting** to ensure stability
 6. **Document your configuration** for future reference
 
@@ -233,7 +259,7 @@ sudo mkfs.ext4 -b 4096 /dev/nvme0n1
 # 1. Backup data
 sudo dd if=/dev/nvme0n1 of=/backup/nvme-backup.img bs=4M
 
-# 2. Format to 4KB
+# 2. Use the verified LBAF index for this device; 1 is only an example
 sudo nvme format /dev/nvme0n1 --lbaf=1 --ses=1
 
 # 3. Create aligned partition
@@ -250,26 +276,29 @@ sudo mkfs.ext4 -b 4096 /dev/nvme0n1p1
 # Cryptographic erase and format to 4KB
 sudo nvme format /dev/nvme0n1 --lbaf=1 --ses=2
 
-# Verify secure erase completed
-sudo nvme smart-log /dev/nvme0 | grep "percentage_used"
+# Confirm the command completed successfully, then re-read namespace state
+sudo nvme id-ns /dev/nvme0n1 -H
 ```
+
+The SMART `percentage_used` field is an endurance indicator; it does not prove that a cryptographic erase occurred. A successful format completion is controller-reported evidence, not an independent audit of media sanitisation. Use your organisation's approved sanitisation and verification procedure when assurance matters.
 
 ## Important Warnings
 
 - **Data loss:** Formatting destroys all data on the device.
 - **No undo:** Format operations cannot be reversed.
 - **Device compatibility:** Not all devices support all formats.
+- **Namespace support:** Many consumer controllers do not support creating, deleting or attaching namespaces.
 - **System disruption:** Never format a device in use by the system.
 
 ## Additional Resources
 
 - [NVMe CLI Documentation](https://github.com/linux-nvme/nvme-cli)
 - [NVMe Specification](https://nvmexpress.org/specifications/)
-- Linux NVMe Subsystem Documentation
+- [`blockdev` manual](https://man7.org/linux/man-pages/man8/blockdev.8.html)
 
 ## Summary
 
-Changing NVMe format is straightforward but requires careful attention to:
+Changing an NVMe LBA format is a destructive maintenance operation that requires careful attention to:
 - Backing up data
 - Verifying supported formats
 - Proper secure erase selection

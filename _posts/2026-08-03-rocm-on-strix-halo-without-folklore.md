@@ -43,7 +43,7 @@ AMD's current [Strix Halo system-optimisation guide](https://rocm.docs.amd.com/e
 
 That distinction matters. Linux reporting only 1GiB of visible VRAM does **not** mean this machine can load only a 1GiB model. The active backend is using the much larger shared-memory path. On this machine, `/sys` exposes a 120GiB GTT aperture and a 122B model can run fully resident. The runtime and kernel still have to support that path correctly; a large number in a BIOS menu cannot substitute for that support.
 
-There is also a release boundary. AMD publishes a `gfx1151` payload in its [ROCm installer documentation](https://rocm.docs.amd.com/en/develop/install/rocm.html), but the support table and required kernel fixes are version-specific. This system's ROCm build and kernel combination has passed my workloads. I would not turn that observation into a claim that an arbitrary distribution kernel, packaged runtime or older stable release will behave identically.
+There is also a release boundary. AMD publishes a `gfx1151` payload in its [ROCm 7.2 installer documentation](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/), but the support table and required kernel fixes are version-specific. This system's ROCm build and kernel combination has passed my workloads. I would not turn that observation into a claim that an arbitrary distribution kernel, packaged runtime or older stable release will behave identically.
 
 ## Qualification starts with provenance
 
@@ -74,7 +74,7 @@ ls -l /dev/kfd /dev/dri/renderD*
 
 The service account needs the relevant render/video permissions. Passing `rocminfo` as an interactive user does not prove that the system service can open the same devices.
 
-For a direct build, the official [`llama.cpp` build guide](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md) is the source of truth. The useful principle is to declare the backend and target explicitly, then keep the resulting binary separate from the Vulkan build:
+For a direct build, the official [`llama.cpp` build guide at the revision checked for this article](https://github.com/ggml-org/llama.cpp/blob/fa72aec/docs/build.md) is the source of truth. The useful principle is to declare the backend and target explicitly, then keep the resulting binary separate from the Vulkan build:
 
 ```bash
 cmake -S . -B build-rocm \
@@ -179,4 +179,4 @@ The caveats are equally real. This is a development stack, the kernel and ROCm c
 
 The product conclusion is more useful: **ROCm on Strix Halo is a viable local-inference path when the build provenance, shared-memory model and lifecycle contract are treated as part of the product.**
 
-*Sources checked 3 August 2026: [AMD Strix Halo system optimisation](https://rocm.docs.amd.com/en/docs-7.2.0/how-to/system-optimization/strixhalo.html), [AMD ROCm installer documentation](https://rocm.docs.amd.com/en/develop/install/rocm.html), the official [`llama.cpp` build guide](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md), [Lemonade configuration](https://lemonade-server.ai/docs/guide/configuration/) and [Lemonade's `llama.cpp` backend guide](https://lemonade-server.ai/docs/guide/configuration/llamacpp/). Observed versions and service state come from the EVO-X3 itself.*
+*Sources checked 3 August 2026: [AMD Strix Halo system optimisation](https://rocm.docs.amd.com/en/docs-7.2.0/how-to/system-optimization/strixhalo.html), [AMD ROCm 7.2 installer documentation](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.0/), the official [`llama.cpp` build guide at commit `fa72aec`](https://github.com/ggml-org/llama.cpp/blob/fa72aec/docs/build.md), [Lemonade configuration](https://lemonade-server.ai/docs/guide/configuration/) and [Lemonade's `llama.cpp` backend guide](https://lemonade-server.ai/docs/guide/configuration/llamacpp/). Observed versions and service state come from the EVO-X3 itself.*
