@@ -3,7 +3,7 @@ layout: post
 title: "EVO-X3 from BIOS to Lemonade: the reproducible build"
 seo_title: "EVO-X3 Ubuntu, GTT and Lemonade installation guide"
 date: 2026-08-06
-last_modified_at: 2026-08-06 14:00:00 +0100
+last_modified_at: 2026-08-06 09:50:00 +0100
 permalink: /blog/2026/08/06/evox3-bios-to-lemonade-reproducible-build/
 categories: [local-ai, linux, automation]
 tags: [gmktec, evo-x3, strix-halo, ubuntu, rocm, gtt, lemonade, autoinstall]
@@ -16,7 +16,7 @@ image_alt: "EVO X3 from BIOS to LLM server, showing 1GiB fixed UMA and a 120GiB 
 image_type: image/png
 ---
 
-> **Release record:** this guide describes `evox3-llm-provisioner` 2026.08.06.1. The repository keeps tested versions separate from the moving stable channel, and it does not claim that every Lemonade backend is a ROCm 7.14 userspace runtime.
+> **Release record:** this guide describes `evox3-llm-provisioner` 2026.08.06.2. The repository keeps tested versions separate from the moving stable channel, and it does not claim that every Lemonade backend is a ROCm 7.14 userspace runtime.
 
 The first seven parts of this series answer a sequence of engineering questions: what the EVO-X3 hardware actually exposes, how ROCm and Vulkan behave, which quantizations are useful, what survives long context, and which DeepSeek profile can be defended with evidence. This part turns those findings into a product someone else can install.
 
