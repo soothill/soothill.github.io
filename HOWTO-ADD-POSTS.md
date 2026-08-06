@@ -26,7 +26,7 @@ Every post must start with YAML front matter (metadata between `---` markers):
 layout: post
 title: "Your Post Title Here"
 date: 2025-10-15
-categories: [Storage, Linux]
+categories: [storage, linux]
 tags: [iscsi, storage, linux, tutorial]
 author: Darren Soothill
 description: "A brief description of your post for SEO (150-160 characters)"
@@ -96,7 +96,7 @@ Create `_posts/2025-10-15-example-post.md`:
 layout: post
 title: "Example Technical Guide"
 date: 2025-10-15
-categories: [Tutorial, Linux]
+categories: [tutorial, linux]
 tags: [example, tutorial, guide]
 author: Darren Soothill
 description: "An example blog post showing the structure and formatting"
@@ -217,7 +217,7 @@ GitHub will automatically build and deploy your site within a few minutes.
 
 ## Tips and Best Practices
 
-### SEO Optimization
+### SEO Optimisation
 
 1. **Title:** Keep it under 60 characters
 2. **Description:** 150-160 characters, compelling summary
@@ -235,11 +235,11 @@ GitHub will automatically build and deploy your site within a few minutes.
 
 ### Categories and Tags
 
-**Categories:** Broad topics (Storage, Linux, Networking)
+**Categories:** Broad topics using lowercase slugs (`storage`, `linux`, `networking`). The topic index applies display capitalisation.
 **Tags:** Specific keywords (nvme, spdk, rdma, ubuntu)
 
 ```yaml
-categories: [Storage, NVMe]
+categories: [storage, nvme]
 tags: [nvme-of, roce, rdma, ubuntu, enterprise-storage]
 ```
 

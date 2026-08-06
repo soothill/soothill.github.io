@@ -8,31 +8,31 @@ permalink: /documents/portfolio.html
 <header class="document-hero shell">
   <p class="eyebrow"><span>Selected work</span><span>Product ↔ systems</span></p>
   <h1>Questions taken<br><em>to the bench.</em></h1>
-  <p>A selection of the hands-on investigations that inform how I think about infrastructure products.</p>
+  <p>Four investigations showing the question, the method and the decision or reusable output that followed.</p>
 </header>
 
 <section class="work-index shell">
   <article class="work-entry work-entry--feature">
-    <div class="work-entry__meta"><span>01</span><small>Current investigation</small></div>
-    <div><h2>Local LLMs on Strix Halo</h2><p>Testing whether a high-memory x86 APU can become a credible local-AI product platform once software maturity, model fit, cost, power and sustained experience are considered together.</p><a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Open the series roadmap <span aria-hidden="true">↗</span></a></div>
-    <ul><li>Product framing</li><li>Hardware capability</li><li>Runtime evaluation</li><li>Reproducible measurement</li></ul>
+    <div class="work-entry__meta"><span>01</span><small>Completed series</small></div>
+    <div><h2>Local LLMs on Strix Halo</h2><p><strong>Question:</strong> can a 128GB x86 APU become a credible local-AI platform? <strong>Approach:</strong> qualify the hardware, software stack, model fit, backend performance and sustained behaviour. <strong>Outcome:</strong> a seven-part evidence base and an operating recommendation that separates demonstrated capability from deployment readiness.</p><a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Read the complete series <span aria-hidden="true">↗</span></a></div>
+    <ul><li>Product framing</li><li>Seven field notes</li><li>Measured trade-offs</li><li>Operating recommendation</li></ul>
   </article>
 
   <article class="work-entry">
     <div class="work-entry__meta"><span>02</span><small>Storage path</small></div>
-    <div><h2>SPDK NVMe-oF target</h2><p>A complete path from userspace storage framework and hugepages to an RDMA-backed target, persistent service and working troubleshooting model.</p><a class="text-link" href="{{ '/blog/2025/10/10/spdk-nvmeof-target-setup/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
-    <ul><li>SPDK</li><li>NVMe-oF</li><li>RDMA</li><li>Linux</li></ul>
+    <div><h2>SPDK NVMe-oF target</h2><p><strong>Question:</strong> what is the smallest reproducible path from an Ubuntu host to an SPDK RDMA target? <strong>Approach:</strong> pin the release, define the target declaratively and make service ownership explicit. <strong>Output:</strong> a lab-oriented setup with verification, host-access controls and troubleshooting boundaries.</p><a class="text-link" href="{{ '/blog/2025/10/10/spdk-nvmeof-target-setup/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
+    <ul><li>SPDK</li><li>NVMe-oF</li><li>RDMA</li><li>Service lifecycle</li></ul>
   </article>
 
   <article class="work-entry">
     <div class="work-entry__meta"><span>03</span><small>Infrastructure</small></div>
-    <div><h2>Kernel NVMe-oF over RoCE</h2><p>Persistent target configuration across network, kernel modules, namespaces and service lifecycle — with enough context to make the result repeatable.</p><a class="text-link" href="{{ '/blog/2025/10/10/nvme-over-fabrics-roce-setup/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
-    <ul><li>RoCE</li><li>RDMA</li><li>Ubuntu</li><li>Operations</li></ul>
+    <div><h2>Kernel NVMe-oF over RoCE</h2><p><strong>Question:</strong> how should a persistent kernel target be assembled without hiding destructive storage and network assumptions? <strong>Approach:</strong> use stable device identities, explicit host access and end-to-end RoCE prerequisites. <strong>Output:</strong> an annotated lab configuration with safer lifecycle checks.</p><a class="text-link" href="{{ '/blog/2025/10/10/nvme-over-fabrics-roce-setup/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
+    <ul><li>RoCE</li><li>Stable device IDs</li><li>Access control</li><li>Operations</li></ul>
   </article>
 
   <article class="work-entry">
     <div class="work-entry__meta"><span>04</span><small>Performance tooling</small></div>
-    <div><h2>S3 multipart benchmarking</h2><p>A practical tool and methodology for understanding how object size, range requests and concurrency affect S3-compatible download throughput.</p><a class="text-link" href="{{ '/blog/2026/02/22/s3-benchmarking-multipart-uploads-downloads/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
-    <ul><li>Object storage</li><li>Go</li><li>Concurrency</li><li>Measurement</li></ul>
+    <div><h2>S3 ranged-download benchmarking</h2><p><strong>Question:</strong> where does an S3-compatible download path saturate? <strong>Approach:</strong> sweep byte-range size and worker concurrency while separating network throughput from local-disk performance. <strong>Output:</strong> a Go tool and repeatable method for comparing endpoints and configurations.</p><a class="text-link" href="{{ '/blog/2026/02/22/s3-benchmarking-multipart-uploads-downloads/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
+    <ul><li>Object storage</li><li>Go</li><li>Ranged GETs</li><li>Repeatable measurement</li></ul>
   </article>
 </section>

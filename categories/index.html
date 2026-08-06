@@ -14,10 +14,11 @@ description: Browse Soot / Silicon field notes by technical topic.
 <div class="topic-index shell">
   {% for category in categories %}
     {% if category != '' %}
+    {% capture category_label %}{% case category %}{% when 'aws' %}AWS{% when 'local-ai' %}Local AI{% when 'nvme' %}NVMe{% when 's3' %}S3{% when 'spdk' %}SPDK{% else %}{{ category | capitalize }}{% endcase %}{% endcapture %}
     <section id="{{ category | slugify }}" class="topic-section">
       <header>
         <span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
-        <h2>{{ category }}</h2>
+        <h2>{{ category_label | strip }}</h2>
       </header>
       <div>
         {% assign category_posts = site.posts | where_exp: 'post', 'post.categories contains category' %}

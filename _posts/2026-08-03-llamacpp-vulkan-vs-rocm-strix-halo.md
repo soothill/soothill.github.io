@@ -106,7 +106,7 @@ At one interactive client, `llama.cpp` ROCm delivered the highest generation rat
 
 That is a better decision table than “backend A wins”. If first-token latency for two simultaneous users is the main requirement, vLLM GPTQ is compelling even though it loses the one-client throughput test. If one person is working locally, `llama.cpp` ROCm is the faster 122B interactive path. If two clients need maximum aggregate decode, Vulkan wins this run.
 
-The vLLM comparison is also outside its official sweet spot. The project's [Qwen3.5 recipes](https://github.com/vllm-project/recipes/blob/main/Qwen/Qwen3.5.md) validate data-centre accelerators and multi-GPU configurations, not this 128GB integrated-memory desktop. It is a useful control and an interesting engineering path, not evidence of official support for this exact host.
+The vLLM comparison is also outside its official sweet spot. The project's [Qwen3.5 recipe at the revision checked for this article](https://github.com/vllm-project/recipes/blob/490e06b5891115bd14913894279afc94c55cafbd/Qwen/Qwen3.5.md) validates data-centre accelerators and multi-GPU configurations, not this 128GB integrated-memory desktop. It is a useful control and an interesting engineering path, not evidence of official support for this exact host.
 
 ## Settings that mattered, and settings that did not
 
@@ -140,4 +140,4 @@ The conclusion is not that Vulkan or ROCm has won Strix Halo. It is that **backe
 
 That is the subject of [the next article: finding the useful quant](/blog/2026/08/03/finding-the-useful-quant-strix-halo/).
 
-*Sources checked 3 August 2026: the official [`llama.cpp` repository](https://github.com/ggml-org/llama.cpp), [Lemonade's `llama.cpp` backend documentation](https://lemonade-server.ai/docs/guide/configuration/llamacpp/), [Lemonade's experimental vLLM backend documentation](https://lemonade-server.ai/docs/guide/configuration/vllm/), the [vLLM Qwen3.5 recipe](https://github.com/vllm-project/recipes/blob/main/Qwen/Qwen3.5.md) and the [Qwen3.5-122B-A10B model card](https://huggingface.co/Qwen/Qwen3.5-122B-A10B). All performance figures above come from retained same-machine benchmark artefacts.*
+*Sources checked 3 August 2026: the official [`llama.cpp` repository](https://github.com/ggml-org/llama.cpp), [Lemonade's `llama.cpp` backend documentation](https://lemonade-server.ai/docs/guide/configuration/llamacpp/), [Lemonade's experimental vLLM backend documentation](https://lemonade-server.ai/docs/guide/configuration/vllm/), the [vLLM Qwen3.5 recipe at commit `490e06b`](https://github.com/vllm-project/recipes/blob/490e06b5891115bd14913894279afc94c55cafbd/Qwen/Qwen3.5.md) and the [Qwen3.5-122B-A10B model card](https://huggingface.co/Qwen/Qwen3.5-122B-A10B). All performance figures above come from retained same-machine benchmark artefacts.*

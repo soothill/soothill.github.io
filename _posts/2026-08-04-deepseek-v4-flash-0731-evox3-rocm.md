@@ -1,19 +1,19 @@
 ---
 layout: post
-title: "DeepSeek V4 Flash 0731 on evox3: the repeat that changed deployment"
+title: "DeepSeek V4 Flash 0731 on EVO-X3: the repeat that changed deployment"
 seo_title: "DeepSeek V4 Flash 0731 on ROCm 7.14: a measured 10× experiment"
 date: 2026-08-04 14:00:00 +0100
-last_modified_at: 2026-08-05 04:24:00 +0100
+last_modified_at: 2026-08-06
 permalink: /blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/
 categories: [local-ai, benchmarks, engineering]
 tags: [deepseek-v4, rocm, lemonade, strix-halo, long-context]
 author: Darren Soothill
 series: "Local LLMs on Strix Halo"
 series_order: 7
-description: "DeepSeek V4 Flash 0731 on evox3 and ROCm 7.14: a measured 10× experiment, the repeat that changed deployment, and a four-hour 32K thermal soak."
+description: "DeepSeek V4 Flash 0731 on an EVO-X3 with ROCm 7.14: a measured 10× experiment, the repeat that changed deployment, a four-hour 32K thermal soak and a 20-variant cold-load audit."
 ---
 
-> **Test record:** I measured the pinned DeepSeek V4 Flash 0731 target on `evox3`, an AMD Ryzen AI MAX+ 395 system with 128GB physical memory, using ROCm 7.14.0. A sparse four-expert experiment processed 32,512 prompt tokens at **146.65 tok/s**, 10.06 times the first working configuration, and completed a one-pass 130,816-token run at **110.22 tok/s**. Repeated requests were not answer-stable, so I did not deploy that fast path as the default. The exact production profile then completed a 4.09-hour, fully saturated 32K soak with no observed progressive leak signal, performance decline or thermal fault.
+> **Test record:** I measured the pinned DeepSeek V4 Flash 0731 target on the GMKtec EVO-X3 host named `evox3`, an AMD Ryzen AI MAX+ 395 system with 128GB physical memory, using ROCm 7.14.0. A sparse four-expert experiment processed 32,512 prompt tokens at **146.65 tok/s**, 10.06 times the first working configuration, and completed a one-pass 130,816-token run at **110.22 tok/s**. Repeated requests were not answer-stable, so I did not deploy that fast path as the default. The exact production profile then completed a 4.09-hour, fully saturated 32K soak with no observed progressive leak signal, performance decline or thermal fault. A later service-cold inventory started **20 complete model variants**, all of which returned exact `OK`; the full loading-time table is included below.
 
 The first deployment did not produce a slow benchmark. It did not load.
 
@@ -21,7 +21,7 @@ The new [official DeepSeek V4 Flash 0731 release](https://huggingface.co/deepsee
 
 That failure set the order of work: make the new weights load, measure each cumulative change, and keep testing the answer after the attractive number appears.
 
-## The optimization ladder
+## The optimisation ladder
 
 Every stage used the same request: 32,512 prompt tokens, temperature zero, target-only batch one, caches disabled and up to 64 output tokens. The experimental profile used sparse prefill and four routed experts. Each row began in a fresh server and had to return exactly `OK` on its first request.
 
@@ -76,6 +76,52 @@ The registered model is `DeepSeek-V4-Flash-0731-ROCmFP3-MIX`. The 10.8GB [DSpark
 
 The lifecycle boundary is tested too: Lemonade unloaded the attached container cleanly, reloaded the exact profile in 23 seconds, and returned exact `OK` from a short post-reload smoke test. I left the model loaded and healthy on `evox3`.
 
+## How long the installed models take to load
+
+I later audited every deployable model variant I found on `evox3`, rather than publishing only the current DeepSeek number. These are **service-cold** measurements: the previous model was unloaded, its backend process was absent, and the clock ran from the load or launch request until the model API reported ready. Tests ran sequentially so each backend had the available accelerator and memory resources.
+
+I did not globally discard the Linux page cache. These figures therefore represent the operational wait after an unload or service start, not a power-cycle or storage-cache-cold boot. The Lemonade registry loads used a 32,768-token context; the direct GGUF sweep used 4,096; the superseded DeepSeek preview used 8,192; FastFlowLM and the qualified vLLM launch retained their runtime profiles. That makes this an operations table, not a claim that unlike backends have been compared under one inference workload.
+
+### Registered and service-format models
+
+| Model | Serving path | Ready | API check | Result |
+| --- | --- | ---: | ---: | --- |
+| Tiny test GGUF | Lemonade / ROCm 7.14 | 0.715s | 0.063s | exact `OK` |
+| Qwen3 Coder 30B-A3B Q4_K_S | Lemonade / ROCm 7.14 | 7.324s | 0.177s | exact `OK` |
+| Qwen3.5 122B-A10B split Q4_K_XL | Lemonade / ROCm 7.14 | 38.211s | 0.352s | exact `OK`; thinking disabled for the visible-answer check |
+| DeepSeek V4 Flash 0731 ROCmFP3-MIX | Lemonade / Lucebox ROCm 7.14 | 27.535s | 0.847s | exact `OK` |
+| Qwen3.5 0.8B NPU2 | FastFlowLM / NPU | 3.044s | 0.509s | exact `OK` |
+| Qwen3.5 4B NPU2 | FastFlowLM / NPU | 4.417s | 1.310s | exact `OK` |
+| Qwen3.6 35B-A3B NPU2 | FastFlowLM / NPU | 16.611s | 2.865s | exact `OK` |
+| Phi-3.5 Mini production package | NPU prefill / GPU decode | 15.470s | 20.600s | exact `OK` when isolated |
+| Qwen3.5 122B-A10B GPTQ Int4 | vLLM / ROCm 7.14 | 73.522s | 0.505s | exact `OK` |
+| Superseded DeepSeek V4 Flash preview | Lucebox / ROCm 7.14 | 32.707s | 0.997s | exact `OK` |
+
+### Retained GGUF sweep and alternate representations
+
+| Model artefact | Ready | API check | Result |
+| --- | ---: | ---: | --- |
+| Qwen3.5 0.8B Q4_K_XL | 1.551s | 0.130s | exact `OK` |
+| Qwen3.5 2B Q4_K_XL | 1.553s | 0.104s | exact `OK` |
+| Qwen3.5 4B Q4_K_XL | 2.062s | 0.139s | exact `OK` |
+| Qwen3.5 9B Q4_K_XL | 3.448s | 0.149s | exact `OK` |
+| Qwen3.5 27B Q4_K_XL | 10.189s | 0.427s | exact `OK` |
+| Qwen3.5 35B-A3B Q4_K_XL | 8.829s | 0.180s | exact `OK` |
+| Qwen3.5 397B-A17B IQ1_M | 66.067s | 0.586s | exact `OK` |
+| Qwen3.5 122B-A10B consolidated Q4_K_XL | 35.574s | 0.364s | exact `OK` |
+| Qwen3.5 0.8B F16 | 1.547s | 0.143s | exact `OK` |
+| Qwen3.5 0.8B BF16 | 1.547s | 0.114s | exact `OK` |
+
+That is **20/20 complete artefacts** loaded and functionally checked. A twenty-first Lemonade registry name, `Qwen3-Coder-30B-A3B-Instruct-GGUF`, failed in 0.418 seconds because its Hugging Face cache contained a ref but no weights. I do not count that as a corrupt model: the complete local Q4_K_S representation is the 7.324-second row above and works correctly.
+
+The 22.212-second DeepSeek figure in the lifecycle section and the 27.535-second figure in this table answer slightly different questions. The former is the median of six reloads within one fixed lifecycle test; the latter is the single service-cold observation in the sequential cross-model inventory. Both protocols are recorded rather than combining them into a misleading average.
+
+After this audit I changed Lemonade's persistent default from Vulkan to ROCm 7.14 and repeated two backend-free loads. Qwen3 Coder became ready in 7.385 seconds, 0.8% from its audit result; DeepSeek 0731 became ready in 27.736 seconds, 0.7% from its audit result. Both again returned exact `OK`, so the default-backend change introduced no observed cold-load regression beyond ordinary run-to-run variation.
+
+The Phi result also exposed an operating boundary. Phi works by itself, but issuing a Phi generation while the roughly 97GB DeepSeek process is resident exhausts the 128GB machine and invokes the kernel OOM killer. I therefore operate those two services one at a time; a health endpoint alone is not evidence that they are safe to use concurrently.
+
+The exact machine-readable results are available as [CSV](/assets/data/evox3-model-loading-times-2026-08-05.csv).
+
 ## I looked for memory leakage
 
 I then kept the exact profile in one Lemonade process for a 28-minute allocation soak. The sequence was 100 identical short requests, a 256→1K→2K→4K→8K context ramp, followed by 4K→2K→1K→8K, another 100 short requests, and a 30-second idle settle. One-second telemetry produced 1,623 samples. All **209/209** responses were exact `OK`.
@@ -118,7 +164,7 @@ The first request raised GTT by **190MiB**, from 515.7 to 705.7MiB, as the 32K w
 
 *The retained GTT allocation is a bounded workspace plateau, not request-by-request growth.*
 
-One-second telemetry recorded 14,490 GPU samples. GPU busy averaged 99.92%, package power averaged 98.4W and the edge temperature averaged 69.6°C. Temperature peaked at 73°C, comfortably below the 90°C safety cutoff, while the clock held near 2.9GHz.
+One-second telemetry recorded 14,490 GPU samples. GPU busy averaged 99.92%, package power averaged 98.4W and the edge temperature averaged 69.6°C. Temperature peaked at 73°C, below the test's predefined 90°C abort threshold, while the clock held near 2.9GHz.
 
 ![One-second evox3 telemetry shows GPU busy near 100 percent, package power near 98 watts and edge temperature near 70 degrees Celsius across the full 32K soak.](/assets/images/deepseek-0731-evox3-thermal-over-time.svg)
 
@@ -128,6 +174,6 @@ ECC correctable, deferred and uncorrectable counts did not change. Kernel and se
 
 So this longer test found **no progressive memory-leak signal, performance degradation or thermal problem** under sustained 32K production load. It remains bounded evidence: four hours cannot rule out a failure that needs days to emerge.
 
-The useful result is therefore more nuanced than “10× faster”. DeepSeek V4 Flash 0731 now loads and runs under Lemonade on `evox3`; the sparse path established a compelling performance ceiling; repeated requests exposed a correctness boundary; the production default moved back to the slower exact path; and that exact service stayed stable through both a 215-request allocation test and a 4.09-hour saturated 32K soak. That is the optimization outcome I would rather operate—and publish.
+The useful result is therefore more nuanced than “10× faster”. DeepSeek V4 Flash 0731 now loads and runs under Lemonade on `evox3`; the sparse path established a compelling performance ceiling; repeated requests exposed a correctness boundary; the production default moved back to the slower exact path; and that exact service stayed stable through both a 215-request allocation test and a 4.09-hour saturated 32K soak. That is the optimisation outcome I would rather operate—and publish.
 
 For the host and runtime choices behind this deployment, see [ROCm on Strix Halo without folklore](/blog/2026/08/03/rocm-on-strix-halo-without-folklore/).
