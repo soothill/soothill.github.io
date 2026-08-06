@@ -7,10 +7,10 @@ import json
 import re
 import sys
 import xml.etree.ElementTree as ET
-from collections import defaultdict
+from collections import Counter, defaultdict
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import unquote, urljoin, urlparse
 
 SITE = Path(sys.argv[1] if len(sys.argv) > 1 else "_site")
 CANONICAL_HOST = "www.soothill.io"
@@ -26,6 +26,8 @@ class PageParser(HTMLParser):
         self.canonical = ""
         self.robots = ""
         self.missing_alt = 0
+        self.ids: list[str] = []
+        self.links: list[str] = []
         self.json_ld: list[str] = []
         self._in_title = False
         self._in_json_ld = False
@@ -33,6 +35,11 @@ class PageParser(HTMLParser):
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = dict(attrs)
+        element_id = values.get("id")
+        if element_id:
+            self.ids.append(element_id)
+        if tag == "a" and values.get("href"):
+            self.links.append(values["href"] or "")
         if tag == "title":
             self._in_title = True
         elif tag == "meta":
@@ -108,6 +115,9 @@ def main() -> int:
                 json.loads(payload)
             except json.JSONDecodeError as exc:
                 errors.append(f"Invalid JSON-LD on {relative}: {exc}")
+        for element_id, count in Counter(parser.ids).items():
+            if count > 1:
+                errors.append(f"Duplicate id {element_id!r} on {relative}: {count} occurrences")
 
     for title, paths in titles.items():
         if len(paths) > 1:
@@ -116,6 +126,7 @@ def main() -> int:
         if len(paths) > 1:
             warnings.append(f"Duplicate description on {', '.join(paths)}")
 
+    sitemap_paths: set[str] = set()
     sitemap = SITE / "sitemap.xml"
     if not sitemap.exists():
         errors.append("Missing sitemap.xml")
@@ -123,6 +134,7 @@ def main() -> int:
         root = ET.parse(sitemap).getroot()
         namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
         urls = [node.text or "" for node in root.findall("sm:url/sm:loc", namespace)]
+        sitemap_paths = {urlparse(url).path for url in urls}
         if len(urls) != len(set(urls)):
             errors.append("Duplicate URLs in sitemap")
         for url in urls:
@@ -136,6 +148,30 @@ def main() -> int:
                 errors.append(f"Sitemap URL has no built HTML page: {url}")
             elif page.canonical != url:
                 errors.append(f"Canonical mismatch for {url}: {page.canonical}")
+
+    inbound: dict[str, set[str]] = defaultdict(set)
+    for source_path, page in pages.items():
+        source_url = f"https://{CANONICAL_HOST}{source_path}"
+        for href in page.links:
+            target = urlparse(urljoin(source_url, href))
+            if target.scheme not in {"http", "https"} or target.netloc != CANONICAL_HOST:
+                continue
+
+            target_path = target.path or "/"
+            if target.fragment:
+                fragment = unquote(target.fragment)
+                target_page = pages.get(target_path)
+                if target_page is not None and fragment not in target_page.ids:
+                    errors.append(
+                        f"Missing fragment #{fragment} from {source_path} to {target_path}"
+                    )
+
+            if target_path in sitemap_paths and target_path != source_path:
+                inbound[target_path].add(source_path)
+
+    for path in sorted(sitemap_paths):
+        if path != "/" and not inbound[path]:
+            errors.append(f"Sitemap-only orphan page: {path}")
 
     for forbidden in FORBIDDEN_PATHS:
         if forbidden in pages:
