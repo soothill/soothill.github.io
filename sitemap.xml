@@ -4,7 +4,7 @@ sitemap: false
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {% assign core_pages = '/,/blog/,/categories/,/about/,/series/strix-halo/,/resources.html,/useful-commands.html,/documents/resume.html,/documents/portfolio.html,/documents/publications.html,/documents/certifications.html,/documents/contact-info.html' | split: ',' %}
+  {% assign core_pages = '/,/blog/,/categories/,/about/,/series/strix-halo/,/resources.html,/useful-commands.html,/documents/resume.html,/documents/portfolio.html,/documents/publications.html,/documents/certifications.html,/documents/contact-info.html,/privacy/' | split: ',' %}
   {% for core_url in core_pages %}
     {% assign matched_page = site.pages | where: 'url', core_url | first %}
   <url>
