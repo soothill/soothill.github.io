@@ -144,6 +144,20 @@
     });
   }
 
+  function initCookieSettings() {
+    const button = document.querySelector('[data-cookie-settings]');
+    if (!button) return;
+
+    button.addEventListener('click', () => {
+      if (window.Cookiebot && typeof window.Cookiebot.renew === 'function') {
+        window.Cookiebot.renew();
+        return;
+      }
+      button.textContent = 'Cookie settings unavailable — reload this page';
+      button.disabled = true;
+    });
+  }
+
   function initServiceWorker() {
     if (!('serviceWorker' in navigator) || window.location.protocol !== 'https:') return;
     window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
@@ -155,6 +169,7 @@
     initArticleTools();
     initBackToTop();
     initLegacyHelpers();
+    initCookieSettings();
     initServiceWorker();
   }
 
