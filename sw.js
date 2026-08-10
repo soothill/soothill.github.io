@@ -3,7 +3,7 @@
  * Provides offline support and caching for PWA functionality
  */
 
-const CACHE_NAME = 'soot-silicon-v3-editorial';
+const CACHE_NAME = 'soot-silicon-v4-navigation';
 const OFFLINE_URL = '/offline.html';
 
 // Assets to cache on install
@@ -15,6 +15,7 @@ const PRECACHE_ASSETS = [
     '/assets/css/main.css',
     '/assets/js/main.js',
     '/blog/',
+    '/storage/',
     '/series/strix-halo/',
     '/about/',
     '/offline.html'
