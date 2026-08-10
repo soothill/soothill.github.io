@@ -15,8 +15,8 @@ description: "Practical articles on local AI, storage, NVMe, SPDK and Linux infr
     <p>Browse the archive</p>
     <div>
       <a class="is-active" href="{{ '/blog/' | relative_url }}">All notes</a>
-      <a href="{{ '/series/strix-halo/' | relative_url }}">Local AI</a>
-      <a href="{{ '/categories/' | relative_url }}#storage">Storage</a>
+      <a href="{{ '/series/strix-halo/' | relative_url }}">GPU / Strix Halo</a>
+      <a href="{{ '/storage/' | relative_url }}">Storage</a>
       <a href="{{ '/categories/' | relative_url }}#linux">Linux</a>
     </div>
   </div>
@@ -38,8 +38,9 @@ description: "Practical articles on local AI, storage, NVMe, SPDK and Linux infr
 </section>
 
 <aside class="series-callout shell">
+  {% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
   <div><span class="series-callout__number">01</span><p>Complete series</p></div>
-  <h2>Local LLMs<br>on Strix Halo</h2>
-  <p>A seven-part record of setup choices, runtimes, model fit, throughput, power and the things a short benchmark misses.</p>
+  <h2>AMD Strix Halo<br>GPU field notes</h2>
+  <p>A {{ strix_halo_posts.size }}-part record of setup choices, GPU runtimes, model fit, throughput, power and the things a short benchmark misses.</p>
   <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Read the series <span aria-hidden="true">↗</span></a>
 </aside>

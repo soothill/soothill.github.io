@@ -1,18 +1,26 @@
 ---
 layout: default
-title: Local LLMs on Strix Halo
-description: "A practical series on running local large language models on AMD Strix Halo: setup, runtimes, model fit, throughput, power and sustained use."
+title: AMD Strix Halo GPU & local AI
+seo_title: AMD Strix Halo GPU benchmarks and local AI field notes
+description: "AMD Strix Halo GPU benchmarks and local-AI field notes covering ROCm, Vulkan, llama.cpp, model fit, memory, power, thermals and sustained Linux workloads."
 schema_type: CollectionPage
+schema_series: true
 ---
 
 {% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
+{% assign strix_halo_posts_ordered = strix_halo_posts | reverse %}
 
 <header class="series-hero">
   <div class="shell series-hero__inner">
     <div>
-      <p class="eyebrow"><span>Series 01</span><span>Complete / 2026</span></p>
-      <h1>Local LLMs<br>on <em>Strix Halo.</em></h1>
-      <p class="series-hero__dek">A product investigation from the hardware up: model fit, real throughput and the small decisions that decide whether a powerful local AI machine is genuinely useful.</p>
+      <p class="eyebrow"><span>GPU field notes / Series 01</span><span>Complete / 2026</span></p>
+      <h1>AMD Strix Halo<br><em>GPU &amp; local AI.</em></h1>
+      <p class="series-hero__dek">A product investigation from the hardware up: AMD Strix Halo GPU performance, local-LLM model fit, real throughput and the small decisions that decide whether a powerful local AI machine is genuinely useful.</p>
+      <nav class="series-jump" aria-label="Strix Halo topics">
+        <a href="#hardware">Hardware &amp; memory</a>
+        <a href="#benchmarks">GPU benchmarks</a>
+        <a href="#test-method">Test method &amp; data</a>
+      </nav>
     </div>
     <div class="series-spec" aria-label="Series scope">
       <div><span>Scope</span><strong>End to end</strong></div>
@@ -23,10 +31,10 @@ schema_type: CollectionPage
   </div>
 </header>
 
-<section class="series-context shell">
+<section class="series-context shell" id="hardware">
   <div>
     <p class="eyebrow"><span>Why this machine</span></p>
-    <h2>Memory changes the product conversation.</h2>
+    <h2>AMD Strix Halo hardware changes the local-AI product conversation.</h2>
   </div>
   <div>
     <p>Strix Halo combines Zen 5 CPU cores, integrated RDNA 3.5 graphics and up to 128 GB of fast system memory. On Linux, GPUVM and a large GTT aperture let supported runtimes address that shared memory without a huge fixed graphics partition.</p>
@@ -35,55 +43,27 @@ schema_type: CollectionPage
   </div>
 </section>
 
-<section class="roadmap shell" aria-labelledby="roadmap-heading">
+<section class="roadmap shell" id="benchmarks" aria-labelledby="roadmap-heading">
   <div class="section-heading">
     <p class="eyebrow"><span>Publication record</span><span>{{ strix_halo_posts.size }} of {{ strix_halo_posts.size }} published</span></p>
-    <h2 id="roadmap-heading">{{ strix_halo_posts.size }} notes, one reproducible path.</h2>
+    <h2 id="roadmap-heading">{{ strix_halo_posts.size }} Strix Halo GPU field notes, one reproducible path.</h2>
   </div>
 
   <ol class="roadmap-list">
-    <li>
-      <div><span>01</span><small>Published</small></div>
-      <h3><a href="{{ '/blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/' | relative_url }}">GMKtec EVO-X3: the baseline</a></h3>
-      <p>A hardware inventory, provable firmware state and repeatable NVMe test from the theoretical link ceiling to a real model-file read.</p>
+    {% for post in strix_halo_posts_ordered %}
+    <li{% if forloop.last %} class="is-active"{% endif %}>
+      <div><span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><small>Published</small></div>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      <p>{{ post.description | default: post.excerpt | strip_html }}</p>
     </li>
-    <li>
-      <div><span>02</span><small>Published</small></div>
-      <h3><a href="{{ '/blog/2026/08/03/rocm-on-strix-halo-without-folklore/' | relative_url }}">ROCm without folklore</a></h3>
-      <p>The tested Linux stack, shared-memory model, software provenance and a recovery path after an experimental failure.</p>
-    </li>
-    <li>
-      <div><span>03</span><small>Published</small></div>
-      <h3><a href="{{ '/blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/' | relative_url }}">llama.cpp: Vulkan vs ROCm</a></h3>
-      <p>Matched prompt processing, generation and API concurrency results that produce different winners for different workloads.</p>
-    </li>
-    <li>
-      <div><span>04</span><small>Published</small></div>
-      <h3><a href="{{ '/blog/2026/08/03/finding-the-useful-quant-strix-halo/' | relative_url }}">Finding the useful quant</a></h3>
-      <p>An eight-model sweep from 0.8B to 397B, separating what fits from what is fast, useful and properly qualified.</p>
-    </li>
-    <li>
-      <div><span>05</span><small>Published</small></div>
-      <h3><a href="{{ '/blog/2026/08/03/qwen35-122b-256k-long-session-test/' | relative_url }}">The long-session test</a></h3>
-      <p>A 101-minute 122B soak at nearly 256K context, including throughput drift, memory slope, thermals and API retention.</p>
-    </li>
-    <li>
-      <div><span>06</span><small>Published</small></div>
-      <h3><a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">A local stack worth keeping</a></h3>
-      <p>The final hardware, model, runtime and operating decisions — including the one service gap still left to close.</p>
-    </li>
-    <li class="is-active">
-      <div><span>07</span><small>Published</small></div>
-      <h3><a href="{{ '/blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/' | relative_url }}">DeepSeek V4 Flash 0731 on EVO-X3</a></h3>
-      <p>A failed first deployment, a 10× sparse-prefill experiment, the repeat-stable ROCm 7.14 profile and a 20-variant cold-load audit.</p>
-    </li>
+    {% endfor %}
   </ol>
 </section>
 
-<section class="test-contract shell">
+<section class="test-contract shell" id="test-method">
   <div>
     <p class="eyebrow"><span>The test contract</span></p>
-    <h2>Every result ships with its context.</h2>
+    <h2>A reproducible Strix Halo GPU test record.</h2>
     <p class="source-note">Download the <a href="{{ '/assets/data/strix-halo-headline-results-2026-08-06.csv' | relative_url }}">headline results and model checksums</a> or the separate <a href="{{ '/assets/data/evox3-model-loading-times-2026-08-05.csv' | relative_url }}">20-variant loading-time dataset</a>. These files transcribe the published measurements; the articles remain the source for protocol, caveats and interpretation.</p>
   </div>
   <ul>

@@ -5,6 +5,7 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
 ---
 
 {% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
+{% assign strix_halo_posts_ordered = strix_halo_posts | reverse %}
 
 <section class="home-hero shell">
   <div class="home-hero__copy">
@@ -62,41 +63,13 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
     </div>
 
     <ol class="series-index">
+      {% for post in strix_halo_posts_ordered %}
       <li>
-        <span>01</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/' | relative_url }}">GMKtec EVO-X3 baseline</a></strong><p>Hardware, firmware state and NVMe performance measured as one Linux system.</p></div>
+        <span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+        <div><strong><a href="{{ post.url | relative_url }}">{{ post.title }}</a></strong><p>{{ post.description | default: post.excerpt | strip_html | truncatewords: 24 }}</p></div>
         <small>Published</small>
       </li>
-      <li>
-        <span>02</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/rocm-on-strix-halo-without-folklore/' | relative_url }}">ROCm without folklore</a></strong><p>The working Linux stack, its support boundary and a recovery runbook.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>03</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/' | relative_url }}">Vulkan versus ROCm</a></strong><p>Matched prompt, generation and concurrency results across two models.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>04</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/finding-the-useful-quant-strix-halo/' | relative_url }}">Find the useful quant</a></strong><p>Fit, context and speed from 0.8B to a 397B-class model.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>05</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/qwen35-122b-256k-long-session-test/' | relative_url }}">Run the long-session test</a></strong><p>122B at a near-full 256K context for more than 100 minutes.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>06</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">Keep the useful stack</a></strong><p>The final product, runtime and operations decisions.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>07</span>
-        <div><strong><a href="{{ '/blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/' | relative_url }}">DeepSeek V4 Flash 0731 on EVO-X3</a></strong><p>A failed first load, a measured 10× experiment, the repeat that changed deployment and a 20-variant cold-load audit.</p></div>
-        <small>Published</small>
-      </li>
+      {% endfor %}
     </ol>
   </div>
 </section>
