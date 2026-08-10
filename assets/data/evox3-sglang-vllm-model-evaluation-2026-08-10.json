@@ -1,0 +1,251 @@
+{
+  "comparisons": [
+    {
+      "model": "qwen3-coder-30b-a3b",
+      "prompt_words": 480,
+      "rows": [
+        {
+          "concurrency": 1,
+          "sglang_completion_tps": 7.904678241472402,
+          "sglang_mean_e2e_ms": 8096.28362901276,
+          "sglang_mean_ttft_ms": 870.9869302110747,
+          "sglang_p50_itl_ms": 114.65996195329353,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -69.27383995876426,
+          "vllm_completion_tps": 25.726215807194937,
+          "vllm_mean_e2e_ms": 2487.5740270130336,
+          "vllm_mean_ttft_ms": 343.89330679550767,
+          "vllm_p50_itl_ms": 34.04752543428913,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 2,
+          "sglang_completion_tps": 13.670676611910215,
+          "sglang_mean_e2e_ms": 9362.699653365416,
+          "sglang_mean_ttft_ms": 1190.7701301155612,
+          "sglang_p50_itl_ms": 130.47514244681224,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -61.04492529949134,
+          "vllm_completion_tps": 35.093442168990904,
+          "vllm_mean_e2e_ms": 3630.835222650785,
+          "vllm_mean_ttft_ms": 499.8870737385005,
+          "vllm_p50_itl_ms": 47.30494046816602,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 4,
+          "sglang_completion_tps": 22.263412126642226,
+          "sglang_mean_e2e_ms": 11497.975201084046,
+          "sglang_mean_ttft_ms": 1759.156051199534,
+          "sglang_p50_itl_ms": 156.1734895221889,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -51.07122071201275,
+          "vllm_completion_tps": 45.50167089925383,
+          "vllm_mean_e2e_ms": 5606.84745417675,
+          "vllm_mean_ttft_ms": 828.9505117572844,
+          "vllm_p50_itl_ms": 73.46340850926936,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 8,
+          "sglang_completion_tps": 34.56303204615242,
+          "sglang_mean_e2e_ms": 14812.471684711636,
+          "sglang_mean_ttft_ms": 3073.951033820049,
+          "sglang_p50_itl_ms": 189.72243304597214,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -55.353314614251346,
+          "vllm_completion_tps": 77.41455328100356,
+          "vllm_mean_e2e_ms": 6600.763165655371,
+          "vllm_mean_ttft_ms": 1539.7466905022156,
+          "vllm_p50_itl_ms": 78.93072650767863,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        }
+      ],
+      "sglang_wins": [],
+      "shared_prefix_words": 0,
+      "source": {
+        "result_dir": "evox3-engine-comparison/results/20260810T101528Z-qwen3-coder-30b-a3b-sglang-vllm-eval-primary"
+      },
+      "workload": "unique-prompts"
+    },
+    {
+      "model": "qwen3-8b",
+      "prompt_words": 480,
+      "rows": [
+        {
+          "concurrency": 1,
+          "sglang_completion_tps": 7.366557563617034,
+          "sglang_mean_e2e_ms": 8687.727963505313,
+          "sglang_mean_ttft_ms": 350.5677693989128,
+          "sglang_p50_itl_ms": 132.31775106396526,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -46.92520077210914,
+          "vllm_completion_tps": 13.87957688165102,
+          "vllm_mean_e2e_ms": 4610.9236411051825,
+          "vllm_mean_ttft_ms": 143.69262600084767,
+          "vllm_p50_itl_ms": 70.66389097599313,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 2,
+          "sglang_completion_tps": 14.817325432267321,
+          "sglang_mean_e2e_ms": 8638.10222504544,
+          "sglang_mean_ttft_ms": 502.6255991368089,
+          "sglang_p50_itl_ms": 129.11420204909518,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -45.96103225431979,
+          "vllm_completion_tps": 27.419704798953703,
+          "vllm_mean_e2e_ms": 4643.137213401496,
+          "vllm_mean_ttft_ms": 216.8845041480381,
+          "vllm_p50_itl_ms": 69.53780603362247,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 4,
+          "sglang_completion_tps": 29.04900063807498,
+          "sglang_mean_e2e_ms": 8812.051265552873,
+          "sglang_mean_ttft_ms": 617.1142425795551,
+          "sglang_p50_itl_ms": 130.06276596570387,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -42.39471365457709,
+          "vllm_completion_tps": 50.42766468321374,
+          "vllm_mean_e2e_ms": 5049.1942035383545,
+          "vllm_mean_ttft_ms": 372.59201756096445,
+          "vllm_p50_itl_ms": 73.1311910203658,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 8,
+          "sglang_completion_tps": 54.941835518816326,
+          "sglang_mean_e2e_ms": 9317.83461470186,
+          "sglang_mean_ttft_ms": 953.8685324354446,
+          "sglang_p50_itl_ms": 132.81366444425657,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -37.118350100904685,
+          "vllm_completion_tps": 87.37340004115697,
+          "vllm_mean_e2e_ms": 5842.518056249537,
+          "vllm_mean_ttft_ms": 609.6111832841416,
+          "vllm_p50_itl_ms": 81.74153399886563,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 16,
+          "sglang_completion_tps": 98.73391056747832,
+          "sglang_mean_e2e_ms": 10369.09558690968,
+          "sglang_mean_ttft_ms": 1646.9530017806392,
+          "sglang_p50_itl_ms": 138.4450799669139,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -35.63430681632026,
+          "vllm_completion_tps": 153.39524160133308,
+          "vllm_mean_e2e_ms": 6667.464296903199,
+          "vllm_mean_ttft_ms": 1264.5996906547225,
+          "vllm_p50_itl_ms": 84.52203898923472,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        }
+      ],
+      "sglang_wins": [],
+      "shared_prefix_words": 400,
+      "source": {
+        "result_dir": "evox3-engine-comparison/results/20260810T103206Z-qwen3-8b-sglang-vllm-eval-shared-prefix-primary"
+      },
+      "workload": "shared-prefix"
+    },
+    {
+      "model": "qwen3-8b",
+      "prompt_words": 480,
+      "rows": [
+        {
+          "concurrency": 1,
+          "sglang_completion_tps": 7.0756389443555054,
+          "sglang_mean_e2e_ms": 9044.943958229851,
+          "sglang_mean_ttft_ms": 708.3953703171574,
+          "sglang_p50_itl_ms": 132.31911754701287,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -46.7260073188244,
+          "vllm_completion_tps": 13.281600623967664,
+          "vllm_mean_e2e_ms": 4818.537904589903,
+          "vllm_mean_ttft_ms": 351.8397640902549,
+          "vllm_p50_itl_ms": 70.69321203744039,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 2,
+          "sglang_completion_tps": 13.515814117966027,
+          "sglang_mean_e2e_ms": 9469.981156795984,
+          "sglang_mean_ttft_ms": 1315.81796904793,
+          "sglang_p50_itl_ms": 129.3991809943691,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -45.7920915233621,
+          "vllm_completion_tps": 24.9332883296742,
+          "vllm_mean_e2e_ms": 5098.436223715544,
+          "vllm_mean_ttft_ms": 530.61478510499,
+          "vllm_p50_itl_ms": 69.9398119468242,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 4,
+          "sglang_completion_tps": 24.515158430668397,
+          "sglang_mean_e2e_ms": 10441.8250499235,
+          "sglang_mean_ttft_ms": 2199.289877715637,
+          "sglang_p50_itl_ms": 130.8199914637953,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -42.301251555998334,
+          "vllm_completion_tps": 42.488197910325695,
+          "vllm_mean_e2e_ms": 6004.5307282794965,
+          "vllm_mean_ttft_ms": 1078.6711765598739,
+          "vllm_p50_itl_ms": 74.23606252996251,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 8,
+          "sglang_completion_tps": 40.44060959467466,
+          "sglang_mean_e2e_ms": 12659.470456656709,
+          "sglang_mean_ttft_ms": 4156.328849404235,
+          "sglang_p50_itl_ms": 134.99944499926642,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -36.847710456332536,
+          "vllm_completion_tps": 64.03664837315436,
+          "vllm_mean_e2e_ms": 7982.842888458981,
+          "vllm_mean_ttft_ms": 2368.947233108338,
+          "vllm_p50_itl_ms": 84.20819049933925,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        },
+        {
+          "concurrency": 16,
+          "sglang_completion_tps": 59.45906115106848,
+          "sglang_mean_e2e_ms": 17219.71278070705,
+          "sglang_mean_ttft_ms": 8029.30113064067,
+          "sglang_p50_itl_ms": 145.92477347468957,
+          "sglang_success_rate": 1.0,
+          "sglang_vs_vllm_percent": -36.22677036426099,
+          "vllm_completion_tps": 93.23514190936815,
+          "vllm_mean_e2e_ms": 10975.201605510665,
+          "vllm_mean_ttft_ms": 5016.6154047132295,
+          "vllm_p50_itl_ms": 89.71087203826755,
+          "vllm_success_rate": 1.0,
+          "winner": "vllm"
+        }
+      ],
+      "sglang_wins": [],
+      "shared_prefix_words": 0,
+      "source": {
+        "sglang_benchmark": "evox3-engine-comparison/results/20260810T095136Z-qwen3-8b-sglang-vllm-eval-primary/sglang/benchmark.json",
+        "vllm_benchmark": "evox3-engine-comparison/results/20260810T100535Z-qwen3-8b-sglang-vllm-eval-vllm-retry/vllm/benchmark.json"
+      },
+      "workload": "unique-prompts"
+    }
+  ]
+}
