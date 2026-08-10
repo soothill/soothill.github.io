@@ -3,7 +3,7 @@ layout: post
 title: "DeepSeek V4 Flash on Strix Halo: tuning ROCm, matching Vulkan"
 seo_title: "DeepSeek V4 Flash: ROCm vs Vulkan on Strix Halo"
 date: 2026-08-09 16:00:00 +0100
-last_modified_at: 2026-08-09
+last_modified_at: 2026-08-09 16:00:00 +0100
 permalink: /blog/2026/08/09/deepseek-v4-flash-vulkan-rocm-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [deepseek-v4, llama-cpp, vulkan, rocm, strix-halo, gfx1151]

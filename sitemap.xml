@@ -9,7 +9,7 @@ sitemap: false
     {% assign matched_page = site.pages | where: 'url', core_url | first %}
   <url>
     <loc>{{ core_url | absolute_url }}</loc>
-    <lastmod>{% if matched_page.last_modified_at %}{{ matched_page.last_modified_at | date_to_xmlschema }}{% elsif matched_page.date %}{{ matched_page.date | date_to_xmlschema }}{% else %}{{ site.time | date_to_xmlschema }}{% endif %}</lastmod>
+    {% if matched_page.last_modified_at %}<lastmod>{{ matched_page.last_modified_at | date_to_xmlschema }}</lastmod>{% elsif matched_page.date %}<lastmod>{{ matched_page.date | date_to_xmlschema }}</lastmod>{% endif %}
   </url>
   {% endfor %}
 

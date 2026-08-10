@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Soot slash Silicon</title>
+  <rect width="64" height="64" rx="12" fill="#11191a"/>
+  <path d="M29 16H14l-5 7h14L13 41H5" fill="none" stroke="#d7ed5a" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M39 10 27 54" fill="none" stroke="#ee4f27" stroke-width="4"/>
+  <path d="M59 16H46l-5 7h13L44 41H35" fill="none" stroke="#d7ed5a" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

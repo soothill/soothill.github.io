@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "SGLang vs vLLM vs llama.cpp on Strix Halo: five models, three winners"
-seo_title: "SGLang vs vLLM on Strix Halo: five-model benchmark"
+seo_title: "SGLang vs vLLM: Strix Halo benchmarks"
 date: 2026-08-10 08:00:00 +0100
-last_modified_at: 2026-08-10
+last_modified_at: 2026-08-10 08:00:00 +0100
 permalink: /blog/2026/08/10/sglang-vllm-llamacpp-evox3/
 categories: [local-ai, benchmarks, engineering]
 tags: [sglang, vllm, llama-cpp, rocm, strix-halo, qwen3, qwen35, deepseek-v4, prefix-caching]

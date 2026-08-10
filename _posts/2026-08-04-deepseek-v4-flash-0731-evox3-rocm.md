@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DeepSeek V4 Flash 0731 on EVO-X3: the repeat that changed deployment"
-seo_title: "DeepSeek V4 Flash 0731 on ROCm 7.14: a measured 10× experiment"
+seo_title: "DeepSeek V4 Flash 0731 on Strix Halo"
 date: 2026-08-04 14:00:00 +0100
 last_modified_at: 2026-08-06
 permalink: /blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/
@@ -10,7 +10,7 @@ tags: [deepseek-v4, rocm, lemonade, strix-halo, long-context]
 author: Darren Soothill
 series: "Local LLMs on Strix Halo"
 series_order: 7
-description: "DeepSeek V4 Flash 0731 on an EVO-X3 with ROCm 7.14: a measured 10× experiment, the repeat that changed deployment, a four-hour 32K thermal soak and a 20-variant cold-load audit."
+description: "A measured DeepSeek V4 Flash 0731 study on Strix Halo: ROCm optimisation, a four-hour 32K thermal soak and 20 cold model loads."
 ---
 
 > **Test record:** I measured the pinned DeepSeek V4 Flash 0731 target on the GMKtec EVO-X3 host named `evox3`, an AMD Ryzen AI MAX+ 395 system with 128GB physical memory, using ROCm 7.14.0. A sparse four-expert experiment processed 32,512 prompt tokens at **146.65 tok/s**, 10.06 times the first working configuration, and completed a one-pass 130,816-token run at **110.22 tok/s**. Repeated requests were not answer-stable, so I did not deploy that fast path as the default. The exact production profile then completed a 4.09-hour, fully saturated 32K soak with no observed progressive leak signal, performance decline or thermal fault. A later service-cold inventory started **20 complete model variants**, all of which returned exact `OK`; the full loading-time table is included below.
@@ -154,19 +154,19 @@ The allocation test answered the repeated-request question, but it did not hold 
 
 The eight results ranged from 17.6511 to 17.6799 tok/s, with a coefficient of variation of only 0.045%. A fitted trend was slightly positive at +0.0024 tok/s per hour. In other words, this run contains no sign of progressive prefill degradation.
 
-![Eight uncached 32K exact-prefill requests on evox3 remain tightly grouped around 17.67 tokens per second over 4.09 hours.](/assets/images/deepseek-0731-evox3-32k-throughput.svg)
+<img src="/assets/images/deepseek-0731-evox3-32k-throughput.svg" width="1000" height="540" loading="lazy" decoding="async" alt="Eight uncached 32K exact-prefill requests on evox3 remain tightly grouped around 17.67 tokens per second over 4.09 hours.">
 
 *Prefill throughput remained flat across all eight production-profile requests.*
 
 The first request raised GTT by **190MiB**, from 515.7 to 705.7MiB, as the 32K workspace reached its high-water mark. GTT was then byte-for-byte flat: its late 30-minute median equalled the median after that first request. Container cgroup memory differed by only **1.08MiB** between the post-first-request and late medians. Available RAM fluctuated in both directions: its late median was 10.7MiB higher than just after the first request, while the post-settle reading was 336.2MiB below the initial sample. That system-wide measure was non-monotonic while the process cgroup and GTT plateaued. Swap free increased by 8.30MiB; VRAM changed by 4KiB.
 
-![Memory change from the first active sample on evox3: GTT allocates about 190 MiB during the first 32K request and then plateaus; container memory stays effectively flat while available RAM fluctuates.](/assets/images/deepseek-0731-evox3-memory-over-time.svg)
+<img src="/assets/images/deepseek-0731-evox3-memory-over-time.svg" width="1000" height="540" loading="lazy" decoding="async" alt="Memory change from the first active sample on evox3: GTT allocates about 190 MiB during the first 32K request and then plateaus; container memory stays effectively flat while available RAM fluctuates.">
 
 *The retained GTT allocation is a bounded workspace plateau, not request-by-request growth.*
 
 One-second telemetry recorded 14,490 GPU samples. GPU busy averaged 99.92%, package power averaged 98.4W and the edge temperature averaged 69.6°C. Temperature peaked at 73°C, below the test's predefined 90°C abort threshold, while the clock held near 2.9GHz.
 
-![One-second evox3 telemetry shows GPU busy near 100 percent, package power near 98 watts and edge temperature near 70 degrees Celsius across the full 32K soak.](/assets/images/deepseek-0731-evox3-thermal-over-time.svg)
+<img src="/assets/images/deepseek-0731-evox3-thermal-over-time.svg" width="1000" height="540" loading="lazy" decoding="async" alt="One-second evox3 telemetry shows GPU busy near 100 percent, package power near 98 watts and edge temperature near 70 degrees Celsius across the full 32K soak.">
 
 *The GPU stayed saturated without a rising temperature trend or clock collapse.*
 

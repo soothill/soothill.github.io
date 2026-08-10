@@ -1,12 +1,13 @@
 ---
 layout: post
 title: "S3 Benchmarking: Parallel Ranged Downloads with s3bench"
+seo_title: "S3 ranged-download benchmarking with s3bench"
 date: 2026-02-22
 last_modified_at: 2026-08-06
 categories: [storage, benchmarking, s3, aws]
 tags: [s3, benchmarking, multipart, throughput, aws, minio, go]
 author: Darren Soothill
-description: "A practical guide to benchmarking parallel S3 ranged-download performance with s3bench, a Go tool for measuring throughput against AWS S3 and compatible object stores."
+description: "Benchmark parallel S3 ranged-download performance with s3bench, a Go tool for measuring throughput against AWS S3 and compatible object stores."
 ---
 
 When working with object storage at scale, understanding download throughput matters. Whether the endpoint is AWS S3, MinIO, Ceph or another S3-compatible store, parallel byte-range requests can expose the limits of the client, network and storage path. This post introduces **s3bench**, a command-line tool I developed to benchmark downloads with configurable concurrency and chunk sizes.

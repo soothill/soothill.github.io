@@ -1,12 +1,13 @@
 ---
 layout: post
 title: "NVMe-oF with RoCE Configuration Guide - Ubuntu Server"
+seo_title: "NVMe-oF with RoCE on Ubuntu Server"
 date: 2025-10-10
 last_modified_at: 2026-08-06
 categories: [storage, nvme, linux]
 tags: [nvme-of, roce, rdma, ubuntu, storage-configuration, linux]
 author: Darren Soothill
-description: "A lab-focused guide to configuring a persistent Linux NVMe over Fabrics target with RoCE, stable device identities, host access control and explicit network prerequisites."
+description: "Configure a persistent Linux NVMe over Fabrics target with RoCE, stable device identities, host access control and explicit network prerequisites."
 keywords: "NVMe-oF, NVMe over Fabrics, RoCE, RDMA, Ubuntu Server, nvmet, nvmetcli, storage configuration"
 ---
 
