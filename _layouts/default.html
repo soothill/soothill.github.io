@@ -122,11 +122,13 @@
   }
   </script>
   {% elsif page.schema_type == 'CollectionPage' %}
+  {% assign collection_anchor = '#collection' %}
+  {% if page.schema_series %}{% assign collection_anchor = '#series' %}{% endif %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": ["CollectionPage", "CreativeWorkSeries"],
-    "@id": {{ canonical_url | append: '#series' | jsonify }},
+    "@type": {% if page.schema_series %}["CollectionPage", "CreativeWorkSeries"]{% else %}"CollectionPage"{% endif %},
+    "@id": {{ canonical_url | append: collection_anchor | jsonify }},
     "name": {{ page.title | jsonify }},
     "description": {{ meta_description | strip_html | strip_newlines | jsonify }},
     "url": {{ canonical_url | jsonify }},

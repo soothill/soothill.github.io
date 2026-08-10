@@ -187,23 +187,19 @@ button, input, textarea, select { font: inherit; }
 
 .wordmark:hover, .site-title:hover { color: var(--ink); }
 
-.wordmark__device {
-  display: grid;
-  width: 41px;
-  height: 41px;
-  place-items: center;
-  color: var(--paper-light);
-  background: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: -.08em;
-}
+.wordmark__mark { display: block; width: 54px; height: 38px; flex: 0 0 auto; }
+.wordmark__mark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.wordmark__mark-letter, .wordmark__mark-slash { fill: none; stroke-linecap: square; stroke-linejoin: bevel; }
+.wordmark__mark-letter { stroke: var(--ink); stroke-width: 5; }
+.wordmark__mark-slash { stroke: var(--signal); stroke-width: 3; }
+.wordmark:hover .wordmark__mark-letter { stroke: var(--signal-dark); }
+.wordmark:hover .wordmark__mark-slash { stroke: var(--ink); }
 
 .wordmark__copy { display: flex; flex-direction: column; gap: 1px; }
 .wordmark__copy strong, .site-title { font-size: 13px; font-weight: 700; letter-spacing: -.02em; }
 .wordmark__copy small { color: var(--ink-soft); font-size: 10px; letter-spacing: .01em; }
 
-.site-nav { display: flex; align-items: center; gap: 30px; }
+.site-nav { display: flex; align-items: center; gap: 22px; }
 .site-nav a {
   color: var(--ink-soft);
   font-size: 12px;
@@ -474,6 +470,9 @@ button, input, textarea, select { font: inherit; }
 .series-hero h1 { max-width: 900px; color: white; font-size: clamp(62px, 8vw, 118px); }
 .series-hero h1 em { color: var(--acid); }
 .series-hero__dek { max-width: 720px; margin: 38px 0 0; color: #b8c1be; font-size: 18px; }
+.series-jump { display: flex; flex-wrap: wrap; gap: 9px 22px; margin-top: 34px; }
+.series-jump a { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.28); color: #dce2df; font-family: var(--font-mono); font-size: 10px; text-decoration: none; text-transform: uppercase; }
+.series-jump a:hover { color: var(--acid); border-bottom-color: var(--acid); }
 .series-spec { border-top: 1px solid rgba(255,255,255,.35); }
 .series-spec div { display: grid; min-height: 72px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.18); grid-template-columns: 90px 1fr; gap: 12px; align-items: center; }
 .series-spec span { color: #7e8d89; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; }
