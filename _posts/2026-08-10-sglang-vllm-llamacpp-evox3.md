@@ -22,8 +22,8 @@ That is not an attempt to avoid a verdict. The verdict changes with model size, 
 | Workload | What I would run | Why |
 |---|---|---|
 | Small Qwen, one to eight clients | custom vLLM 0.26.0 / ROCm 7.14 | fastest completion throughput and lowest TTFT at every tested concurrency |
-| Qwen3-8B BF16, unique or shared-prefix prompts | custom vLLM 0.26.0 / ROCm 7.14 | 36–47% ahead of SGLang across C=1 to C=16, even when both prefix caches work |
-| Qwen3-Coder-30B-A3B BF16 MoE | custom vLLM 0.26.0 / ROCm 7.14 | 51–69% ahead across C=1 to C=8; both engines used untuned default Triton MoE profiles |
+| Qwen3-8B BF16, unique or shared-prefix prompts | custom vLLM 0.26.0 / ROCm 7.14 | SGLang trailed vLLM by 36–47% across C=1 to C=16, even when both prefix caches worked |
+| Qwen3-Coder-30B-A3B BF16 MoE | custom vLLM 0.26.0 / ROCm 7.14 | SGLang trailed vLLM by 51–69% across C=1 to C=8; both engines used untuned default Triton MoE profiles |
 | Qwen3.5-122B-A10B, one interactive client | custom llama.cpp b10333 / ROCm 7.14 / HIP graphs off | 13.57 completion tok/s and 4.72s mean end-to-end |
 | Qwen3.5-122B-A10B, two simultaneous clients | official llama.cpp b10333 binary | 17.88 aggregate completion tok/s; slightly ahead of the custom build |
 | DeepSeek V4 Flash in production | specialised Lucebox ROCmFP3 service / ROCm 7.14 | 23.70 tok/s qualified target-only decode; the quant and kernels are purpose-built |
@@ -108,7 +108,7 @@ artificial graph-off tie.
 | SGLang 0.5.17 / ROCm 7.14 | 7.08 | 13.52 | 24.52 | 40.44 | 59.46 |
 | **vLLM 0.26.0 / ROCm 7.14** | **13.28** | **24.93** | **42.49** | **64.04** | **93.24** |
 
-vLLM finished **36.2–46.7% ahead**. SGLang did scale—its aggregate
+SGLang finished **36.2–46.7% behind vLLM**. It did scale—its aggregate
 completion rate grew 8.4 times from one to sixteen clients—but its p50
 inter-token interval remained 132–146ms. vLLM's was 70–90ms. At one client,
 mean TTFT was 708ms for SGLang and 352ms for vLLM; mean end-to-end latency was
@@ -128,7 +128,7 @@ should produce similar rates.
 | **vLLM 0.26.0 / ROCm 7.14** | **25.73** | **35.09** | **45.50** | **77.41** |
 
 This was the strongest rejection of the “right model will fix it” hypothesis.
-vLLM finished **51.1–69.3% ahead**. SGLang's p50 inter-token interval ranged
+SGLang finished **51.1–69.3% behind vLLM**. Its p50 inter-token interval ranged
 from 115ms at C=1 to 190ms at C=8; vLLM ranged from 34ms to 79ms. At one
 client, the first-token difference was 527ms, while complete-request latency
 differed by 5.61s. Most of the loss accumulated during decode.
@@ -139,7 +139,7 @@ were using a default configuration. That makes a new SGLang profile a valid
 next experiment, but not a sufficient explanation for this result: vLLM used
 an untuned profile too and was still more than three times as fast at C=1.
 The earlier WNA16 work provides a useful bound—shape tuning improved SGLang by
-7–9%, while this BF16 MoE gap is 51–69%.
+7–9%, while SGLang's BF16 MoE shortfall relative to vLLM was 51–69%.
 
 ### Shared prefixes: both caches work, vLLM still wins
 
@@ -166,8 +166,8 @@ Caching helped both engines almost identically:
 | 16 | 66.1% | 64.5% | 79.5% | 74.8% |
 
 SGLang's largest result, 98.73 tok/s at C=16, was 66.1% above its own
-cache-disabled baseline. vLLM improved by 64.5% to 153.40 tok/s and preserved
-a 35.6% lead. The experiment validates SGLang's cache; it does not turn cache
+cache-disabled baseline. vLLM improved by 64.5% to 153.40 tok/s, while SGLang
+remained 35.6% behind it. The experiment validates SGLang's cache; it does not turn cache
 reuse into an engine win.
 
 Across these three added matrices, all **1,540 measured requests** completed
@@ -184,7 +184,7 @@ generic flag changes:
 
 1. Generate and retain `E=128,N=768` up/down Triton profiles for the Radeon
    8060S, then repeat the Coder matrix. This removes a documented fallback but
-   is unlikely by itself to close a greater-than-50% gap.
+   is unlikely by itself to close SGLang's 51–69% shortfall relative to vLLM.
 2. Target decode kernels. Dense Qwen3-8B remained roughly 1.6–1.9 times slower
    per output-token interval, and the MoE model was roughly 2.4–3.4 times
    slower. Prefix reuse cut TTFT without changing that relationship.
