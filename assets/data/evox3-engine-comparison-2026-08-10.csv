@@ -1,0 +1,70 @@
+workload,model,format,engine,engine_version,lane,build_or_userspace,concurrency,completion_tokens_per_second,mean_ttft_ms,mean_e2e_ms,success_rate,status
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,1,58.231944,79.716656,1098.877060,1.0,complete
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,2,107.024107,154.913264,1195.590199,1.0,complete
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,4,173.615307,386.515477,1473.798061,1.0,complete
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,8,250.318338,883.492478,2044.271783,1.0,complete
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 decode graphs,1,57.246666,80.013011,1117.776894,1.0,complete
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 decode graphs,2,105.482562,154.954303,1213.029981,1.0,complete
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 decode graphs,4,171.480803,387.452697,1492.188724,1.0,complete
+small,Qwen3.5-0.8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 decode graphs,8,248.432781,885.400547,2059.867817,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,official,ROCm 7.2.3 wheel userspace,1,81.928248,54.630784,781.012830,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,official,ROCm 7.2.3 wheel userspace,2,143.395196,87.640977,887.710535,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,official,ROCm 7.2.3 wheel userspace,4,231.418720,213.426801,1101.838426,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,official,ROCm 7.2.3 wheel userspace,8,291.746394,643.993789,1751.407291,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,1,86.585294,53.185443,739.018675,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,2,152.481686,77.669727,833.768706,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,4,246.526976,200.969155,1034.788485,1.0,complete
+small,Qwen3.5-0.8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,8,311.589883,628.542749,1638.973904,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,official,ROCm 7.2 release build with host ROCm 7.14 libraries,1,81.041767,117.474759,789.567125,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,official,ROCm 7.2 release build with host ROCm 7.14 libraries,2,110.996303,241.203563,1152.824975,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,official,ROCm 7.2 release build with host ROCm 7.14 libraries,4,133.412833,536.380100,1906.146281,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,official,ROCm 7.2 release build with host ROCm 7.14 libraries,8,213.793830,1117.929012,2393.688606,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs on,1,81.349015,115.733118,786.588328,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs on,2,110.836694,243.965185,1154.493293,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs on,4,137.047927,535.178113,1867.349497,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs on,8,203.053444,1151.639286,2520.413095,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs off,1,81.744051,116.868384,782.783499,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs off,2,111.611435,240.448383,1146.464638,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs off,4,138.041757,528.785182,1853.894369,1.0,complete
+small,Qwen3.5-0.8B,BF16 GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs off,8,207.091061,1114.370690,2471.206760,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,vLLM,0.26.0,official,ROCm 7.2.3 wheel userspace,1,10.334969,1055.610566,6192.400276,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,vLLM,0.26.0,official,ROCm 7.2.3 wheel userspace,2,16.160968,1626.427569,7883.581177,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,vLLM,0.26.0,custom,ROCm 7.14 retuned mean,1,10.328592,1066.249692,6196.423347,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,vLLM,0.26.0,custom,ROCm 7.14 retuned mean,2,16.178723,1610.369698,7873.096104,1.0,complete
+large,Qwen3.5-122B-A10B,UD-Q4_K_XL GGUF,llama.cpp,b10333,official,ROCm 7.2 release build with host ROCm 7.14 libraries,1,13.369054,1807.021572,4787.015313,1.0,complete
+large,Qwen3.5-122B-A10B,UD-Q4_K_XL GGUF,llama.cpp,b10333,official,ROCm 7.2 release build with host ROCm 7.14 libraries,2,17.877505,3422.384150,7159.478819,1.0,complete
+large,Qwen3.5-122B-A10B,UD-Q4_K_XL GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs off,1,13.573217,1774.622885,4715.024178,1.0,complete
+large,Qwen3.5-122B-A10B,UD-Q4_K_XL GGUF,llama.cpp,b10333,custom,ROCm 7.14 gfx1151 HIP graphs off,2,17.561768,3453.931744,7288.218436,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,SGLang,0.5.17,custom-failed-path,ROCm 7.14 automatic/plain GPTQ attempts,,,,,,no-load: GPTQ MoE requires gptq_marlin; Marlin unsupported on ROCm
+large,Qwen3.5-122B-A10B,GPTQ-Int4,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 moe_wna16 default MoE config,1,7.252603,1307.125379,8824.264110,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 moe_wna16 default MoE config,2,12.331620,2066.006052,10379.439159,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 moe_wna16 tuned MoE config,1,7.750867,1252.340175,8256.969113,1.0,complete
+large,Qwen3.5-122B-A10B,GPTQ-Int4,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 moe_wna16 tuned MoE config,2,13.482908,2035.536434,9493.091119,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,1,7.904678,870.986930,8096.283629,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,1,25.726216,343.893307,2487.574027,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,2,13.670677,1190.770130,9362.699653,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,2,35.093442,499.887074,3630.835223,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,4,22.263412,1759.156051,11497.975201,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,4,45.501671,828.950512,5606.847454,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,8,34.563032,3073.951034,14812.471685,1.0,complete
+additional-unique,Qwen3-Coder-30B-A3B-Instruct,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,8,77.414553,1539.746691,6600.763166,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,1,7.366558,350.567769,8687.727964,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,1,13.879577,143.692626,4610.923641,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,2,14.817325,502.625599,8638.102225,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,2,27.419705,216.884504,4643.137213,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,4,29.049001,617.114243,8812.051266,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,4,50.427665,372.592018,5049.194204,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,8,54.941836,953.868532,9317.834615,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,8,87.373400,609.611183,5842.518056,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,16,98.733911,1646.953002,10369.095587,1.0,complete
+additional-shared-prefix,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,16,153.395242,1264.599691,6667.464297,1.0,complete
+additional-unique,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,1,7.075639,708.395370,9044.943958,1.0,complete
+additional-unique,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,1,13.281601,351.839764,4818.537905,1.0,complete
+additional-unique,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,2,13.515814,1315.817969,9469.981157,1.0,complete
+additional-unique,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,2,24.933288,530.614785,5098.436224,1.0,complete
+additional-unique,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,4,24.515158,2199.289878,10441.825050,1.0,complete
+additional-unique,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,4,42.488198,1078.671177,6004.530728,1.0,complete
+additional-unique,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,8,40.440610,4156.328849,12659.470457,1.0,complete
+additional-unique,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,8,64.036648,2368.947233,7982.842888,1.0,complete
+additional-unique,Qwen3-8B,BF16,SGLang,0.5.17,custom,ROCm 7.14 gfx1151 source build,16,59.459061,8029.301131,17219.712781,1.0,complete
+additional-unique,Qwen3-8B,BF16,vLLM,0.26.0,custom,ROCm 7.14 gfx1151 source build,16,93.235142,5016.615405,10975.201606,1.0,complete
