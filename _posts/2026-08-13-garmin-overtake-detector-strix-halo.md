@@ -3,7 +3,7 @@ layout: post
 title: "Finding cycle overtakes in 136 hours of Garmin video"
 seo_title: "Garmin overtake detection on AMD Strix Halo"
 date: 2026-08-13 00:30:00 +0100
-last_modified_at: 2026-08-14 09:00:00 +0100
+last_modified_at: 2026-08-14 14:00:00 +0100
 permalink: /blog/2026/08/13/garmin-overtake-detector-strix-halo/
 categories: [local-ai, engineering, cycling]
 tags: [computer-vision, rocm, strix-halo, garmin, yolo, ffmpeg, nfs, cycling]
@@ -93,16 +93,15 @@ Every backend decoded at five frames per second, resized to the same 640x640
 model input, used 0.20 confidence and 0.50 IoU, then ran the same tracker and
 trajectory rules. Clip encoding was outside the timer.
 
-| Platform | Wall time | Real-time factor | Measured energy | Candidate events |
-|---|---:|---:|---:|---:|
-| Radeon 8060S GPU | 12.26 min | 15.719x | 14.93Wh APU package | 153 |
-| Ryzen AI NPU | 27.58 min | 6.955x | 19.48Wh APU package | 126 |
-| Hailo-8L | 63.35 min | 3.001x | 4.81Wh Pi PMIC rails | 176 |
+| Platform | Model | Wall time | Real-time factor | Measured energy | Candidate events |
+|---|---|---:|---:|---:|---:|
+| Radeon 8060S GPU | YOLOv8s FP16 | 12.26 min | 15.719x | 14.93Wh APU package | 153 |
+| Ryzen AI NPU | same-source YOLOv8s XINT8 | 28.07 min | 6.774x | 41.42Wh APU package | 167 |
+| Hailo-8L | YOLOv8s HEF | 63.35 min | 3.001x | 4.81Wh Pi PMIC rails | 176 |
 
 The GPU and NPU numbers are directly comparable: the same EVO-X3, source pair,
 client-cache precondition, clean idle gate and APU package measurement. The GPU
-finished 55.55% sooner and used 23.33% less gross package energy. It drew more
-power while active, but the shorter run more than compensated. For this
+finished 56.32% sooner and used 63.95% less gross package energy. For this
 end-to-end workload the GPU was both the speed and energy-efficiency winner.
 
 The Hailo number needs different language. Its 4.81Wh covers internal Raspberry
@@ -110,12 +109,27 @@ Pi PMIC output rails, not the same system boundary as the EVO-X3 package. It is
 a useful directional result, but I would need the same external wall meter on
 all hosts before publishing a three-way energy ranking.
 
-The detector needs video decode, resize and colour conversion, YOLO inference,
-tracking, OCR and H.264 composition. ROCm and FFmpeg could keep that path on a
-mature stack. The NPU route uses AMD's quantized YOLOv8m graph through the
-Vitis AI execution provider; GPU and Hailo use YOLOv8s variants. Peak TOPS did
-not describe end-to-end throughput, and this remains a deployable-workflow
-comparison rather than an identical-model silicon test.
+The first NPU result had used AMD's available quantized YOLOv8m graph. That was
+useful as a deployable baseline, but it was not a fair model comparison. I
+therefore exported the exact `yolov8s.pt` weights used by the GPU, calibrated
+them on 128 held-out Garmin frames, quantized the detector body to XINT8 with
+AMD Quark and reran the complete pair through the Vitis AI execution provider.
+The GPU and NPU now have hash-proven common source weights. The Hailo graph is
+also YOLOv8s, although its vendor HEF does not expose the original training
+weight hash.
+
+The result was counter-intuitive. AMD SMI reported only 1.92W mean direct NPU
+power, yet the whole APU package averaged 88.54W. CPU-core power averaged about
+79.28W. The compiled subgraph was using the low-power accelerator, but video
+decode, tensor handling, floating-point box decoding, non-maximum suppression
+and tracking around it kept the CPU busy. The old vendor graph had consumed
+less package energy, while the more comparable standard YOLO export made much
+better detections and consumed more.
+
+Peak TOPS and accelerator-only watts therefore did not describe end-to-end
+efficiency. The next NPU experiment is not simply a smaller quantization scale;
+it is a compiler-friendly raw-head export that moves or removes CPU fallback
+and data-layout conversion.
 
 The production path therefore remains PyTorch on ROCm with FFmpeg/VAAPI. This
 is a workload-specific choice, not a claim that the NPU is never useful. A
@@ -129,23 +143,25 @@ work. There is no human-labelled ground truth for this benchmark pair, so I
 used a deliberately modest proxy: an event enters the consensus set when at
 least two of the three platforms report it within two seconds.
 
-That produced 150 consensus event clusters. Hailo found 146 (97.33%), the GPU
-141 (94.00%) and the NPU 118 (78.67%). The NPU was weakest on the front camera,
-where it found 73.33% of the consensus set, versus 84.00% at the rear.
+The same-model run produced 154 consensus event clusters. Hailo found 149
+(96.75%), the NPU 146 (94.81%) and the GPU 142 (92.21%). Replacing the earlier
+NPU YOLOv8m deployment with same-source YOLOv8s raised NPU consensus coverage
+from 78.67% to 94.81%—a 16.14 percentage-point gain. Raw NPU detections rose
+from 33,913 to 86,704 and candidate events from 126 to 167.
 
-The other side of the result is candidate confirmation. The GPU produced 12
-single-platform candidates, the NPU 8 and Hailo 30. Hailo's larger count may be
-better recall, more false positives or tracks split differently; it cannot be
-decided from agreement alone. Those 50 disagreements are the first frames I
-would label.
+The other side is candidate confirmation: 92.81% for GPU, 87.43% for NPU and
+84.66% for Hailo. The extra NPU and Hailo candidates may represent better
+recall, more false positives or tracks split differently; agreement alone
+cannot decide that. Those disagreements are the first frames I would label.
 
-The common numerical confidence threshold was not a common operating point.
-Median maximum event confidence was about 0.93 on GPU, 0.53 on NPU and 0.91 on
-Hailo. Lowering the NPU threshold may recover events, but a bigger count is not
-proof of better detection. The defensible route is to label representative
-day, night, rain and occlusion cases, compile the same trained model where the
-runtimes permit it, use camera-domain quantization calibration, and select a
-separate threshold for each backend that meets one held-out recall target.
+The original common numerical threshold was not a common operating point:
+median maximum event confidence had been about 0.93 on GPU, 0.53 on the older
+NPU graph and 0.91 on Hailo. Same-source XINT8 moved the NPU median to about
+0.94. That closes an important comparability gap, but it still is not labelled
+precision or recall. The defensible route is to label representative day,
+night, rain and occlusion cases, use camera-domain quantization calibration,
+and select a separate threshold for each backend that meets one held-out recall
+target.
 
 ## What the measured run produced
 
