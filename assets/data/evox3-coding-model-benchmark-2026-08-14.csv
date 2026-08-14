@@ -1,7 +1,10 @@
 model,total_b,active_b,installed_gib,quant,runtime,native_context_tokens,max_supported_context_tokens,tasks_passed,tasks_total,wall_seconds_per_task,completion_tokens_per_task,decode_tokens_per_second,load_seconds
 gpt-oss-120b-mxfp-GGUF,117.0,5.1,59.03,MXFP4,llama.cpp,131072,131072,9,10,21.1573,1019.6,50.2102,23.6337
 Qwen-AgentWorld-35B-A3B-Q6_K,35.0,3.0,26.56,Q6_K,llama.cpp,262144,262144,8,10,7.1585,341.6,50.7097,5.8468
+Qwen3.8-27B-Q6_K-MTP,27.0,27.0,21.31,Q6_K + MTP,llama.cpp,262144,1000000,8,10,12.4558,288.7,25.2817,12.8721
+Qwen3.8-27B-Q8_0-MTP,27.0,27.0,29.58,Q8_0 + Q8_0 MTP,llama.cpp,262144,1000000,8,10,16.2725,285.2,18.8271,13.3825
 Qwen3.6-27B-Q6_K-MTP,27.0,27.0,22.18,Q6_K + MTP,llama.cpp,262144,1010000,8,10,17.8669,349.2,20.7489,12.7706
+Qwen3.6-27B-Q4_K_M-MTP,27.0,27.0,20.73,Q4_K_M + Q8_0 MTP,llama.cpp,262144,1010000,8,10,21.6466,403.7,19.4545,7.3359
 Qwen3.5-122B-A10B-GGUF,122.0,10.0,72.59,GGUF Q4,llama.cpp,262144,1010000,7,10,14.0584,270.1,20.7911,34.5625
 Qwen3.8-27B-Q4_K_M-MTP,27.0,27.0,20.62,Q4_K_M + MTP,llama.cpp,262144,1000000,7,10,14.1538,298.1,22.4370,3.5300
 qwen35-122b-gptq-vllm026,122.0,10.0,73.48,GPTQ Int4,vLLM,262144,1010000,7,10,21.2230,258.1,,100.1339

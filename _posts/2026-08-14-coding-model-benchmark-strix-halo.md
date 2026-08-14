@@ -1,24 +1,25 @@
 ---
 layout: post
-title: "20 coding models on Strix Halo: what I would run"
-seo_title: "Coding model benchmark on Strix Halo: 20 models"
+title: "23 coding models on Strix Halo: what I would run"
+seo_title: "Strix Halo coding benchmark: 23 models"
 date: 2026-08-14 10:00:00 +0100
-last_modified_at: 2026-08-14 18:30:00 +0100
+last_modified_at: 2026-08-14 20:15:00 +0100
 permalink: /blog/2026/08/14/coding-model-benchmark-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [coding-models, strix-halo, llama-cpp, rocm, lemonade, qwen, gpt-oss, nemotron]
 author: Darren Soothill
 series: "Local LLMs on Strix Halo"
 series_order: 10
-description: "I ran 20 local coding models through 200 executable tasks on a 128GB Strix Halo workstation, comparing accuracy, latency and context limits."
+description: "I ran 23 local coding model deployments through 230 executable tasks on a 128GB Strix Halo workstation, comparing accuracy, latency and context limits."
 ---
 
-> **Test record:** I ran 20 locally installed model deployments through ten
+> **Test record:** I ran 23 locally installed model deployments through ten
 > executable coding tasks on `evox3`, a 128GB GMKtec EVO-X3 with a Ryzen AI
-> MAX+ 395 and Radeon 8060S. All **200/200 scored model-task requests completed**.
+> MAX+ 395 and Radeon 8060S. All **230/230 scored model-task requests completed**.
 > `gpt-oss-120b` led accuracy at **9/10**. Qwen AgentWorld reached **8/10 in
-> 7.2 seconds per task**, making it the strongest interactive result. The new
-> Qwen3.8-27B deployment reached **7/10 in 14.2 seconds per task**. The
+> 7.2 seconds per task**, making it the strongest interactive result. Qwen3.8-27B
+> Q6_K reached **8/10 in 12.5 seconds per task**; its Q8_0 build tied that score
+> but was 8.27GiB larger and slower. The
 > published context ceilings ranged from 131,072 to 1,048,576 tokens, but every
 > comparable coding result used the same 32,768-token context. The model with
 > the longest context was not the best coder, and the fastest decoder was not
@@ -36,13 +37,13 @@ Those are three separate product questions:
 I had benchmarked parts of this portfolio while bringing several new models
 online. I reran the original 19-model matrix in one controlled pass after
 fixing the special runtime paths for Nemotron Puzzle and DeepSeek V4 Flash. I
-then added Qwen3.8-27B with the same harness and deterministic profile, and
-repeated it from a cold start. The comparison now covers 20 deployments and 200
-scored executable answers. The Qwen3.8 result is an audited extension to the
-matrix, not a claim that all 20 ran in one uninterrupted pass.
+then added Qwen3.8-27B Q4, Q6 and Q8 plus a Qwen3.6-27B Q4 control with the same
+harness and deterministic profile. The comparison now covers 23 deployments
+and 230 scored executable answers. These four quant rows are audited extensions
+to the matrix, not a claim that all 23 ran in one uninterrupted pass.
 
-The deployment decision did not change. The evidence behind it became much
-better.
+The primary deployment decision did not change. The evidence behind it became
+much better.
 
 ## The short answer
 
@@ -51,14 +52,14 @@ better.
 | Interactive default | Qwen AgentWorld 35B-A3B Q6_K | 8/10; 7.2s/task | Best latency at the 80% quality tier; production-configured at 262K context |
 | Accuracy tier | gpt-oss-120b MXFP4 | 9/10; 21.2s/task | Only model to pass nine tasks; use for difficult work and final review |
 | Fast draft | Qwen3-Coder 30B-A3B Q4_K_S | 5/10; 4.0s/task | Fastest completed answers, but the quality loss is large |
-| New dense candidate | Qwen3.8-27B Q4_K_M + MTP | 7/10; 14.2s/task | Matches the 122B Qwen3.5 accuracy tier from a 20.62GiB deployment, but does not beat Qwen3.6-27B Q6_K |
+| Compact dense choice | Qwen3.8-27B Q6_K + MTP | 8/10; 12.5s/task | Equal accuracy to Q8 with 8.27GiB less storage and 23.5% lower task time |
 | Long-context candidate to retain | Nemotron Puzzle 75B-A9B Q4_K_M | 6/10; 14.6s/task | Stable repaired runtime and a publisher-supported 1M ceiling that still needs local long-context qualification |
 | Do not use as the default | Qwopus3.6-27B preview Q6_K | 5/10; 165.4s/task | Less accurate and more than nine times slower than base Qwen3.6-27B |
 
 `gpt-oss-120b` is the quality winner. AgentWorld is the product winner for the
 common path. That distinction matters more than declaring one universal
-champion. Qwen3.8 is a useful compact dense candidate, but this Q4 deployment
-does not displace either winner.
+champion. Qwen3.8 Q6 is now the best compact dense deployment in this test, but
+it does not displace either winner.
 
 ## What the benchmark measured
 
@@ -85,7 +86,7 @@ The score is therefore a small diagnostic pass@1, not a claim to reproduce
 SWE-bench or a complete repository agent. It is deliberately strict and easy
 to audit: either the code passed or it did not.
 
-## All 20 results, including maximum context
+## All 23 results, including maximum context
 
 The context column is the maximum the publisher advertises or supports for the
 base model. It is **not** the context used by this coding run. Native and
@@ -96,7 +97,10 @@ another override.
 | --- | ---: | ---: | ---: | ---: |
 | [gpt-oss-120b MXFP4](https://developers.openai.com/api/docs/models/gpt-oss-120b) | 131,072 | **9/10** | 21.2 | 50.2 |
 | [Qwen AgentWorld 35B-A3B Q6_K](https://huggingface.co/Qwen/Qwen-AgentWorld-35B-A3B) | 262,144 | **8/10** | **7.2** | 50.7 |
+| [Qwen3.8-27B Q6_K MTP](https://huggingface.co/Qwen/Qwen3.8-27B) | 262,144 native; 1,000,000 extended | **8/10** | 12.5 | 25.3 |
+| [Qwen3.8-27B Q8_0 MTP](https://huggingface.co/Qwen/Qwen3.8-27B) | 262,144 native; 1,000,000 extended | **8/10** | 16.3 | 18.8 |
 | [Qwen3.6-27B Q6_K MTP](https://huggingface.co/Qwen/Qwen3.6-27B) | 262,144 native; 1,010,000 YaRN | **8/10** | 17.9 | 20.7 |
+| [Qwen3.6-27B Q4_K_M MTP](https://huggingface.co/Qwen/Qwen3.6-27B) | 262,144 native; 1,010,000 YaRN | **8/10** | 21.6 | 19.5 |
 | [Qwen3.5-122B-A10B GGUF](https://huggingface.co/Qwen/Qwen3.5-122B-A10B) | 262,144 native; 1,010,000 YaRN | 7/10 | 14.1 | 20.8 |
 | [Qwen3.8-27B Q4_K_M MTP](https://huggingface.co/Qwen/Qwen3.8-27B) | 262,144 native; 1,000,000 extended | 7/10 | 14.2 | 22.4 |
 | [Qwen3.5-122B-A10B GPTQ/vLLM](https://huggingface.co/Qwen/Qwen3.5-122B-A10B) | 262,144 native; 1,010,000 YaRN | 7/10 | 21.2 | — |
@@ -126,26 +130,47 @@ The [machine-readable result table](/assets/data/evox3-coding-model-benchmark-20
 contains the exact unrounded measurements, installed sizes and native/maximum
 context fields.
 
-## What Qwen3.8 changes
+## What the Qwen3.8 quantisation ladder changes
 
-Qwen3.8-27B is a dense 27B model. I tested the Q4_K_M GGUF with its Q8_0 MTP
-head: 20.62GiB installed in total. Lemonade 11.5.2 routed it through the same
-qualified ROCm llama.cpp build and MTP settings used by the Qwen3.6 comparison.
-The smoke-test telemetry confirmed that speculative decoding was active rather
-than merely finding an unused draft file.
+Qwen3.8-27B is a dense 27B model. I first tested Q4_K_M and then added Q6_K and
+Q8_0 builds after the 7/10 Q4 result appeared to trail Qwen3.6 at the same
+parameter count. All used Lemonade 11.5.2, the qualified ROCm llama.cpp path,
+the same 32,768-token test context and the same MTP speculative-decoding policy.
 
-The final cold run loaded in 3.53 seconds, passed 7/10 tasks, averaged 14.15
-seconds per task and decoded at 22.44 tokens per second. An earlier warm run
-produced the same 7/10 pass pattern and nearly identical throughput. The three
-misses were specific edge cases: an RFC-style HTTP date, a path containing a
-normalising `a/../b` segment, and eager validation of an invalid chunk size.
+| Qwen3.8 build | Installed GiB | Accuracy | Wall s/task | Decode tok/s | Load s | Failed tasks |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Q4_K_M + MTP | 20.62 | 7/10 | 14.15 | 22.44 | 3.53 | `retry_after`, `safe_join`, `lazy_chunks` |
+| Q6_K + MTP | 21.31 | **8/10** | **12.46** | **25.28** | 12.87 | `safe_join`, `lazy_chunks` |
+| Q8_0 + Q8_0 MTP | 29.58 | **8/10** | 16.27 | 18.83 | 13.38 | `safe_join`, `lazy_chunks` |
 
-That is a good result for the footprint. It ties the Qwen3.5-122B deployments
-on accuracy while using less than a third of their installed storage. It does
-not beat Qwen3.6-27B Q6_K, which reached 8/10. Because the comparison also
-changes quantisation from Q6_K to Q4_K_M, it cannot isolate architecture from
-precision. A Q6 Qwen3.8 follow-up would be worthwhile; the current Q4 row is
-not enough evidence to replace the default.
+Q6 is the clear deployment choice here. It matches Q8's task-level result while
+using 8.27GiB less installed storage, decoding 34.3% faster and taking 23.5%
+less end-to-end time per task. Q8 did not recover another edge case; it produced
+the same two failures as Q6. More bits did not make this small deterministic
+suite more accurate.
+
+Q4 contributed to the original one-task deficit: its `retry_after` answer
+returned early for every non-digit value, making its later HTTP-date parser
+unreachable. Q6 and Q8 both handled that case. This is still a deployed-build
+comparison rather than a laboratory isolation of bit width: the Q4 and Q6
+files came from different conversion publishers, and their MTP drafts are
+packaged differently.
+
+The more important control was matched precision. Qwen3.6 Q6 and Qwen3.8 Q6
+both scored 8/10, so the original 8/10 versus 7/10 was not evidence that the
+newer model is generally worse. Qwen3.8 Q6 was also faster here: 12.5 rather
+than 17.9 seconds per task. Qwen's broader full-precision model-card results
+place 3.8 ahead on several coding evaluations; those publisher results use
+different prompts, sampling and agent scaffolds, so they are supporting
+context rather than a direct comparison to this ten-task harness.
+
+The remaining `safe_join` difference looks like version behavior, not quant
+damage. Both Qwen3.8 Q6 and Q8 reject every raw `..` component. The hidden test
+accepts an internal `a/../b` segment after safe normalisation, which both
+Qwen3.6 quants allow. Rejecting lexical traversal literally is defensible, so
+this also exposed an ambiguity in my prompt. All four Qwen3.6/3.8 Q4/Q6 control
+builds missed `lazy_chunks` by delaying invalid-size validation until generator
+iteration.
 
 ## Accuracy and decode rate did not move together
 
@@ -183,11 +208,11 @@ The two original Qwen3-Coder quants also tied at 5/10. Q4_K_S was slightly
 faster and smaller. Once correctness is tied, the operational choice becomes
 easy.
 
-The adjacent Qwen dense rows make the other trade-off visible. Qwen3.8 Q4_K_M
-used 20.62GiB and finished in 14.2 seconds per task; Qwen3.6 Q6_K used 22.18GiB
-and needed 17.9 seconds. The newer deployment saved time and storage, but lost
-one task. I would not trade away measured correctness based on version number
-alone.
+The Qwen3.8 ladder shows why quant choice should be measured instead of inferred
+from bit width. Q6 was both more accurate and faster than Q4 in this run, while
+Q8 was larger and slower without improving accuracy. Different output lengths,
+conversion sources and MTP packaging mean these are operational comparisons of
+complete deployments, not pure quantisation microbenchmarks.
 
 ## Maximum context is a capability claim, not a free feature
 
@@ -256,15 +281,17 @@ output tokens and 165.4 seconds per task. Base Qwen3.6-27B passed eight tasks in
 17.9 seconds. The preview's advertised long context is real metadata, but it
 does not rescue the observed coding product.
 
-Qwen3.8 then reproduced its exact task-level result in both warm and cold
-runs. The table uses the cold row; the warm repeat is not counted in the 200
-scored requests.
+Qwen3.8 Q4 reproduced its exact task-level result in warm and cold runs. The
+new Qwen3.8 Q6 and Qwen3.6 Q4 controls were also rerun from cold: both repeated
+the same 8/10 task matrix and the exact same completion-token counts. The table
+uses one result per deployment; those confirmation runs are not counted in the
+230 scored requests.
 
-Across the controlled matrix and its Qwen3.8 extension, all 20 deployments
-loaded, all 200 scored task requests completed and the evaluator reference
+Across the controlled matrix and its four quant extensions, all 23 deployments
+loaded, all 230 scored task requests completed and the evaluator reference
 implementation passed. The original matrix automatically restored AgentWorld;
-after the extension I explicitly unloaded Qwen3.8 to return to the pre-test
-idle state.
+after the extensions I explicitly unloaded the tested Qwen deployment to return
+Lemonade to an idle state.
 
 ## What I would operate
 
@@ -274,8 +301,8 @@ The portfolio I would keep is smaller than the benchmark matrix:
 - **gpt-oss-120b MXFP4** as the explicit accuracy and review tier;
 - **Qwen3-Coder 30B-A3B Q4_K_S** only when rapid drafting is worth a large
   measured quality trade-off;
-- **Qwen3.8-27B Q4_K_M MTP** as a compact dense evaluation candidate pending a
-  higher-precision comparison;
+- **Qwen3.8-27B Q6_K MTP** as the compact dense choice; Q8 bought no measured
+  accuracy and Q4 lost a fragile protocol edge case;
 - **Qwen3.5-122B GGUF** for Qwen-specific 122B work and long-context
   qualification;
 - **Nemotron Puzzle** as a retained specialist while its isolated runtime is
@@ -288,12 +315,12 @@ the actual task: interactive edit, difficult verification, long document or
 model-specific evaluation. Context, correctness and response time remain
 separate controls.
 
-The useful outcome of testing 20 deployments is not that the workstation should
-serve all 20. It is knowing which two deserve to be easy to reach—and why.
+The useful outcome of testing 23 deployments is not that the workstation should
+serve all 23. It is knowing which few deserve to be easy to reach—and why.
 
 *Sources checked 14 August 2026: the linked publisher model cards and current
 Hugging Face configurations for Qwen, OpenAI gpt-oss, NVIDIA Nemotron, Google
 Gemma, Mistral, DeepSeek and Qwopus. Context ceilings are publisher/configuration
 claims unless explicitly described as an EVO-X3 test. Benchmark figures come
-from the deterministic 19-model rerun and same-profile Qwen3.8 cold-run
-extension completed on 14 August 2026.*
+from the deterministic 19-model rerun and same-profile Qwen Q4/Q6/Q8 extensions
+completed on 14 August 2026.*
