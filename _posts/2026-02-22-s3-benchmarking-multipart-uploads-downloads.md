@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "S3 Benchmarking: Parallel Ranged Downloads with s3bench"
+title: "S3 benchmarking with parallel ranged downloads"
 seo_title: "S3 ranged-download benchmarking with s3bench"
 date: 2026-02-22
 last_modified_at: 2026-08-06
@@ -10,7 +10,9 @@ author: Darren Soothill
 description: "Benchmark parallel S3 ranged-download performance with s3bench, a Go tool for measuring throughput against AWS S3 and compatible object stores."
 ---
 
-When working with object storage at scale, understanding download throughput matters. Whether the endpoint is AWS S3, MinIO, Ceph or another S3-compatible store, parallel byte-range requests can expose the limits of the client, network and storage path. This post introduces **s3bench**, a command-line tool I developed to benchmark downloads with configurable concurrency and chunk sizes.
+I built **s3bench** to answer a narrow question: how does an S3 endpoint behave when one large object is fetched through concurrent HTTP range requests? It controls the chunk size and concurrency, then records the throughput and latency of that access pattern.
+
+That result is not a general score for AWS S3, MinIO, Ceph or any other backend. The client, network, object shape, endpoint, cache state and output mode are all part of the measurement.
 
 ## Why Parallel Range Requests Matter
 
@@ -24,7 +26,7 @@ This approach can improve throughput for large objects and high-latency paths. I
 
 ## How s3bench Works
 
-The tool follows a straightforward but effective approach:
+The tool does five things:
 
 1. **HeadObject** - Determines the object size
 2. **Chunk Division** - Splits the object into configurable byte-range chunks
@@ -140,7 +142,7 @@ Instead of remembering byte values, use intuitive presets:
 
 ### Concurrency Sweep
 
-The most powerful feature for finding optimal settings. Pass multiple concurrency values to automatically benchmark each:
+Use a concurrency sweep to find where this particular path stops gaining throughput. Pass several worker counts in one run:
 
 ```bash
 ./s3bench \
@@ -225,17 +227,17 @@ For scripting and automation:
 
 **Known interface caveat:** in commit `49344ec`, duration fields such as `total_time_ms` and `ttfb_ms` are serialised from Go's `time.Duration` without conversion. Their numeric values are nanoseconds despite the `_ms` suffix. Convert them before use—for example, divide by `1,000,000` for milliseconds—and pin the tool revision in automated reports until the schema is corrected.
 
-## Tuning Recommendations
+## How I would run the comparison
 
 Use these as starting points, then retain the settings and conditions with the result:
 
-### 1. Use Concurrency Sweep
-Run `--concurrency 4,8,16,32,64` to find your saturation point. Throughput will plateau when you've hit your network or storage ceiling.
+### 1. Sweep concurrency
+Run `--concurrency 4,8,16,32,64` to locate the plateau. A plateau shows that some part of the measured path has saturated; it does not identify the bottleneck by itself.
 
 ### 2. Balance Chunk Size and Concurrency
 - **Smaller chunks + more workers** = more connection overhead
 - **Larger chunks + fewer workers** = potential worker idle time
-- **Sweet spot**: Start with `--chunk-size L --concurrency 16` and sweep from there
+- **Starting point**: try `--chunk-size L --concurrency 16`, then sweep in both directions
 
 ### 3. Use Multiple Runs and Record the Conditions
 Use `--runs 3` or more and report the spread, not only the best result. A slower first run might reflect DNS, connection setup, TLS, a client-side cache or an object-store cache; do not attribute it to storage without evidence.
@@ -267,13 +269,8 @@ Results are only meaningful when measured from where your workload actually runs
 | `--output` | `""` | Write to file instead |
 | `--json` | `false` | JSON output |
 
-## Conclusion
+## What the result can and cannot say
 
-Parallel ranged GETs are one useful way to test high-throughput object access. With s3bench, you can:
+Parallel ranged GETs are one useful way to exercise high-throughput object access. They can show where throughput plateaus for a recorded object, client, endpoint, chunk size and worker count. They cannot, on their own, identify whether the limiting component is the client, network or storage backend, and they do not represent small-object or whole-object streaming workloads.
 
-- Find optimal concurrency settings
-- Compare different storage backends
-- Validate network infrastructure
-- Benchmark before and after optimisations
-
-The tool is open source under the MIT licence. See the [GitHub repository](https://github.com/soothill/s3bench) for the source code, current documentation and release status.
+Use the same object shape, output mode and client location when comparing systems or releases. Report the spread across repeated runs rather than only the best result, and keep the tool revision with the data. The source, current documentation and release status are in the [s3bench GitHub repository](https://github.com/soothill/s3bench); it is published under the MIT licence.

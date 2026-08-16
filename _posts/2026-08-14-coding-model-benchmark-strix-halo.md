@@ -1,16 +1,16 @@
 ---
 layout: post
-title: "23 coding models on Strix Halo: what I would run"
-seo_title: "Strix Halo coding benchmark: 23 models"
+title: "23 coding deployments on Strix Halo: what I would run"
+seo_title: "Strix Halo benchmark: 23 coding deployments"
 date: 2026-08-14 10:00:00 +0100
-last_modified_at: 2026-08-14 20:15:00 +0100
+last_modified_at: 2026-08-15 08:37:22 +0100
 permalink: /blog/2026/08/14/coding-model-benchmark-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [coding-models, strix-halo, llama-cpp, rocm, lemonade, qwen, gpt-oss, nemotron]
 author: Darren Soothill
 series: "Local LLMs on Strix Halo"
 series_order: 10
-description: "I ran 23 local coding model deployments through 230 executable tasks on a 128GB Strix Halo workstation, comparing accuracy, latency and context limits."
+description: "I ran 23 local coding-model deployments through 230 executable tasks on a 128GB Strix Halo workstation, comparing accuracy, latency and context limits."
 ---
 
 > **Test record:** I ran 23 locally installed model deployments through ten
@@ -39,11 +39,12 @@ online. I reran the original 19-model matrix in one controlled pass after
 fixing the special runtime paths for Nemotron Puzzle and DeepSeek V4 Flash. I
 then added Qwen3.8-27B Q4, Q6 and Q8 plus a Qwen3.6-27B Q4 control with the same
 harness and deterministic profile. The comparison now covers 23 deployments
-and 230 scored executable answers. These four quant rows are audited extensions
-to the matrix, not a claim that all 23 ran in one uninterrupted pass.
+and 230 scored executable answers. These four quant rows came from separate
+follow-up runs using the same harness and profile. They extend the matrix; they
+do not make it one uninterrupted 23-deployment run.
 
-The primary deployment decision did not change. The evidence behind it became
-much better.
+The primary deployment decision did not change. The added controls did change
+how I read the Qwen3.8 Q4 result.
 
 ## The short answer
 
@@ -58,8 +59,9 @@ much better.
 
 `gpt-oss-120b` is the quality winner. AgentWorld is the product winner for the
 common path. That distinction matters more than declaring one universal
-champion. Qwen3.8 Q6 is now the best compact dense deployment in this test, but
-it does not displace either winner.
+champion. Qwen3.8 Q6 is the compact dense deployment I would keep from these
+local results, but the exact file provenance was not retained. It does not
+displace either winner.
 
 ## What the benchmark measured
 
@@ -86,7 +88,7 @@ The score is therefore a small diagnostic pass@1, not a claim to reproduce
 SWE-bench or a complete repository agent. It is deliberately strict and easy
 to audit: either the code passed or it did not.
 
-## All 23 results, including maximum context
+## All 23 deployment results, including maximum context
 
 The context column is the maximum the publisher advertises or supports for the
 base model. It is **not** the context used by this coding run. Native and
@@ -137,24 +139,32 @@ Q8_0 builds after the 7/10 Q4 result appeared to trail Qwen3.6 at the same
 parameter count. All used Lemonade 11.5.2, the qualified ROCm llama.cpp path,
 the same 32,768-token test context and the same MTP speculative-decoding policy.
 
+The published record does not contain the exact conversion repositories,
+revisions, filenames or checksums for these four follow-up deployments. It also
+does not include their per-task outputs or confirmation-run logs. The linked CSV
+supports the aggregate scores, timings and sizes below, but it is not enough to
+reproduce the exact deployments. A repeat intended to isolate bit width would
+need to record and publish those details.
+
 | Qwen3.8 build | Installed GiB | Accuracy | Wall s/task | Decode tok/s | Load s | Failed tasks |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | Q4_K_M + MTP | 20.62 | 7/10 | 14.15 | 22.44 | 3.53 | `retry_after`, `safe_join`, `lazy_chunks` |
 | Q6_K + MTP | 21.31 | **8/10** | **12.46** | **25.28** | 12.87 | `safe_join`, `lazy_chunks` |
 | Q8_0 + Q8_0 MTP | 29.58 | **8/10** | 16.27 | 18.83 | 13.38 | `safe_join`, `lazy_chunks` |
 
-Q6 is the clear deployment choice here. It matches Q8's task-level result while
-using 8.27GiB less installed storage, decoding 34.3% faster and taking 23.5%
-less end-to-end time per task. Q8 did not recover another edge case; it produced
-the same two failures as Q6. More bits did not make this small deterministic
-suite more accurate.
+Of the three local Qwen3.8 deployments recorded here, Q6 is the operating choice.
+It matches Q8's task-level result while using 8.27GiB less installed storage,
+decoding 34.3% faster and taking 23.5% less end-to-end time per task. Q8 did not
+recover another edge case; it produced the same two failures as Q6. More bits
+did not make this small deterministic suite more accurate.
 
 Q4 contributed to the original one-task deficit: its `retry_after` answer
 returned early for every non-digit value, making its later HTTP-date parser
 unreachable. Q6 and Q8 both handled that case. This is still a deployed-build
 comparison rather than a laboratory isolation of bit width: the Q4 and Q6
 files came from different conversion publishers, and their MTP drafts are
-packaged differently.
+packaged differently. Without the missing file-level provenance, the conclusion
+applies to these local deployments rather than Qwen3.8 quantisations generally.
 
 The more important control was matched precision. Qwen3.6 Q6 and Qwen3.8 Q6
 both scored 8/10, so the original 8/10 versus 7/10 was not evidence that the
@@ -164,7 +174,7 @@ place 3.8 ahead on several coding evaluations; those publisher results use
 different prompts, sampling and agent scaffolds, so they are supporting
 context rather than a direct comparison to this ten-task harness.
 
-The remaining `safe_join` difference looks like version behavior, not quant
+The remaining `safe_join` difference looks like version behaviour, not quant
 damage. Both Qwen3.8 Q6 and Q8 reject every raw `..` component. The hidden test
 accepts an internal `a/../b` segment after safe normalisation, which both
 Qwen3.6 quants allow. Rejecting lexical traversal literally is defensible, so
@@ -281,11 +291,13 @@ output tokens and 165.4 seconds per task. Base Qwen3.6-27B passed eight tasks in
 17.9 seconds. The preview's advertised long context is real metadata, but it
 does not rescue the observed coding product.
 
-Qwen3.8 Q4 reproduced its exact task-level result in warm and cold runs. The
-new Qwen3.8 Q6 and Qwen3.6 Q4 controls were also rerun from cold: both repeated
-the same 8/10 task matrix and the exact same completion-token counts. The table
-uses one result per deployment; those confirmation runs are not counted in the
-230 scored requests.
+The retained run summaries record the same task-level result for Qwen3.8 Q4 in
+warm and cold runs. They also record matching 8/10 task matrices and matching
+completion-token counts when Qwen3.8 Q6 and Qwen3.6 Q4 were rerun from cold.
+Those summaries
+are not part of the published dataset, so the public table uses one aggregate
+result per deployment and does not count the confirmation runs in the 230 scored
+requests.
 
 Across the controlled matrix and its four quant extensions, all 23 deployments
 loaded, all 230 scored task requests completed and the evaluator reference
@@ -323,4 +335,6 @@ Hugging Face configurations for Qwen, OpenAI gpt-oss, NVIDIA Nemotron, Google
 Gemma, Mistral, DeepSeek and Qwopus. Context ceilings are publisher/configuration
 claims unless explicitly described as an EVO-X3 test. Benchmark figures come
 from the deterministic 19-model rerun and same-profile Qwen Q4/Q6/Q8 extensions
-completed on 14 August 2026.*
+completed on 14 August 2026. The published CSV contains aggregate results; the
+follow-up deployments' exact file provenance and task-level logs were not
+included and remain a limit on independent reproduction.*

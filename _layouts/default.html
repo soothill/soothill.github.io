@@ -190,7 +190,7 @@
     gtag('config', '{{ site.google_analytics }}');
   </script>
 
-  {% if site.github.build_revision %}
+  {% if jekyll.environment == 'production' and site.github.build_revision %}
     {% assign asset_revision = site.github.build_revision %}
   {% else %}
     {% assign asset_revision = site.time | date: '%s' %}
