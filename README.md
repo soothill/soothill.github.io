@@ -41,8 +41,12 @@ Your content here...
 
 ### Prerequisites
 
-- Ruby 2.7 or higher
+- Ruby 3.3.12 (recorded in `.ruby-version`)
 - Bundler
+
+Ruby version managers will read `.ruby-version` automatically. On a Mac using
+Homebrew's versioned Ruby, run Bundler through
+`/opt/homebrew/opt/ruby@3.3/bin/bundle`.
 
 ### Setup
 
