@@ -206,7 +206,7 @@ features are the requirement, not the throughput choice.
 | llama.cpp b10333, custom ROCm 7.14, HIP graphs off | UD-Q4_K_XL | **13.573** | 17.562 |
 | SGLang 0.5.17, custom ROCm 7.14, tuned `moe_wna16` | GPTQ-Int4 | 7.751 | 13.483 |
 
-At one client, the custom llama.cpp build completed the workload at 13.57 tok/s, **31.3% above** official vLLM. At two clients, the official llama.cpp artifact was fastest at 17.88 aggregate tok/s, **10.5% above** the retuned ROCm 7.14 vLLM mean.
+At one client, the custom llama.cpp build completed the workload at 13.57 tok/s, **31.3% above** official vLLM. At two clients, the official llama.cpp artefact was fastest at 17.88 aggregate tok/s, **10.5% above** the retuned ROCm 7.14 vLLM mean.
 
 The latency shape is more nuanced. Official vLLM delivered the first token in 1.056s on average, while custom llama.cpp needed 1.775s. llama.cpp then decoded fast enough to finish the complete 64-token request in 4.715s, versus 6.192s for vLLM. If the interface prizes immediate acknowledgement more than time to complete, vLLM retains an advantage. If “fastest” means finishing the response, llama.cpp wins this test.
 
@@ -275,7 +275,7 @@ this ROCm MoE checkpoint; the working command must name `moe_wna16`.
 
 ## DeepSeek V4 Flash: specialised kernels beat general servers
 
-DeepSeek is a separate comparison because the useful 128GB deployment is a custom quant. The production file is a roughly 102GB ROCmFP3-MIX GGUF with model-specific H32 rotations, sparse indexer work and fused expert kernels. SGLang's AMD documentation explicitly lists GGUF among unsupported methods; neither SGLang nor the [current vLLM GGUF plugin](https://github.com/vllm-project/vllm-gguf-plugin) provides the local ROCmFP3 implementation. They cannot consume the artifact that makes the model fit and run well here.
+DeepSeek is a separate comparison because the useful 128GB deployment is a custom quant. The production file is a roughly 102GB ROCmFP3-MIX GGUF with model-specific H32 rotations, sparse indexer work and fused expert kernels. SGLang's AMD documentation explicitly lists GGUF among unsupported methods; neither SGLang nor the [current vLLM GGUF plugin](https://github.com/vllm-project/vllm-gguf-plugin) provides the local ROCmFP3 implementation. They cannot consume the artefact that makes the model fit and run well here.
 
 The general-server comparison is therefore inside llama.cpp:
 
@@ -288,7 +288,7 @@ The general-server comparison is therefore inside llama.cpp:
 
 The Vulkan build includes the `LIGHTNING_INDEXER` fix needed to avoid the pathological fallback for this model. Both sides use a 2,048 micro-batch and no memory mapping. The matched details and stability evidence are in my [DeepSeek Vulkan-versus-ROCm test](/blog/2026/08/09/deepseek-v4-flash-vulkan-rocm-strix-halo/).
 
-The specialised ROCm 7.14 Lucebox service remains faster for production. Five measured target-only 2,048-prompt / 510-output requests produced a **23.70 tok/s median** with a 23.70–23.80 range. That is not directly interchangeable with the llama.cpp `tg64` test—it uses another quant, another request length and purpose-built kernels—but it answers the operational question: the fastest qualified way I have to run the production DeepSeek artifact is the specialised service.
+The specialised ROCm 7.14 Lucebox service remains faster for production. Five measured target-only 2,048-prompt / 510-output requests produced a **23.70 tok/s median** with a 23.70–23.80 range. That is not directly interchangeable with the llama.cpp `tg64` test—it uses another quant, another request length and purpose-built kernels—but it answers the operational question: the fastest qualified way I have to run the production DeepSeek artefact is the specialised service.
 
 There is a 28.70 tok/s DSpark result in the retained experimental stack. I do not use it as the default recommendation because that publication-shaped profile used approximate sparse prefill and four routed experts rather than the exact six-expert production policy. A high number with a weaker quality boundary is a laboratory ceiling, not a deployment decision.
 
@@ -315,7 +315,7 @@ vLLM 0.26 is the cleanest native serving stack here. The small model used BF16, 
 
 The 122B GPTQ path uses vLLM's [`gfx1151` HybridW4A16 work](https://github.com/vllm-project/vllm/pull/40977). I separately retuned the actual MoE shapes under ROCm 7.14. One M=616 Triton microkernel improved by 7.77%, but the end-to-end server stayed flat. The lesson is familiar but worth publishing: a hot kernel can win in isolation without moving a model dominated by hundreds of other launches, scheduling and memory traffic.
 
-The ROCm 7.14 source runtime also needs a dedicated environment, AMD's modular PyTorch/Triton wheels, a build-pin workaround, controlled library ordering and an initialization entry point that brings up AMD SMI and HIP before vLLM. That work buys 6–7% on the 0.8B model and essentially nothing on the 122B GPTQ model. I keep both facts, not an average of them.
+The ROCm 7.14 source runtime also needs a dedicated environment, AMD's modular PyTorch/Triton wheels, a build-pin workaround, controlled library ordering and an initialisation entry point that brings up AMD SMI and HIP before vLLM. That work buys 6–7% on the 0.8B model and essentially nothing on the 122B GPTQ model. I keep both facts, not an average of them.
 
 ### llama.cpp: format and memory controls are the advantage
 
@@ -358,7 +358,7 @@ the official vLLM wheel is the sensible fallback.
 
 For Qwen3.5-122B-A10B, I would run **llama.cpp b10333 with UD-Q4_K_XL**. The `gfx1151` ROCm 7.14 build with HIP graphs off is the one-client winner. For a persistent two-client endpoint, the official b10333 build is fractionally faster and substantially easier to maintain. If official Qwen GPTQ weights, earlier TTFT or vLLM's production serving features matter more than final completion time, vLLM remains the better product choice despite lower throughput. SGLang WNA16 is now a tested fallback when SGLang-specific serving features matter, but its lower throughput and two extra compatibility patches keep it out of the default recommendation.
 
-For DeepSeek V4 Flash, I would run the **specialised Lucebox ROCmFP3 service** already integrated behind Lemonade. For a general GGUF path, I would use the patched Vulkan llama.cpp build. SGLang and vLLM are excluded by artifact and kernel support before performance enters the discussion.
+For DeepSeek V4 Flash, I would run the **specialised Lucebox ROCmFP3 service** already integrated behind Lemonade. For a general GGUF path, I would use the patched Vulkan llama.cpp build. SGLang and vLLM are excluded by artefact and kernel support before performance enters the discussion.
 
 The winning stack on this machine is therefore deliberately plural: vLLM for small native models, llama.cpp for large GGUF models, and a specialised backend for a specialised DeepSeek quant. A single-server policy would be simpler. It would also leave measurable performance on the table.
 

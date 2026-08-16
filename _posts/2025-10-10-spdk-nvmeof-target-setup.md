@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "SPDK NVMe-oF Target Setup Guide for Ubuntu with RDMA"
+title: "SPDK NVMe-oF target setup on Ubuntu with RDMA"
 seo_title: "SPDK NVMe-oF target with RDMA on Ubuntu"
 date: 2025-10-10
 last_modified_at: 2026-08-06
@@ -420,7 +420,7 @@ chmod +x /opt/spdk/monitor_target.sh
 - **Network:** Ensure dedicated RDMA network with proper MTU settings
 - **Monitoring:** Implement proper logging and alerting for the service
 
-## Key Parameters to Customize
+## Parameters to customise
 
 - **IP Address:** 192.168.1.100 → Your RDMA interface IP
 - **Interface Name:** ens1f0 → Your RDMA NIC name

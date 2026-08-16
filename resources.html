@@ -1,14 +1,14 @@
 ---
 layout: default
 title: Resources
-description: "A focused directory of storage, HPC, Linux and local-AI resources used by Director of Product Darren Soothill."
+description: "Primary documentation, tools and working references used in Darren Soothill's storage, Linux and local-AI investigations."
 permalink: /resources.html
 ---
 
 <header class="page-hero shell page-hero--compact">
-  <p class="eyebrow"><span>Working set</span><span>Resources</span></p>
-  <h1>Useful things,<br><em>kept close.</em></h1>
-  <p>Tools, specifications and communities I return to when a product question needs a technical answer.</p>
+  <p class="eyebrow"><span>Resources</span><span>Working references</span></p>
+  <h1>The sources I check<br><em>before accepting the claim.</em></h1>
+  <p>This is a working directory, not a general recommendation list. I include a source when it helps define a test, reproduce the work or interpret a result.</p>
 </header>
 
 <section class="resource-directory shell" aria-labelledby="internal-resources">
@@ -17,11 +17,11 @@ permalink: /resources.html
     <div><h2 id="internal-resources">On this site</h2><p>Practical references and the complete field-note archive.</p></div>
   </header>
   <div class="resource-grid">
-    <a class="resource-card" href="{{ '/useful-commands.html' | relative_url }}"><span>Reference</span><h3>Useful Linux commands</h3><p>FIO, SMART monitoring, SSH compatibility and storage testing examples.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="{{ '/blog/' | relative_url }}"><span>Archive</span><h3>Field notes</h3><p>Product thinking and hands-on work across infrastructure, storage and local AI.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="{{ '/storage/' | relative_url }}"><span>Storage</span><h3>Storage field notes</h3><p>NVMe, NVMe-oF, SPDK, S3 benchmarking and the practical path through high-performance storage.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="{{ '/series/strix-halo/' | relative_url }}"><span>GPU / Series 01</span><h3>AMD Strix Halo GPU &amp; local AI</h3><p>The complete series on setup, GPU runtimes, model fit, power and sustained testing.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://github.com/{{ site.github_username }}"><span>Code</span><h3>GitHub</h3><p>Tools, experiments and source code behind some of the work.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/useful-commands.html' | relative_url }}"><span>Reference</span><h3>Useful Linux commands</h3><p>Bounded FIO, SMART and legacy SSH examples, with the safety checks that matter before they are run.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/blog/' | relative_url }}"><span>Archive</span><h3>Field notes</h3><p>The complete archive in publication order, including investigations that do not yet belong to a larger series.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/storage/' | relative_url }}"><span>Storage</span><h3>Storage field notes</h3><p>A curated starting point for NVMe, NVMe-oF, SPDK and S3 work, including the operational boundaries around each test.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/series/strix-halo/' | relative_url }}"><span>GPU / Series 01</span><h3>AMD Strix Halo GPU &amp; local AI</h3><p>The ongoing investigation: establish the baseline, compare runtimes, check model fit, verify correctness and then run for long enough to expose stability problems.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://github.com/{{ site.github_username }}"><span>Code</span><h3>GitHub</h3><p>Public code and data used in the work, plus the implementation, release and source material behind it.</p><b aria-hidden="true">↗</b></a>
   </div>
 </section>
 
@@ -31,12 +31,12 @@ permalink: /resources.html
     <div><h2 id="storage-resources">Storage &amp; systems</h2><p>Primary sources for the storage work.</p></div>
   </header>
   <div class="resource-grid">
-    <a class="resource-card" href="https://nvmexpress.org"><span>Specification</span><h3>NVM Express</h3><p>Standards and technical resources for NVMe and NVMe over Fabrics.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://spdk.io"><span>Framework</span><h3>SPDK</h3><p>User-space libraries and tools for high-performance storage applications.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://docs.ceph.com/en/latest/"><span>Storage</span><h3>Ceph</h3><p>Open-source distributed object, block and file storage.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://daos.io"><span>HPC storage</span><h3>DAOS</h3><p>Distributed asynchronous object storage for large-scale systems.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://github.com/axboe/fio"><span>Benchmarking</span><h3>FIO</h3><p>The flexible I/O tester and the reference for repeatable storage workloads.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://io500.org"><span>Community</span><h3>IO500</h3><p>A benchmark and community view of high-performance storage systems.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://nvmexpress.org"><span>Specification</span><h3>NVM Express</h3><p>I use the specifications to check namespace, format and NVMe-over-Fabrics behaviour rather than relying on a summary.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://spdk.io"><span>Framework</span><h3>SPDK</h3><p>The primary source for release-specific APIs, configuration and user-space storage behaviour.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://docs.ceph.com/en/latest/"><span>Storage</span><h3>Ceph</h3><p>Current Ceph documentation, checked against the version and behaviour of the system being discussed.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://daos.io"><span>HPC storage</span><h3>DAOS</h3><p>A useful comparison when the workload and architecture move beyond conventional block or file storage.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://github.com/axboe/fio"><span>Benchmarking</span><h3>FIO</h3><p>The workload generator and reference used to define exactly what an I/O number represents.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://io500.org"><span>Community</span><h3>IO500</h3><p>Community results and methodology for comparing high-performance storage without losing the test context.</p><b aria-hidden="true">↗</b></a>
   </div>
 </section>
 
@@ -46,9 +46,9 @@ permalink: /resources.html
     <div><h2 id="local-ai-resources">Local AI</h2><p>Start with the runtime and silicon documentation, then measure.</p></div>
   </header>
   <div class="resource-grid">
-    <a class="resource-card" href="https://rocm.docs.amd.com"><span>Compute stack</span><h3>AMD ROCm docs</h3><p>Official installation, compatibility and optimisation documentation.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://github.com/ggml-org/llama.cpp"><span>Runtime</span><h3>llama.cpp</h3><p>Portable local inference with multiple CPU and GPU backends.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://huggingface.co/models"><span>Models</span><h3>Hugging Face Hub</h3><p>Model cards, weights and the metadata needed to understand what is being tested.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-ai-max-series/amd-ryzen-ai-max-plus-395.html"><span>Hardware</span><h3>Ryzen AI Max+ 395</h3><p>AMD’s official Strix Halo specifications and current driver links.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://rocm.docs.amd.com"><span>Compute stack</span><h3>AMD ROCm docs</h3><p>I check installation, compatibility and optimisation guidance against the exact ROCm release used in a test.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://github.com/ggml-org/llama.cpp"><span>Runtime</span><h3>llama.cpp</h3><p>Build instructions, release history and source for the Vulkan and ROCm backends used in local inference tests.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://huggingface.co/models"><span>Models</span><h3>Hugging Face Hub</h3><p>Model cards, weights and metadata used to identify the exact model rather than just the family name.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-ai-max-series/amd-ryzen-ai-max-plus-395.html"><span>Hardware</span><h3>Ryzen AI Max+ 395</h3><p>AMD’s specifications and current driver route for the Strix Halo system used in the series.</p><b aria-hidden="true">↗</b></a>
   </div>
 </section>

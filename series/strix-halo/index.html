@@ -2,7 +2,7 @@
 layout: default
 title: AMD Strix Halo GPU & local AI
 seo_title: AMD Strix Halo GPU and local AI benchmarks
-description: "AMD Strix Halo GPU benchmarks and local-AI field notes covering ROCm, Vulkan, llama.cpp, model fit, memory, power, thermals and sustained Linux workloads."
+description: "An ongoing Strix Halo investigation testing local-AI compatibility, performance, correctness, memory behaviour and stability on a documented Linux system."
 schema_type: CollectionPage
 schema_series: true
 ---
@@ -13,12 +13,12 @@ schema_series: true
 <header class="series-hero">
   <div class="shell series-hero__inner">
     <div>
-      <p class="eyebrow"><span>GPU field notes / Series 01</span><span>Complete / 2026</span></p>
-      <h1>AMD Strix Halo<br><em>GPU &amp; local AI.</em></h1>
-      <p class="series-hero__dek">A product investigation from the hardware up: AMD Strix Halo GPU performance, local-LLM model fit, real throughput and the small decisions that decide whether a powerful local AI machine is genuinely useful.</p>
+      <p class="eyebrow"><span>GPU field notes / Series 01</span><span>Ongoing / 2026</span></p>
+      <h1>AMD Strix Halo<br><em>under sustained local-AI use.</em></h1>
+      <p class="series-hero__dek">This is an ongoing investigation, not a final verdict on the platform. I test what runs, whether the answer is correct, how the runtime behaves over time and which result is strong enough to change what I would use.</p>
       <nav class="series-jump" aria-label="Strix Halo topics">
-        <a href="#hardware">Hardware &amp; memory</a>
-        <a href="#benchmarks">GPU benchmarks</a>
+        <a href="#start-here">Start here</a>
+        <a href="#benchmarks">All field notes</a>
         <a href="#test-method">Test method &amp; data</a>
       </nav>
     </div>
@@ -26,7 +26,7 @@ schema_series: true
       <div><span>Scope</span><strong>End to end</strong></div>
       <div><span>Platform</span><strong>Ubuntu / Linux</strong></div>
       <div><span>Runtimes</span><strong>ROCm / Vulkan / vLLM</strong></div>
-      <div><span>Measure</span><strong>Speed / fit / stability</strong></div>
+      <div><span>Checks</span><strong>Fit / correctness / stability</strong></div>
     </div>
   </div>
 </header>
@@ -34,19 +34,31 @@ schema_series: true
 <section class="series-context shell" id="hardware">
   <div>
     <p class="eyebrow"><span>Why this machine</span></p>
-    <h2>AMD Strix Halo hardware changes the local-AI product conversation.</h2>
+    <h2>128GB of shared memory answers the fit question. It does not answer the product question.</h2>
   </div>
   <div>
     <p>Strix Halo combines Zen 5 CPU cores, integrated RDNA 3.5 graphics and up to 128 GB of fast system memory. On Linux, GPUVM and a large GTT aperture let supported runtimes address that shared memory without a huge fixed graphics partition.</p>
-    <p>That does not automatically make it a great LLM product platform. Software support, memory bandwidth, prompt processing, power and thermals still matter. This series is about the gap between <em>can run</em>, <em>good to use</em> and <em>worth deploying</em>.</p>
+    <p>That does not automatically make it a mature LLM platform. Runtime support is changing quickly, and software that can load a model may still behave differently under a longer context, repeated requests or recovery. I therefore treat <em>can run</em>, <em>good to use</em> and <em>worth deploying</em> as separate findings.</p>
     <p class="source-note">Platform details are based on AMD’s published <a href="https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-ai-max-series/amd-ryzen-ai-max-plus-395.html">Ryzen AI Max+ 395 specifications</a> and <a href="https://rocm.docs.amd.com/en/docs-7.2.0/how-to/system-optimization/strixhalo.html">Strix Halo Linux guidance</a>. Every article records its own test-machine and software context.</p>
+  </div>
+</section>
+
+<section class="series-context shell" id="start-here">
+  <div>
+    <p class="eyebrow"><span>Start here</span></p>
+    <h2>Choose the article that matches the decision you are trying to make.</h2>
+  </div>
+  <div>
+    <p><strong>Establish the machine first:</strong> the <a href="{{ '/blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/' | relative_url }}">hardware, BIOS and NVMe baseline</a> separates verified system facts from assumptions.</p>
+    <p><strong>Choose what is useful, not merely what fits:</strong> the <a href="{{ '/blog/2026/08/03/finding-the-useful-quant-strix-halo/' | relative_url }}">quantisation comparison</a> looks at quality, speed and operating headroom together.</p>
+    <p><strong>See the current decision:</strong> the <a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">local LLM stack I would keep</a> connects the earlier tests and states what would make me revisit it.</p>
   </div>
 </section>
 
 <section class="roadmap shell" id="benchmarks" aria-labelledby="roadmap-heading">
   <div class="section-heading">
-    <p class="eyebrow"><span>Publication record</span><span>{{ strix_halo_posts.size }} of {{ strix_halo_posts.size }} published</span></p>
-    <h2 id="roadmap-heading">{{ strix_halo_posts.size }} Strix Halo GPU field notes, one reproducible path.</h2>
+    <p class="eyebrow"><span>Publication record</span><span>{{ strix_halo_posts.size }} published so far</span></p>
+    <h2 id="roadmap-heading">{{ strix_halo_posts.size }} field notes published so far. The investigation is still growing.</h2>
   </div>
 
   <ol class="roadmap-list">
@@ -63,7 +75,7 @@ schema_series: true
 <section class="test-contract shell" id="test-method">
   <div>
     <p class="eyebrow"><span>The test contract</span></p>
-    <h2>A reproducible Strix Halo GPU test record.</h2>
+    <h2>What I record before I trust a result.</h2>
     <p class="source-note">Download the <a href="{{ '/assets/data/strix-halo-headline-results-2026-08-06.csv' | relative_url }}">headline results and model checksums</a> or the separate <a href="{{ '/assets/data/evox3-model-loading-times-2026-08-05.csv' | relative_url }}">20-variant loading-time dataset</a>. These files transcribe the published measurements; the articles remain the source for protocol, caveats and interpretation.</p>
   </div>
   <ul>
@@ -77,7 +89,7 @@ schema_series: true
 </section>
 
 <aside class="series-subscribe shell">
-  <div><span>Series 01</span><h2>Follow the next field note.</h2></div>
-  <p>This series is complete. RSS is the quiet, portable way to follow the next product investigation.</p>
+  <div><span>Ongoing investigation</span><h2>Follow the next test.</h2></div>
+  <p>More Strix Halo articles are planned as runtimes change and new questions emerge. RSS will also carry future investigations into storage, LLMs and other technologies.</p>
   <a class="button button--solid" href="{{ '/feed.xml' | relative_url }}">Follow via RSS <span aria-hidden="true">↗</span></a>
 </aside>
