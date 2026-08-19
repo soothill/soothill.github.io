@@ -3,7 +3,7 @@ layout: post
 title: "Vulkan 0.6.4 on Strix Halo: the coding models moved"
 seo_title: "Vulkan 0.6.4 vs ROCm 7.14 on Strix Halo"
 date: 2026-08-19 12:45:00 +0100
-last_modified_at: 2026-08-19 14:25:00 +0100
+last_modified_at: 2026-08-19 16:15:00 +0100
 permalink: /blog/2026/08/19/vulkan-064-rocm-714-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [vulkan, rocm, llama-cpp, strix-halo, qwen3-coder, qwen3-8, mtp, lemonade]
@@ -75,10 +75,10 @@ backend in ABCCBA order, with three repetitions inside each launch. The 32K
 and original Qwen3-Coder-Next runs used two launches per backend in ABBA order.
 
 The release comparison added 30 fresh launches. Each model's shallow matrix
-used three launches per version in ABCCBA order and three repetitions per cell.
-The 32K matrix used two launches per version in ABBA order and two repetitions
-per cell. The tables report the median of each launch's mean rather than the
-fastest run.
+used the six-launch order `v0.6.2, v0.6.4, v0.6.4, v0.6.2, v0.6.2, v0.6.4`,
+with three repetitions per cell. The 32K matrix used two launches per version
+in ABBA order and two repetitions per cell. The tables report the median of
+each launch's mean rather than the fastest run.
 
 `pp` means prompt processing and `tg` means token generation. Both are measured
 in tokens per second, so higher is better. Context depth is the number of
