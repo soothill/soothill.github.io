@@ -8,6 +8,10 @@ permalink: /blog/2026/08/10/sglang-vllm-llamacpp-evox3/
 categories: [local-ai, benchmarks, engineering]
 tags: [sglang, vllm, llama-cpp, rocm, strix-halo, qwen3, qwen35, deepseek-v4, prefix-caching]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 9
 description: "Twenty matched SGLang-vLLM points plus llama.cpp and DeepSeek tests show why vLLM wins native Qwen while specialised runtimes win large quants."

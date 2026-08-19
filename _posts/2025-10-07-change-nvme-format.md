@@ -6,6 +6,10 @@ last_modified_at: 2026-08-06
 categories: [storage, nvme]
 tags: [nvme, storage, format, linux, block-size]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 description: "A safety-first guide to inspecting and changing a supported NVMe LBA format, with separate notes on namespace management and secure erase."
 keywords: "NVMe, format, block size, namespace, storage, Linux"
 ---

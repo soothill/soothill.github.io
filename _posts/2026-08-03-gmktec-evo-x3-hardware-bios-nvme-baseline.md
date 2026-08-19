@@ -8,6 +8,10 @@ permalink: /blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/
 categories: [hardware, local-ai, storage]
 tags: [gmktec, evo-x3, strix-halo, ryzen-ai-max, bios, nvme, pcie-4]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 1
 description: "A product-led examination of my Linux-based GMKtec EVO-X3: Strix Halo hardware, its provable firmware state and measured NVMe performance."

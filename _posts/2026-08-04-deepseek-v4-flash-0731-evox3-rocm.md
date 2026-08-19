@@ -8,6 +8,10 @@ permalink: /blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/
 categories: [local-ai, benchmarks, engineering]
 tags: [deepseek-v4, rocm, lemonade, strix-halo, long-context]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 7
 description: "A measured DeepSeek V4 Flash 0731 study on Strix Halo: ROCm optimisation, a four-hour 32K thermal soak and 20 cold model loads."

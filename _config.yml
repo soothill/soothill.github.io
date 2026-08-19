@@ -5,6 +5,7 @@ author: "Darren Soothill"
 email: "darren@soothill.com"
 url: "https://www.soothill.io"
 baseurl: ""
+timezone: "Europe/London"
 
 # Build settings
 markdown: kramdown
@@ -37,6 +38,7 @@ exclude:
   - HOWTO-ADD-POSTS.md
   - SETUP-COMPLETE.md
   - TODO.md
+  - _templates
   - Gemfile
   - Gemfile.lock
   - node_modules

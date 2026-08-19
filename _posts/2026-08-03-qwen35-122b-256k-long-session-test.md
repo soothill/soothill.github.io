@@ -8,6 +8,10 @@ permalink: /blog/2026/08/03/qwen35-122b-256k-long-session-test/
 categories: [local-ai, benchmarks, reliability]
 tags: [qwen3-5, long-context, soak-test, memory, lemonade, strix-halo]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 5
 description: "A 101-minute, 165-request soak of Qwen3.5 122B at a nearly full 256K context, including throughput, memory, thermals and request-retention fixes."
