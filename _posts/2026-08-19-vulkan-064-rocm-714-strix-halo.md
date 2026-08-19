@@ -3,14 +3,14 @@ layout: post
 title: "Vulkan 0.6.4 on Strix Halo: the coding models moved"
 seo_title: "Vulkan 0.6.4 vs ROCm 7.14 on Strix Halo"
 date: 2026-08-19 12:45:00 +0100
-last_modified_at: 2026-08-19 12:45:00 +0100
+last_modified_at: 2026-08-19 14:25:00 +0100
 permalink: /blog/2026/08/19/vulkan-064-rocm-714-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [vulkan, rocm, llama-cpp, strix-halo, qwen3-coder, qwen3-8, mtp, lemonade]
 author: Darren Soothill
 series: "Local LLMs on Strix Halo"
 series_order: 11
-description: "I tested Vulkan 0.6.4 against ROCm 7.14 on three Qwen deployments. Coding MoEs gained up to 128% at 32K; dense Qwen remained workload-dependent in practice."
+description: "I compared Vulkan 0.6.2 and 0.6.4 with ROCm 7.14 on Strix Halo. The new release improved prefill by up to 72%, while decode performance stayed unchanged."
 ---
 
 > **Test record:** I compared the Strix Halo Vulkan v0.6.4 release with my
@@ -19,9 +19,12 @@ description: "I tested Vulkan 0.6.4 against ROCm 7.14 on three Qwen deployments.
 > Qwen3-Coder-30B-A3B and Qwen3-Coder-Next 80B-A3B. Vulkan improved
 > Qwen3-Coder-Next generation by **22–23%** and improved Qwen3-Coder-30B
 > generation at 32K depth by **127–128%**. Dense Qwen3.8 was mixed in the
-> synthetic test, but its real MTP requests completed **17–19% sooner**. All
-> 18 measured API responses passed the output checks. This was a focused
-> benchmark, not the final production soak.
+> synthetic test, but its real MTP requests completed **17–19% sooner**. I then
+> compared v0.6.4 directly with the current v0.6.2 Vulkan package. The new
+> release added **3–10%** to ordinary prompt-processing cells and **72.3%** to
+> one Qwen3-Coder-Next large-prefill shape, while decode was effectively
+> unchanged. All 54 measured API responses across both comparisons passed the
+> output checks. This was a focused benchmark, not the final production soak.
 
 The [last time I compared Vulkan and ROCm on this machine](/blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/),
 the answer split in two: ROCm was better at prompt processing, while Vulkan
@@ -34,17 +37,23 @@ multiplication, a faster transposed-concat path and corrected bulk reads from
 write-combined mappings. The publisher measured **5–19% faster prefill than
 Vulkan 0.6.2**, with decode unchanged.
 
-That is a sound release comparison. It is not the question I needed to answer.
-My running alternative is ROCm 7.14, not Vulkan 0.6.2, and the models I care
-about include coding mixtures of experts and native speculative decoding. I
-wanted to know whether this build was now good enough to move an actual route.
+That gave me two questions rather than one. First, how much had v0.6.4 actually
+added over the Vulkan package I had already qualified? Second, was the result
+now strong enough to move a route away from ROCm 7.14? I tested both instead of
+using the release comparison as a proxy for my deployment.
 
-## The comparison I ran
+## The comparisons I ran
 
 The ROCm baseline was `llama.cpp` build 10387 at commit `401060ab7`, using
 ROCm 7.14.60850. The Vulkan candidate was build 10565 at commit `baf6360be`,
 packaged with Mesa 26.3.0-devel RADV, libdrm 2.4.134 and shaderc 2026.3-dev.
 The candidate archive matched its published SHA-256 digest before I used it.
+
+For the release comparison, the current baseline was Vulkan v0.6.2: build
+10352 at commit `baf0025de`. The stale v0.2 package had already been superseded,
+so using it would have exaggerated the apparent improvement. Both release
+archives matched their published digests and used the same bundled RADV and
+shader-compiler generation.
 
 Both backends ran on the Radeon 8060S (`gfx1151`) with:
 
@@ -61,17 +70,74 @@ machine without producing enough performance to justify the trade, so I did
 not smuggle that change into a backend comparison. I also made no thermal,
 firmware or power-policy changes.
 
-For the main shallow matrix I used three fresh launches per backend in ABCCBA
-order, with three repetitions inside each launch. The 32K-depth and
-Qwen3-Coder-Next runs used two launches per backend in ABBA order, with two
-repetitions inside each launch. The table reports the median of each launch's
-mean rather than selecting the fastest run.
+For the ROCm comparison, the main shallow matrix used three fresh launches per
+backend in ABCCBA order, with three repetitions inside each launch. The 32K
+and original Qwen3-Coder-Next runs used two launches per backend in ABBA order.
+
+The release comparison added 30 fresh launches. Each model's shallow matrix
+used three launches per version in ABCCBA order and three repetitions per cell.
+The 32K matrix used two launches per version in ABBA order and two repetitions
+per cell. The tables report the median of each launch's mean rather than the
+fastest run.
 
 `pp` means prompt processing and `tg` means token generation. Both are measured
 in tokens per second, so higher is better. Context depth is the number of
 tokens already present before the measured operation.
 
-## The result was model-specific again, but less ambiguous
+## First: what v0.6.4 added over v0.6.2
+
+The ordinary result agrees with the release notes: v0.6.4 is a prompt-processing
+update. Dense Qwen3.8 gained **9–10%** on a shallow 2,048-token prompt and about
+**3%** at 32K depth. Qwen3-Coder-30B gained **5–9%** on shallow prefill and
+**1–2%** at 32K. Generation moved by less than 0.7% in every synthetic cell.
+
+| Model and workload | Vulkan 0.6.2 | Vulkan 0.6.4 | v0.6.4 change |
+| --- | ---: | ---: | ---: |
+| Qwen3.8, pp2048, shallow, ubatch 256 | 292.64 | **319.49** | **+9.2%** |
+| Qwen3.8, pp512 at 32K, ubatch 256 | 213.57 | **220.18** | **+3.1%** |
+| Qwen3.8, tg128, shallow, ubatch 256 | 11.12 | 11.17 | +0.5% |
+| Qwen3-Coder-30B, pp2048, shallow, ubatch 256 | 1,155.82 | **1,213.53** | **+5.0%** |
+| Qwen3-Coder-30B, pp2048, shallow, ubatch 2048 | 1,448.58 | **1,575.02** | **+8.7%** |
+| Qwen3-Coder-30B, tg128 at 32K, ubatch 256 | 50.08 | 50.28 | +0.4% |
+| Qwen3-Coder-Next, pp2048, shallow, ubatch 256 | 665.43 | **683.59** | **+2.7%** |
+| Qwen3-Coder-Next, pp2048, shallow, ubatch 2048 | 581.63 | **1,002.14** | **+72.3%** |
+| Qwen3-Coder-Next, pp512 at 32K, ubatch 2048 | 537.10 | **550.20** | **+2.4%** |
+| Qwen3-Coder-Next, tg128 at 32K, ubatch 256 | 48.45 | 48.61 | +0.3% |
+
+The Qwen3-Coder-Next ubatch-2048 result is the exception and deserved a second
+test. The three v0.6.2 launch means drifted from 751.64 to 581.63 and then
+535.18 tokens per second, while the three v0.6.4 launches stayed close to
+1,000. A separate ABBA confirmation with five repetitions per launch measured
+591.19 against 1,034.60 tokens per second, a **75.0%** gain. I use the
+counterbalanced main-matrix result of 72.3% in the table and treat it as a
+shape-specific bottleneck removal, not a 72% speed-up for the whole model.
+
+The same distinction held through the API. I ran two fresh servers per release
+in ABBA order, with three measured requests for each code, prose and strict-JSON
+case after warm-up.
+
+| MTP workload | v0.6.2 prompt | v0.6.4 prompt | Prompt change | Generation change | Wall-time change |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 512-token code | 125.83 tok/s | **133.53 tok/s** | **+6.1%** | -1.0% | +0.7% |
+| 512-token prose | 126.63 tok/s | **131.60 tok/s** | **+3.9%** | -0.8% | +0.7% |
+| Strict JSON | 83.24 tok/s | **86.22 tok/s** | **+3.6%** | -1.2% | +0.9% |
+
+The small negative decode and wall-time movements are not a useful regression
+claim at this sample size. They say decode is unchanged, as the publisher
+reported. These output-heavy requests spent most of their time generating, so
+faster prompt processing did not shorten the complete request. Draft acceptance
+and cached-token counts matched exactly between releases, and all 36 measured
+responses passed.
+
+The full [synthetic release comparison](/assets/data/strix-halo-vulkan-062-vulkan-064-2026-08-19.csv)
+and [served MTP release comparison](/assets/data/strix-halo-vulkan-062-vulkan-064-mtp-2026-08-19.csv)
+are available without the rounding used above.
+
+This changes how I read the ROCm comparison. The large coding-model decode lead
+is a Vulkan-stack advantage that was already present in v0.6.2. What v0.6.4
+adds is better prompt processing and one substantial Qwen3-Coder-Next fix.
+
+## Then: v0.6.4 against ROCm 7.14
 
 | Model and workload | ROCm 7.14 | Vulkan 0.6.4 | Vulkan change |
 | --- | ---: | ---: | ---: |
@@ -97,10 +163,11 @@ sizes, prompt processing improved by **37.7–42.7%** and generation improved by
 **22.2–23.5%**.
 
 That is large enough to notice in a coding session and broad enough that it does
-not depend on one carefully chosen cell. This run only covered the shallow
-performance matrix, however. I have not yet filled a 32K or 64K context for
-this model on the candidate build, nor put its tool calls through an extended
-soak. It is my first canary, not an automatic production promotion.
+not depend on one carefully chosen cell. The follow-up release comparison also
+filled a 32K context: v0.6.4 improved Coder-Next prefill by about 2.5% over
+v0.6.2 there, while decode remained unchanged. I have not yet filled 64K or put
+its tool calls through an extended soak. It is my first canary, not an automatic
+production promotion.
 
 ## The 30B coder becomes much more interesting at depth
 
@@ -152,10 +219,11 @@ dispatcher.
 
 ## I checked the output, not just the rate
 
-All 18 measured API responses passed their workload checks. The JSON responses
-parsed and contained exactly the requested 12 records. I found no empty
-responses, non-finite benchmark values, repeated-slash or question-mark
-corruption signatures, or backend errors in the retained logs.
+All 18 API responses in the ROCm comparison and all 36 in the release
+comparison passed their workload checks. The JSON responses parsed and
+contained exactly the requested 12 records. I found no empty responses,
+non-finite benchmark values, repeated-slash or question-mark corruption
+signatures, backend errors or GPU faults in the retained logs.
 
 The Vulkan release itself reports 33,055/33,055 backend-operation tests passing
 and unchanged perplexity for its default-on matrix changes. That is useful
@@ -170,9 +238,9 @@ ROCm route left ready as the fallback.
 
 My order is:
 
-1. **Qwen3-Coder-Next first.** Add 32K and 64K context tests, tool-call checks
-   and a 30-minute single-slot soak. The measured performance case is already
-   strong.
+1. **Qwen3-Coder-Next first.** The 32K synthetic test now passes; add 64K,
+   tool-call checks and a 30-minute single-slot soak. The measured performance
+   case is already strong.
 2. **Qwen3-Coder-30B-A3B second.** Optimise for the long-running coding session
    rather than the one shallow prefill shape where ROCm still wins.
 3. **Qwen3.8 native MTP third.** Judge it by served completion time, where
@@ -189,9 +257,12 @@ machine, the right policy is now clearer than “keep both backends around”. U
 Vulkan where the model and request shape earn it, and keep ROCm for the cells it
 still wins.
 
-*Sources checked 19 August 2026: the [Strix Halo Vulkan v0.6.4 release and its
-full validation record](https://github.com/Nathanw1014/strix-halo-llamacpp/releases/tag/v0.6.4)
+*Sources checked 19 August 2026: the [Strix Halo Vulkan v0.6.2
+release](https://github.com/Nathanw1014/strix-halo-llamacpp/releases/tag/v0.6.2),
+the [v0.6.4 release and its full validation
+record](https://github.com/Nathanw1014/strix-halo-llamacpp/releases/tag/v0.6.4)
 and the official [`llama.cpp` repository](https://github.com/ggml-org/llama.cpp).
-All ROCm-versus-Vulkan figures above come from retained same-machine benchmark
-artefacts collected on 19 August 2026. The candidate was installed side by side;
-the production Lemonade configuration was not changed during this test.*
+All Vulkan-release and ROCm comparison figures above come from retained
+same-machine benchmark artefacts collected on 19 August 2026. The candidates
+were installed side by side; the production Lemonade configuration was not
+changed during either test.*
