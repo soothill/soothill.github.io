@@ -90,10 +90,10 @@ backend in ABCCBA order, with three repetitions inside each launch. The 32K
 and original Qwen3-Coder-Next runs used two launches per backend in ABBA order.
 
 The release comparison added 30 fresh launches. Each model's shallow matrix
-used three launches per version in ABCCBA order and three repetitions per cell.
-The 32K matrix used two launches per version in ABBA order and two repetitions
-per cell. The tables report the median of each launch's mean rather than the
-fastest run.
+used the six-launch order `v0.6.2, v0.6.4, v0.6.4, v0.6.2, v0.6.2, v0.6.4`,
+with three repetitions per cell. The 32K matrix used two launches per version
+in ABBA order and two repetitions per cell. The tables report the median of
+each launch's mean rather than the fastest run.
 
 `pp` means prompt processing and `tg` means token generation. Both are measured
 in tokens per second, so higher is better. Context depth is the number of
