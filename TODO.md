@@ -23,6 +23,8 @@ published Jekyll site.
 - [x] Move GitHub Actions and the build toolchain to Node.js 24.
 - [x] Pin local and CI builds to Ruby 3.3.12 and bridge the two legacy Liquid
       taint methods removed from modern Ruby.
+- [x] Add a required editorial standard, reusable post template, blog-post
+      review checklist and automated style guardrail for future articles.
 
 ## Measurement
 

@@ -3,11 +3,15 @@ layout: post
 title: "Vulkan 0.6.4 on Strix Halo: the coding models moved"
 seo_title: "Vulkan 0.6.4 vs ROCm 7.14 on Strix Halo"
 date: 2026-08-19 12:45:00 +0100
-last_modified_at: 2026-08-19 14:25:00 +0100
+last_modified_at: 2026-08-19 16:31:00 +0100
 permalink: /blog/2026/08/19/vulkan-064-rocm-714-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [vulkan, rocm, llama-cpp, strix-halo, qwen3-coder, qwen3-8, mtp, lemonade]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-19
 series: "Local LLMs on Strix Halo"
 series_order: 11
 description: "I compared Vulkan 0.6.2 and 0.6.4 with ROCm 7.14 on Strix Halo. The new release improved prefill by up to 72%, while decode performance stayed unchanged."
@@ -17,9 +21,10 @@ description: "I compared Vulkan 0.6.2 and 0.6.4 with ROCm 7.14 on Strix Halo. Th
 > ROCm 7.14 `llama.cpp` build on the same 128GB GMKtec EVO-X3. The same GGUF
 > files, Q8_0 KV cache and common launch settings were used for Qwen3.8-27B,
 > Qwen3-Coder-30B-A3B and Qwen3-Coder-Next 80B-A3B. Vulkan improved
-> Qwen3-Coder-Next generation by **22–23%** and improved Qwen3-Coder-30B
-> generation at 32K depth by **127–128%**. Dense Qwen3.8 was mixed in the
-> synthetic test, but its real MTP requests completed **17–19% sooner**. I then
+> Qwen3-Coder-Next generation by **23.5% in the published matched cell** and
+> improved Qwen3-Coder-30B generation at 32K depth by **127–128%**. Dense
+> Qwen3.8 was mixed in the synthetic test, but its real MTP requests completed
+> **17–19% sooner**. I then
 > compared v0.6.4 directly with the current v0.6.2 Vulkan package. The new
 > release added **3–10%** to ordinary prompt-processing cells and **72.3%** to
 > one Qwen3-Coder-Next large-prefill shape, while decode was effectively
@@ -54,6 +59,16 @@ For the release comparison, the current baseline was Vulkan v0.6.2: build
 so using it would have exaggerated the apparent improvement. Both release
 archives matched their published digests and used the same bundled RADV and
 shader-compiler generation.
+
+The model families came from the publisher repositories for
+[Qwen3.8-27B](https://huggingface.co/Qwen/Qwen3.8-27B),
+[Qwen3-Coder-30B-A3B-Instruct](https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct)
+and [Qwen3-Coder-Next](https://huggingface.co/Qwen/Qwen3-Coder-Next). The
+backend comparisons held each GGUF file and quantisation constant, but the
+published record does not contain the conversion repository, exact filename,
+revision and SHA-256 digest for every file. That is enough to isolate the
+backend change on this machine; it is not enough to reproduce the model
+artefacts independently. A conversion-identical repeat needs a fresh manifest.
 
 Both backends ran on the Radeon 8060S (`gfx1151`) with:
 
@@ -158,9 +173,10 @@ rounding.
 
 ## Qwen3-Coder-Next is the obvious first canary
 
-Vulkan won every Qwen3-Coder-Next cell I tested. Across the two micro-batch
-sizes, prompt processing improved by **37.7–42.7%** and generation improved by
-**22.2–23.5%**.
+In the two Qwen3-Coder-Next cells published in the ROCm comparison, Vulkan
+improved prompt processing by **42.7%** and generation by **23.5%**. I have not
+published the additional cells behind the earlier ranges, so I do not use them
+to support the deployment decision here.
 
 That is large enough to notice in a coding session and broad enough that it does
 not depend on one carefully chosen cell. The follow-up release comparison also
@@ -217,7 +233,7 @@ reported 62, 61 and 37 cached prompt tokens respectively. This matters because
 a faster uncached demo would not compensate for a broken cache in the real
 dispatcher.
 
-## I checked the output, not just the rate
+## The output still had to be correct
 
 All 18 API responses in the ROCm comparison and all 36 in the release
 comparison passed their workload checks. The JSON responses parsed and
@@ -261,7 +277,8 @@ still wins.
 release](https://github.com/Nathanw1014/strix-halo-llamacpp/releases/tag/v0.6.2),
 the [v0.6.4 release and its full validation
 record](https://github.com/Nathanw1014/strix-halo-llamacpp/releases/tag/v0.6.4)
-and the official [`llama.cpp` repository](https://github.com/ggml-org/llama.cpp).
+and the official [`llama.cpp` repository](https://github.com/ggml-org/llama.cpp),
+plus the linked Qwen publisher repositories for model-family identification.
 All Vulkan-release and ROCm comparison figures above come from retained
 same-machine benchmark artefacts collected on 19 August 2026. The candidates
 were installed side by side; the production Lemonade configuration was not

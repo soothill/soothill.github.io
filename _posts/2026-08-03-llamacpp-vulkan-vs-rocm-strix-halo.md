@@ -8,6 +8,10 @@ permalink: /blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/
 categories: [local-ai, benchmarks, software]
 tags: [llama-cpp, vulkan, rocm, strix-halo, qwen3-coder, qwen3-5]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 3
 description: "Matched llama.cpp benchmarks show why Strix Halo has no single fastest backend: ROCm wins prompt processing while Vulkan can win generation."

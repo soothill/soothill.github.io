@@ -7,6 +7,10 @@ last_modified_at: 2026-08-06
 categories: [storage, benchmarking, s3, aws]
 tags: [s3, benchmarking, multipart, throughput, aws, minio, go]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 description: "Benchmark parallel S3 ranged-download performance with s3bench, a Go tool for measuring throughput against AWS S3 and compatible object stores."
 ---
 
