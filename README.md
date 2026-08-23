@@ -41,8 +41,12 @@ Your content here...
 
 ### Prerequisites
 
-- Ruby 2.7 or higher
+- Ruby 3.3.12 (recorded in `.ruby-version`)
 - Bundler
+
+Ruby version managers will read `.ruby-version` automatically. On a Mac using
+Homebrew's versioned Ruby, run Bundler through
+`/opt/homebrew/opt/ruby@3.3/bin/bundle`.
 
 ### Setup
 
@@ -63,6 +67,27 @@ bundle exec jekyll serve
 bundle exec jekyll build
 
 # Output will be in _site/ directory
+```
+
+## Collecting Site Analytics
+
+The read-only analytics reader collects GA4 and Google Search Console data using
+the local Google OAuth credential. It does not save access tokens or client
+secrets in the repository.
+
+```bash
+python3 scripts/collect_site_analytics.py
+```
+
+By default it collects the previous 90 days and writes a Markdown summary, the
+complete JSON data and an accumulating history CSV to `reports/analytics/`.
+Each collection date has one history row, ready for an improvement chart. The
+directory is excluded from Git so the reports cannot be published accidentally.
+
+Use `--days` to change the period:
+
+```bash
+python3 scripts/collect_site_analytics.py --days 30
 ```
 
 ## Directory Structure

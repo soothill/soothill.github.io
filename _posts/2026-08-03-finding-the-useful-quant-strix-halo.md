@@ -8,6 +8,10 @@ permalink: /blog/2026/08/03/finding-the-useful-quant-strix-halo/
 categories: [local-ai, benchmarks, product]
 tags: [quantization, qwen3-5, gguf, mixture-of-experts, strix-halo]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 4
 description: "A measured 0.8B-to-397B Strix Halo model sweep showing why file size, active parameters, context cost and answer quality must be separate decisions."

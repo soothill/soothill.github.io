@@ -8,6 +8,10 @@ permalink: /blog/2026/08/03/qwen35-122b-256k-long-session-test/
 categories: [local-ai, benchmarks, reliability]
 tags: [qwen3-5, long-context, soak-test, memory, lemonade, strix-halo]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 5
 description: "A 101-minute, 165-request soak of Qwen3.5 122B at a nearly full 256K context, including throughput, memory, thermals and request-retention fixes."
@@ -148,6 +152,6 @@ It does not prove every 256K prompt is useful, that an overnight run will certai
 
 The product lesson is that endurance is a stack property. Model kernels, K/V cache, the Linux memory model, the HTTP process, allocator policy, thermals and recovery all contribute to whether a long session feels dependable.
 
-With those layers measured, the final article can make a concrete recommendation: [the local LLM stack worth keeping](/blog/2026/08/03/local-llm-stack-worth-keeping/).
+With those layers measured, the next article in this first sequence can make a concrete recommendation: [the local LLM stack worth keeping](/blog/2026/08/03/local-llm-stack-worth-keeping/).
 
 *Sources checked 3 August 2026: [Lemonade pull request #2873](https://github.com/lemonade-sdk/lemonade/pull/2873), the official [glibc tunables documentation](https://sourceware.org/glibc/manual/latest/html_node/Tunables.html) and [malloc tunable parameters](https://sourceware.org/glibc/manual/latest/html_node/Malloc-Tunable-Parameters.html). All performance, memory and thermal figures come from the retained 6,088-second EVO-X3 soak and associated request-memory benchmarks.*

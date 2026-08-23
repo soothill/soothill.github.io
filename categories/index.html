@@ -1,13 +1,13 @@
 ---
 layout: default
 title: Topics
-description: Browse Soot / Silicon field notes by technical topic.
+description: "Browse every Soot / Silicon field note through the automatic technical-topic index."
 ---
 
 <header class="page-hero shell page-hero--compact">
   <p class="eyebrow"><span>Index</span><span>By topic</span></p>
-  <h1>Find a thread<br>and pull it.</h1>
-  <p>Every field note, grouped by the system or technology at its centre.</p>
+  <h1>Every field note, grouped by topic.</h1>
+  <p>This index is generated from the article categories. For a guided route, use the dedicated Strix Halo or Storage page.</p>
 </header>
 
 {% assign categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}

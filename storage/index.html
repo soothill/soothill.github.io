@@ -2,7 +2,7 @@
 layout: default
 title: Storage systems field notes
 seo_title: Storage systems, NVMe, SPDK and S3 field notes
-description: "Storage systems field notes by Darren Soothill covering NVMe, NVMe over Fabrics, SPDK, RDMA, S3 benchmarking, Linux and high-performance infrastructure."
+description: "Practical storage investigations covering NVMe, NVMe-oF, SPDK, RoCE and S3, with the workload, risks and operating boundaries made explicit."
 schema_type: CollectionPage
 permalink: /storage/
 ---
@@ -11,16 +11,16 @@ permalink: /storage/
 
 <header class="page-hero shell page-hero--editorial">
   <p class="eyebrow"><span>Storage systems</span><span>{{ storage_posts.size }} field notes</span></p>
-  <h1>Storage systems,<br><em>from NVMe to S3.</em></h1>
-  <p>Hands-on work across local devices, fabrics and object storage: the configuration details, benchmarks and operating trade-offs behind a usable infrastructure product.</p>
+  <h1>Storage work where the configuration is part of the result.</h1>
+  <p>These notes cover local devices, fabrics and object storage. They record the workload, device identity, network assumptions, destructive boundaries and checks needed to understand what a performance or configuration result means.</p>
 </header>
 
 <section class="latest shell" aria-labelledby="storage-notes-heading">
   <div class="latest__intro">
     <p class="eyebrow"><span>Storage archive</span></p>
-    <h2 id="storage-notes-heading">Storage field notes</h2>
-    <p>NVMe formats, RoCE, SPDK targets and S3 throughput—measured on working systems and documented so the path can be repeated.</p>
-    <a class="text-link" href="{{ '/categories/' | relative_url }}#storage">Browse every storage topic <span aria-hidden="true">→</span></a>
+    <h2 id="storage-notes-heading">Choose the problem you are trying to solve</h2>
+    <p>Start with device formatting, a kernel or SPDK target, or an S3 download workload. Each article states what was tested and where the example stops being a safe assumption.</p>
+    <a class="text-link" href="{{ '/categories/' | relative_url }}#storage">See the automatic storage index <span aria-hidden="true">→</span></a>
   </div>
 
   <div class="article-list article-list--home">
@@ -41,11 +41,11 @@ permalink: /storage/
 <section class="resource-directory shell" aria-labelledby="storage-working-set">
   <header class="resource-directory__heading">
     <span>02</span>
-    <div><h2 id="storage-working-set">Storage working set</h2><p>Practical references kept separate from the GPU and local-AI investigation.</p></div>
+    <div><h2 id="storage-working-set">Commands and primary sources</h2><p>Use the command reference for a bounded example and the resource directory when the original specification matters.</p></div>
   </header>
   <div class="resource-grid">
-    <a class="resource-card" href="{{ '/useful-commands.html' | relative_url }}"><span>Reference</span><h3>Linux &amp; storage commands</h3><p>FIO, SMART monitoring, NVMe and repeatable storage-testing examples.</p><b aria-hidden="true">↗</b></a>
-    <a class="resource-card" href="{{ '/resources.html' | relative_url }}#storage-resources"><span>Primary sources</span><h3>Storage resources</h3><p>Specifications, documentation and communities for NVMe, SPDK, Ceph, DAOS, FIO and IO500.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/useful-commands.html' | relative_url }}"><span>Reference</span><h3>Linux and storage commands</h3><p>FIO and SMART examples with the device, cache and data-loss checks that need to happen first.</p><b aria-hidden="true">↗</b></a>
+    <a class="resource-card" href="{{ '/resources.html' | relative_url }}#storage-resources"><span>Primary sources</span><h3>Storage specifications and tools</h3><p>The NVMe, SPDK, Ceph, DAOS, FIO and IO500 sources I use to check definitions and current behaviour.</p><b aria-hidden="true">↗</b></a>
   </div>
 </section>
 
