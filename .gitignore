@@ -16,6 +16,10 @@ Gemfile.lock
 *.swp
 *~
 
+# Local analytics reports and OAuth client downloads
+/reports/analytics/
+client_secret*.json
+
 # Local sync-conflict copies of legacy site pages
 /useful-commands 2.html
 /documents/* 2.html

@@ -1,11 +1,15 @@
 ---
 layout: post
-title: "Changing an NVMe LBA Format Safely on Linux"
+title: "Changing an NVMe LBA format safely on Linux"
 date: 2025-10-07
 last_modified_at: 2026-08-06
 categories: [storage, nvme]
 tags: [nvme, storage, format, linux, block-size]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 description: "A safety-first guide to inspecting and changing a supported NVMe LBA format, with separate notes on namespace management and secure erase."
 keywords: "NVMe, format, block size, namespace, storage, Linux"
 ---
@@ -242,16 +246,16 @@ sudo parted /dev/nvme0n1 align-check optimal 1
 sudo mkfs.ext4 -b 4096 /dev/nvme0n1
 ```
 
-## Best Practices
+## Checks I would require before the change
 
-1. **Always backup data** before any format operation
-2. **Verify supported formats** using `nvme id-ns` before formatting
+1. **Back up the data and prove the restore** before any format operation
+2. **Verify the supported formats** using `nvme id-ns` on the actual namespace
 3. **Choose the LBA format for the workload and compatibility requirements**; 4096-byte LBAs are not universally faster
 4. **Create normally aligned partitions and filesystems** after the format change
 5. **Test after formatting** to ensure stability
-6. **Document your configuration** for future reference
+6. **Record the controller, namespace, old format, new format and command output** for the change record
 
-## Common Use Cases
+## Two operations that need different evidence
 
 ### Converting Legacy 512B to 4KB
 
@@ -296,12 +300,6 @@ The SMART `percentage_used` field is an endurance indicator; it does not prove t
 - [NVMe Specification](https://nvmexpress.org/specifications/)
 - [`blockdev` manual](https://man7.org/linux/man-pages/man8/blockdev.8.html)
 
-## Summary
+## Before the command
 
-Changing an NVMe LBA format is a destructive maintenance operation that requires careful attention to:
-- Backing up data
-- Verifying supported formats
-- Proper secure erase selection
-- Post-format verification
-
-Always test the new configuration thoroughly before putting the device into production use.
+I would not approve the change from an example device path or a remembered LBAF number. The change record needs the resolved controller and namespace identity, the formats reported by that namespace, the controller's format scope, a tested restore and the intended erase setting. After the command, re-read the namespace state and test the recreated storage path before returning it to service.

@@ -8,6 +8,10 @@ permalink: /blog/2026/08/03/rocm-on-strix-halo-without-folklore/
 categories: [local-ai, linux, software]
 tags: [rocm, strix-halo, gfx1151, llama-cpp, lemonade, linux]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 2
 description: "A measured Linux setup for ROCm on the Ryzen AI Max+ 395: memory, build provenance, model lifecycle, failure modes and a recovery runbook."

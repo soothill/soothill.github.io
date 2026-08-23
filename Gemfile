@@ -1,5 +1,9 @@
 source "https://rubygems.org"
 
+# Load before Bundler starts Jekyll because github-pages forces safe mode and
+# does not load project plugins from `_plugins`.
+require_relative "lib/liquid_ruby_compatibility"
+
 # Ruby 3.4+ no longer bundles CSV in the standard library; keep local builds portable.
 gem "csv"
 gem "bigdecimal"

@@ -1,13 +1,13 @@
 ---
 layout: default
 title: Field notes
-description: "Practical articles on local AI, storage, NVMe, SPDK and Linux infrastructure by Darren Soothill."
+description: "The complete chronological archive of Darren Soothill's practical investigations into local AI, storage and Linux infrastructure."
 ---
 
 <header class="page-hero shell page-hero--editorial">
   <p class="eyebrow"><span>Field notes</span><span>{{ site.posts.size }} published</span></p>
-  <h1>What worked.<br><em>What didn’t.</em><br>What I’d do again.</h1>
-  <p>Technical notes from real systems: local model inference, storage paths, Linux configuration and performance work.</p>
+  <h1>The complete field-note archive.</h1>
+  <p>Every published investigation in date order. Use the Strix Halo and Storage pages when you want a shorter route into one subject.</p>
 </header>
 
 <section class="notes shell">
@@ -15,8 +15,8 @@ description: "Practical articles on local AI, storage, NVMe, SPDK and Linux infr
     <p>Browse the archive</p>
     <div>
       <a class="is-active" href="{{ '/blog/' | relative_url }}">All notes</a>
-      <a href="{{ '/series/strix-halo/' | relative_url }}">Local AI</a>
-      <a href="{{ '/categories/' | relative_url }}#storage">Storage</a>
+      <a href="{{ '/series/strix-halo/' | relative_url }}">GPU / Strix Halo</a>
+      <a href="{{ '/storage/' | relative_url }}">Storage</a>
       <a href="{{ '/categories/' | relative_url }}#linux">Linux</a>
     </div>
   </div>
@@ -38,8 +38,9 @@ description: "Practical articles on local AI, storage, NVMe, SPDK and Linux infr
 </section>
 
 <aside class="series-callout shell">
-  <div><span class="series-callout__number">01</span><p>Complete series</p></div>
-  <h2>Local LLMs<br>on Strix Halo</h2>
-  <p>A seven-part record of setup choices, runtimes, model fit, throughput, power and the things a short benchmark misses.</p>
-  <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Read the series <span aria-hidden="true">↗</span></a>
+  {% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
+  <div><span class="series-callout__number">01</span><p>Ongoing series</p></div>
+  <h2>Start with the current investigation</h2>
+  <p>{{ strix_halo_posts.size }} Strix Halo articles are published so far, covering the machine baseline, runtimes, model fit, correctness, sustained behaviour and the limits of each test.</p>
+  <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Choose a Strix Halo starting point <span aria-hidden="true">↗</span></a>
 </aside>

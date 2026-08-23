@@ -2,6 +2,7 @@
     "name": "Soot / Silicon — Darren Soothill",
     "short_name": "Soot / Silicon",
     "description": "Product direction grounded in real systems: infrastructure, hardware, storage and local AI.",
+    "id": "/",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#f1efe8",
@@ -10,12 +11,32 @@
     "scope": "/",
     "lang": "en",
     "categories": ["technology", "productivity", "storage"],
+    "icons": [
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ],
     "shortcuts": [
         {
             "name": "Field notes",
             "short_name": "Notes",
             "description": "Read product and technical field notes",
             "url": "/blog/"
+        },
+        {
+            "name": "Storage systems",
+            "short_name": "Storage",
+            "description": "Browse NVMe, SPDK and S3 field notes",
+            "url": "/storage/"
+        },
+        {
+            "name": "GPU and Strix Halo",
+            "short_name": "Strix Halo",
+            "description": "Browse AMD Strix Halo GPU and local-AI tests",
+            "url": "/series/strix-halo/"
         },
         {
             "name": "Resources",

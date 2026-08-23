@@ -1,10 +1,16 @@
 <header class="site-header" data-site-header>
   <div class="shell header-inner">
-    <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="Soot slash Silicon home">
-      <span class="wordmark__device" aria-hidden="true">S/S</span>
+    <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="Soot / Silicon">
+      <span class="wordmark__mark" aria-hidden="true">
+        <svg viewBox="0 0 64 40" role="img">
+          <path class="wordmark__mark-letter" d="M27 7H10l-5 7h16l-8 13H1" />
+          <path class="wordmark__mark-slash" d="M37 3 27 37" />
+          <path class="wordmark__mark-letter" d="M63 7H46l-5 7h16l-8 13H37" />
+        </svg>
+      </span>
       <span class="wordmark__copy">
-        <strong>soothill.io</strong>
-        <small>Product / hardware / storage</small>
+        <strong>Soot / Silicon</strong>
+        <small>Storage · GPU · infrastructure</small>
       </span>
     </a>
 
@@ -15,10 +21,11 @@
 
     <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
       <a href="{{ '/blog/' | relative_url }}">Field notes</a>
-      <a href="{{ '/series/strix-halo/' | relative_url }}">Strix Halo</a>
+      <a href="{{ '/storage/' | relative_url }}">Storage</a>
+      <a href="{{ '/series/strix-halo/' | relative_url }}">GPU / Strix Halo</a>
       <a href="{{ '/about/' | relative_url }}">About</a>
       <a href="{{ '/resources.html' | relative_url }}">Resources</a>
-      <a class="nav-contact" href="mailto:{{ site.email }}">Say hello <span aria-hidden="true">↗</span></a>
+      <a class="nav-contact" href="{{ '/documents/contact-info.html' | relative_url }}">Contact <span aria-hidden="true">↗</span></a>
     </nav>
   </div>
 </header>

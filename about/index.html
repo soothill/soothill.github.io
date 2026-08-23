@@ -1,14 +1,14 @@
 ---
 layout: default
 title: About Darren
-description: "About Director of Product Darren Soothill and his hands-on work across infrastructure, hardware, storage and local AI."
+description: "How Director of Product Darren Soothill connects product direction with practical investigation of storage, GPUs and local AI."
 schema_type: AboutPage
 ---
 
 <header class="page-hero shell page-hero--about">
   <p class="eyebrow"><span>About</span><span>{{ site.role }}</span></p>
-  <h1>Product direction,<br><em>close to the metal.</em></h1>
-  <p>I lead products in infrastructure, then go hands-on with the hardware and storage underneath them. That connection makes the strategy sharper and the trade-offs more honest.</p>
+  <h1>I work between product direction and the systems that have to deliver it.</h1>
+  <p>I’m a Director of Product working with storage and GPU-based products. I use direct system investigation to question assumptions, understand failures and decide whether a technical result is ready to influence the product.</p>
 </header>
 
 <section class="about-story shell">
@@ -17,21 +17,22 @@ schema_type: AboutPage
     <dl>
       <div><dt>Based</dt><dd>{{ site.location }}</dd></div>
       <div><dt>Role</dt><dd>{{ site.role }}</dd></div>
-      <div><dt>Working on</dt><dd>Infrastructure / local AI</dd></div>
-      <div><dt>Writing since</dt><dd>2025</dd></div>
+      <div><dt>Current investigation</dt><dd>Local AI / Strix Halo</dd></div>
+      <div><dt>Subjects</dt><dd>Storage / GPUs / infrastructure</dd></div>
     </dl>
   </div>
   <div class="about-story__copy">
-    <p class="lead">I work from the customer problem down to the system — and back up again.</p>
-    <p>As a Director of Product, my job is to set direction: understand the market, make the trade-offs visible and give teams a clear problem worth solving. In infrastructure, that work is inseparable from the machines. Capacity, latency, failure modes, cost and operational effort are product decisions as much as engineering details.</p>
-    <p>My hands-on background is strongest in hardware and storage. The archive covers NVMe, SPDK, RDMA and the practical Linux work needed to make high-performance systems behave. I use that depth to test assumptions early and to ask better questions of both customers and engineering teams.</p>
-    <p>Local AI is the current thread. Strix Halo puts an unusual amount of memory and GPU capability into one compact x86 system. I want to understand what that unlocks as a product platform: not just which models fit, but what it costs, how it operates and whether the experience remains good under sustained use.</p>
-    <p>Soot / Silicon is where I publish the evidence behind that thinking — including the commands, versions and failures.</p>
+    <p class="lead">A product manager is an interface between layers that do not always describe the same problem in the same way.</p>
+    <p>I set strategic direction for products based around storage and GPUs. The work sits between customer and commercial needs, product priorities, engineering choices and the behaviour of the system itself. My job is to make the decision clear without hiding the constraint that could overturn it.</p>
+    <p>That is why I stay close to the technical detail. A capacity figure, benchmark or compatibility claim is only a starting point. I want to know how it was measured, which workload produced it, what happens during recovery and whether the result survives a longer run.</p>
+    <p>The storage material covers NVMe, NVMe-oF, SPDK, RDMA, RoCE and S3 testing. The same way of thinking appears in my Ceph Days London presentation: begin with the workload and operational consequence, then choose the hardware.</p>
+    <p>Strix Halo is the current investigation. Its software is changing quickly as support expands, which makes compatibility, performance, correctness, memory behaviour and stability separate questions. I publish the machine, versions, commands, datasets and failures so that readers can see how I reached the answer and where it may no longer apply.</p>
+    <p>The subjects on this site will change. The method will not: question the claim, test what can be tested, explain the mechanism and be clear about what remains unknown.</p>
     <nav class="about-links" aria-label="Professional pages">
       <a href="{{ '/documents/resume.html' | relative_url }}">Professional profile <span aria-hidden="true">↗</span></a>
       <a href="{{ '/documents/portfolio.html' | relative_url }}">Selected work <span aria-hidden="true">↗</span></a>
       <a href="{{ '/documents/publications.html' | relative_url }}">Publications <span aria-hidden="true">↗</span></a>
-      <a href="{{ '/documents/certifications.html' | relative_url }}">Expertise <span aria-hidden="true">↗</span></a>
+      <a href="{{ '/expertise/' | relative_url }}">Expertise <span aria-hidden="true">↗</span></a>
       <a href="{{ '/documents/contact-info.html' | relative_url }}">Contact <span aria-hidden="true">↗</span></a>
     </nav>
     <div class="about-links" aria-label="External profiles">
@@ -42,10 +43,9 @@ schema_type: AboutPage
 </section>
 
 <section class="principles shell">
-  <p class="eyebrow"><span>Editorial principles</span></p>
+  <p class="eyebrow"><span>What a useful test record contains</span></p>
   <div class="principles-grid">
-    <div><span>01</span><h2>Problem before feature.</h2><p>Start with the change a customer needs, then decide what deserves to be built.</p></div>
-    <div><span>02</span><h2>Systems set the truth.</h2><p>Capacity, latency, power and operations define the real product boundary.</p></div>
-    <div><span>03</span><h2>Evidence changes direction.</h2><p>A roadmap should get sharper when new measurements or failures arrive.</p></div>
+    <div><span>Recorded</span><h2>The conditions that produced the result</h2><p>Hardware, software versions, settings, workload, measurement and the failures on the way.</p></div>
+    <div><span>Bounded</span><h2>The point where the conclusion stops</h2><p>What was not tested, what is still changing and which different workload could produce another answer.</p></div>
   </div>
 </section>

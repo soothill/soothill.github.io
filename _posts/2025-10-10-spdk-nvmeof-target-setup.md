@@ -1,12 +1,17 @@
 ---
 layout: post
-title: "SPDK NVMe-oF Target Setup Guide for Ubuntu with RDMA"
+title: "SPDK NVMe-oF target setup on Ubuntu with RDMA"
+seo_title: "SPDK NVMe-oF target with RDMA on Ubuntu"
 date: 2025-10-10
 last_modified_at: 2026-08-06
 categories: [storage, spdk, nvme]
 tags: [spdk, nvme-of, rdma, ubuntu, storage, high-performance]
 author: Darren Soothill
-description: "A lab-focused guide to building SPDK v26.05 and configuring an NVMe over Fabrics target on Ubuntu with RDMA, explicit host access and a persistent JSON configuration."
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
+description: "Build SPDK v26.05 and configure an NVMe over Fabrics target on Ubuntu with RDMA, explicit host access and a persistent JSON configuration."
 keywords: "SPDK, NVMe-oF, RDMA, Ubuntu, Linux, storage configuration, high-performance"
 ---
 
@@ -419,7 +424,7 @@ chmod +x /opt/spdk/monitor_target.sh
 - **Network:** Ensure dedicated RDMA network with proper MTU settings
 - **Monitoring:** Implement proper logging and alerting for the service
 
-## Key Parameters to Customize
+## Parameters to customise
 
 - **IP Address:** 192.168.1.100 → Your RDMA interface IP
 - **Interface Name:** ens1f0 → Your RDMA NIC name

@@ -1,0 +1,5 @@
+case,requests,passed,unique_stable_output_hashes,stable_output_identical,median_generation_tokens_per_second,generation_cv,median_draft_acceptance,cached_requests,median_cached_tokens,maximum_cached_tokens
+code,105,True,1,True,84.99001367339336,0.0037521128030312267,0.9047619047619048,104,8218,8218
+json_schema,105,True,1,True,90.64707025172916,0.002873961877503824,0.9746376811594203,104,8218,8218
+prose,105,True,3,False,55.4963787255338,0.008289065222697792,0.5614035087719298,104,8218,8218
+tool_call,104,True,1,True,87.71113514343914,0.006880794405553766,1.0,103,8522.0,8522

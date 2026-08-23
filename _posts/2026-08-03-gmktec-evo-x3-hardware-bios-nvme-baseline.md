@@ -2,12 +2,16 @@
 layout: post
 title: "GMKtec EVO-X3: the hardware, BIOS and NVMe baseline"
 seo_title: "GMKtec EVO-X3: BIOS and NVMe performance"
-date: 2026-08-03
-last_modified_at: 2026-08-03 18:00:00 +0100
+date: 2026-08-03 18:16:44 +0100
+last_modified_at: 2026-08-03 18:52:17 +0100
 permalink: /blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/
 categories: [hardware, local-ai, storage]
 tags: [gmktec, evo-x3, strix-halo, ryzen-ai-max, bios, nvme, pcie-4]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 1
 description: "A product-led examination of my Linux-based GMKtec EVO-X3: Strix Halo hardware, its provable firmware state and measured NVMe performance."
@@ -197,7 +201,7 @@ The model-shaped read is more useful. A real 102.32GB DeepSeek GGUF already on t
 
 The empty second socket remains the one untested part of GMKtec's storage claim. The current result proves that one EVO-X3 path can sustain a high-end Gen4 read rate; it does not prove simultaneous 14GB/s aggregate bandwidth or that both physical sockets are equivalent.
 
-## What this baseline unlocks
+## How this baseline constrains the later tests
 
 This is the first layer of the Strix Halo series. It turns the EVO-X3 from a list of impressive components into a known test system. Once the BIOS state, power profile and storage path are fixed, later comparisons — ROCm against Vulkan, model size against usable context, peak speed against an hour of sustained work — have something solid underneath them.
 

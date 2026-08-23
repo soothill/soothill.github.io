@@ -1,29 +1,29 @@
 ---
 layout: default
 title: Home
-description: "Director of Product Darren Soothill writes about infrastructure products from the hardware up: storage systems, local AI and what real testing teaches."
+description: "Darren Soothill tests storage, GPU and local-AI systems, recording what worked, what failed and what the result changes."
 ---
 
-{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
+{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" | sort: "date" | reverse %}
+{% assign remaining_strix_halo_posts = strix_halo_posts.size | minus: 3 %}
 
 <section class="home-hero shell">
   <div class="home-hero__copy">
-    <p class="eyebrow"><span>{{ site.role }}</span><span>{{ site.location }}</span></p>
-    <h1>I shape infrastructure products <em>from the hardware up.</em></h1>
-    <p class="hero-intro">I’m Darren Soothill, a Director of Product working across infrastructure, hardware and storage. This is where product direction meets the bench: the systems I test, the trade-offs I find and the details that change the roadmap.</p>
+    <p class="eyebrow"><span>Darren Soothill</span><span>{{ site.location }}</span></p>
+    <h1>I test emerging technology to find out what it can actually do.</h1>
+    <p class="hero-intro">I’m a Director of Product working with storage and GPU-based systems. This site is my record of the questions I asked, the tests I ran, what failed and the point at which the result became useful for a product decision.</p>
     <div class="hero-actions">
-      <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Read the Strix Halo series <span aria-hidden="true">↗</span></a>
-      <a class="button button--quiet" href="{{ '/about/' | relative_url }}">How I work <span aria-hidden="true">→</span></a>
+      <a class="button button--solid" href="{{ '/series/strix-halo/' | relative_url }}">Start with Strix Halo <span aria-hidden="true">↗</span></a>
+      <a class="button button--quiet" href="{{ '/about/' | relative_url }}">About Darren <span aria-hidden="true">→</span></a>
     </div>
   </div>
 
   <div class="halo-plate" aria-label="Strix Halo local AI series preview">
     <div class="halo-plate__top">
       <span>Series / 01</span>
-      <span class="status-dot">Complete</span>
+      <span class="status-dot">Ongoing</span>
     </div>
     <div class="halo-plate__core">
-      <span class="halo-plate__ghost">LOCAL</span>
       <div>
         <p>Current focus</p>
         <h2>Strix<br>Halo</h2>
@@ -31,112 +31,121 @@ description: "Director of Product Darren Soothill writes about infrastructure pr
       <span class="core-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
     </div>
     <div class="halo-plate__readout">
-      <div><span>01</span><p>Setup that can be repeated</p></div>
-      <div><span>02</span><p>Throughput in context</p></div>
-      <div><span>03</span><p>Thermals over time</p></div>
+      <div><span>01</span><p>Compatibility</p></div>
+      <div><span>02</span><p>Sustained behaviour</p></div>
+      <div><span>03</span><p>Product decision</p></div>
     </div>
   </div>
 </section>
 
-<div class="signal-strip">
-  <div class="shell signal-strip__inner">
-    <span>Current product lens</span>
-    <p>Local AI on AMD Strix Halo</p>
-    <p>Capability · cost · experience · sustained performance</p>
-  </div>
-</div>
-
 <section class="feature shell" aria-labelledby="series-heading">
   <div class="section-heading">
-    <p class="eyebrow"><span>Product question / 01</span><span>Local AI / 2026</span></p>
-    <h2 id="series-heading">When does local AI become a useful product choice?</h2>
+    <p class="eyebrow"><span>Current investigation</span><span>Ongoing / 2026</span></p>
+    <h2 id="series-heading">Strix Halo can run large local models. That does not settle whether the stack is mature.</h2>
   </div>
 
   <div class="feature-grid">
     <div class="feature-story">
-      <p class="feature-number">01</p>
+      <p class="feature-number">Strix Halo</p>
       <h3>Local LLMs on Strix Halo</h3>
-      <p>The product question is bigger than a headline benchmark. Local inference changes privacy, cost, latency and deployment — but only if the hardware and software form a system people can actually use.</p>
-      <p>I took that question to the bench: what I installed, what broke, how I measured it and which engineering trade-offs deserve to shape the product decision.</p>
-      <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Read the {{ strix_halo_posts.size }}-part series <span aria-hidden="true">↗</span></a>
+      <p>Runtime support is changing quickly as compatibility expands. A model loading once tells me very little about correctness, memory behaviour, long sessions or recovery after a failure.</p>
+      <p>I record the hardware, build, launch settings and workload, then keep compatibility, performance, maturity and stability as separate questions. The conclusion stays attached to the conditions that produced it.</p>
+      <a class="text-link" href="{{ '/series/strix-halo/' | relative_url }}">Read the ongoing investigation and {{ strix_halo_posts.size }} articles published so far <span aria-hidden="true">↗</span></a>
     </div>
 
-    <ol class="series-index">
-      <li>
-        <span>01</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/gmktec-evo-x3-hardware-bios-nvme-baseline/' | relative_url }}">GMKtec EVO-X3 baseline</a></strong><p>Hardware, firmware state and NVMe performance measured as one Linux system.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>02</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/rocm-on-strix-halo-without-folklore/' | relative_url }}">ROCm without folklore</a></strong><p>The working Linux stack, its support boundary and a recovery runbook.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>03</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/' | relative_url }}">Vulkan versus ROCm</a></strong><p>Matched prompt, generation and concurrency results across two models.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>04</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/finding-the-useful-quant-strix-halo/' | relative_url }}">Find the useful quant</a></strong><p>Fit, context and speed from 0.8B to a 397B-class model.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>05</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/qwen35-122b-256k-long-session-test/' | relative_url }}">Run the long-session test</a></strong><p>122B at a near-full 256K context for more than 100 minutes.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>06</span>
-        <div><strong><a href="{{ '/blog/2026/08/03/local-llm-stack-worth-keeping/' | relative_url }}">Keep the useful stack</a></strong><p>The final product, runtime and operations decisions.</p></div>
-        <small>Published</small>
-      </li>
-      <li>
-        <span>07</span>
-        <div><strong><a href="{{ '/blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/' | relative_url }}">DeepSeek V4 Flash 0731 on EVO-X3</a></strong><p>A failed first load, a measured 10× experiment, the repeat that changed deployment and a 20-variant cold-load audit.</p></div>
-        <small>Published</small>
-      </li>
-    </ol>
+    <div class="series-list">
+      <ol class="series-index" reversed start="{{ strix_halo_posts.size }}">
+        {% for post in strix_halo_posts limit: 3 %}
+        {% assign article_number = strix_halo_posts.size | minus: forloop.index0 %}
+        {% assign published_stamp = post.date | date: '%s' %}
+        {% assign updated_stamp = post.last_modified_at | default: post.date | date: '%s' %}
+        {% assign published_clock = post.date | date: '%H:%M' %}
+        {% assign updated_clock = post.last_modified_at | date: '%H:%M' %}
+        <li>
+          <span>{{ article_number | prepend: '0' | slice: -2, 2 }}</span>
+          <div>
+            <strong><a href="{{ post.url | relative_url }}">{{ post.title }}</a></strong>
+            <div class="series-index__dates">
+              <time datetime="{{ post.date | date_to_xmlschema }}">Published {{ post.date | date: '%-d %B %Y' }}{% if published_clock == '00:00' %} — time not recorded{% else %} at {{ published_clock }}{% endif %}</time>
+              {% if post.last_modified_at and updated_stamp != published_stamp %}<time class="is-updated" datetime="{{ post.last_modified_at | date_to_xmlschema }}">Updated {{ post.last_modified_at | date: '%-d %B %Y' }}{% if updated_clock == '00:00' %} — time not recorded{% else %} at {{ updated_clock }}{% endif %}</time>{% endif %}
+            </div>
+            <p>{{ post.description | default: post.excerpt | strip_html | truncatewords: 24 }}</p>
+          </div>
+          <small>{% if forloop.first %}Newest{% else %}Recent{% endif %}</small>
+        </li>
+        {% endfor %}
+      </ol>
+
+      {% if remaining_strix_halo_posts > 0 %}
+      <details class="series-more">
+        <summary>
+          <span class="series-more__closed">Show {{ remaining_strix_halo_posts }} more articles</span>
+          <span class="series-more__open">Hide the older articles</span>
+          <i aria-hidden="true"></i>
+        </summary>
+        <ol class="series-index series-index--continued" reversed start="{{ remaining_strix_halo_posts }}">
+          {% for post in strix_halo_posts offset: 3 %}
+          {% assign article_offset = forloop.index0 | plus: 3 %}
+          {% assign article_number = strix_halo_posts.size | minus: article_offset %}
+          {% assign published_stamp = post.date | date: '%s' %}
+          {% assign updated_stamp = post.last_modified_at | default: post.date | date: '%s' %}
+          {% assign published_clock = post.date | date: '%H:%M' %}
+          {% assign updated_clock = post.last_modified_at | date: '%H:%M' %}
+          <li>
+            <span>{{ article_number | prepend: '0' | slice: -2, 2 }}</span>
+            <div>
+              <strong><a href="{{ post.url | relative_url }}">{{ post.title }}</a></strong>
+              <div class="series-index__dates">
+                <time datetime="{{ post.date | date_to_xmlschema }}">Published {{ post.date | date: '%-d %B %Y' }}{% if published_clock == '00:00' %} — time not recorded{% else %} at {{ published_clock }}{% endif %}</time>
+                {% if post.last_modified_at and updated_stamp != published_stamp %}<time class="is-updated" datetime="{{ post.last_modified_at | date_to_xmlschema }}">Updated {{ post.last_modified_at | date: '%-d %B %Y' }}{% if updated_clock == '00:00' %} — time not recorded{% else %} at {{ updated_clock }}{% endif %}</time>{% endif %}
+              </div>
+              <p>{{ post.description | default: post.excerpt | strip_html | truncatewords: 24 }}</p>
+            </div>
+            <small>Earlier</small>
+          </li>
+          {% endfor %}
+        </ol>
+      </details>
+      {% endif %}
+    </div>
   </div>
 </section>
 
-<section class="latest shell" aria-labelledby="latest-heading">
+<section class="method shell" aria-labelledby="changed-heading">
+  <div class="section-heading">
+    <p class="eyebrow"><span>What changed</span><span>Selected results</span></p>
+    <h2 id="changed-heading">The useful answers came from looking past the first successful run.</h2>
+  </div>
+  <div class="method-grid">
+    <div><span>23 deployments / 230 requests</span><h3>Completion was not the decision</h3><p>Every scored coding request completed, but the deployments still differed in correctness, speed and practical fit. The recommendation had to account for all three.</p><a class="text-link" href="{{ '/blog/2026/08/14/coding-model-benchmark-strix-halo/' | relative_url }}">Read the comparison <span aria-hidden="true">↗</span></a></div>
+    <div><span>4.09 hours</span><h3>The longer run narrowed the claim</h3><p>One sustained DeepSeek run showed no progressive leak signal within that test. It improved confidence in that configuration; it did not prove indefinite stability.</p><a class="text-link" href="{{ '/blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/' | relative_url }}">Read the test record <span aria-hidden="true">↗</span></a></div>
+  </div>
+</section>
+
+<section class="latest shell" aria-labelledby="storage-heading">
   <div class="latest__intro">
-    <p class="eyebrow"><span>The archive</span></p>
-    <h2 id="latest-heading">Recent field notes</h2>
-    <p>The technical detail behind product decisions: storage, Linux and the bits between a specification sheet and a working system.</p>
-    <a class="text-link" href="{{ '/blog/' | relative_url }}">View every note <span aria-hidden="true">→</span></a>
+    <p class="eyebrow"><span>Storage and infrastructure</span></p>
+    <h2 id="storage-heading">The same questions apply below the AI stack.</h2>
+    <p>The storage work covers the details that decide whether a system is repeatable and serviceable: device identity, access control, network assumptions, recovery and the exact workload behind a performance number.</p>
+    <a class="text-link" href="{{ '/storage/' | relative_url }}">Explore the storage work <span aria-hidden="true">→</span></a>
   </div>
 
   <div class="article-list article-list--home">
-    {% for post in site.posts limit: 4 %}
-    <a class="article-row" href="{{ post.url | relative_url }}">
-      <div class="article-row__meta">
-        <span>{{ post.date | date: '%Y.%m.%d' }}</span>
-        <span>{{ post.categories.first | default: 'Field note' }}</span>
-      </div>
-      <h3>{{ post.title }}</h3>
-      <p>{{ post.description | default: post.excerpt | strip_html | truncatewords: 22 }}</p>
-      <span class="article-row__arrow" aria-hidden="true">↗</span>
-    </a>
-    {% endfor %}
+    <a class="article-row" href="{{ '/blog/2025/10/10/spdk-nvmeof-target-setup/' | relative_url }}"><div class="article-row__meta"><span>Guide</span><span>SPDK</span></div><h3>SPDK NVMe-oF target with RDMA</h3><p>A controlled lab path with a pinned release, disposable storage and explicit host access.</p><span class="article-row__arrow" aria-hidden="true">↗</span></a>
+    <a class="article-row" href="{{ '/blog/2025/10/10/nvme-over-fabrics-roce-setup/' | relative_url }}"><div class="article-row__meta"><span>Guide</span><span>NVMe-oF</span></div><h3>Kernel NVMe-oF over RoCE</h3><p>A persistent target built around stable device identities, visible data-loss boundaries and end-to-end network checks.</p><span class="article-row__arrow" aria-hidden="true">↗</span></a>
+    <a class="article-row" href="{{ '/blog/2026/02/22/s3-benchmarking-multipart-uploads-downloads/' | relative_url }}"><div class="article-row__meta"><span>Tool</span><span>S3</span></div><h3>Parallel ranged-download benchmarking</h3><p>A Go tool for testing where the client, network and object-store path reach their limit.</p><span class="article-row__arrow" aria-hidden="true">↗</span></a>
   </div>
 </section>
 
 <section class="method shell">
-  <p class="eyebrow"><span>How I work</span><span>Direction ↔ detail</span></p>
-  <blockquote>“Good product direction starts with the customer problem — and survives contact with the hardware.”</blockquote>
-  <div class="method-grid">
-    <div><span>01</span><h3>Start with the outcome</h3><p>Who needs the product, what must change for them and which constraint is real.</p></div>
-    <div><span>02</span><h3>Get close to the system</h3><p>Hardware, storage paths, versions and topology reveal the actual trade space.</p></div>
-    <div><span>03</span><h3>Bring evidence back</h3><p>Measurements and rough edges turn assumptions into roadmap decisions.</p></div>
-  </div>
+  <p class="eyebrow"><span>How I work</span></p>
+  <div class="section-heading"><h2>I start with the claim, test the mechanism underneath it and state where the result stops.</h2></div>
+  <p>That is the link between my product work and the technical material here. A benchmark is useful when it changes a decision and its limits are clear. <a class="text-link" href="{{ '/about/' | relative_url }}">Read more about the approach <span aria-hidden="true">→</span></a></p>
 </section>
 
 <section class="contact-band">
   <div class="shell contact-band__inner">
-    <p>Comparing notes on local AI or storage?</p>
+    <p>Working through a storage, GPU or local-AI product question?</p>
     <a href="mailto:{{ site.email }}">darren@soothill.com <span aria-hidden="true">↗</span></a>
   </div>
 </section>

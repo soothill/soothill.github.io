@@ -1,83 +1,58 @@
-# Website Modernization TODO List
+# Website work list
 
----
+Owner and final approver: Darren Soothill
 
-## 🔴 Phase 1 - COMPLETED ✅
+Last reviewed: 16 August 2026
 
-All 38 items completed including:
-- Centralized CSS/JS architecture
-- Modern animations and effects
-- Dark/light mode toggle
-- PWA with service worker
-- GitHub Actions CI/CD for minification
+This file records work that is genuinely still open. It is excluded from the
+published Jekyll site.
 
----
+## Completed foundation
 
-## 🟡 Phase 2 - COMPLETED ✅
+- [x] Establish a more natural, evidence-led UK English editorial voice.
+- [x] Present Darren's product direction work across storage, GPUs and local AI.
+- [x] Add published and updated dates to articles.
+- [x] Order articles newest first and add an expandable Strix Halo archive.
+- [x] Bring the PR22 articles into the current editorial style.
+- [x] Add the expertise page and connect it to the site navigation.
+- [x] Add a default Open Graph image and article-level image support.
+- [x] Add production build, SEO, sitemap and link validation.
+- [x] Add private Google Analytics and Search Console collection.
+- [x] Schedule weekly analytics collection for Mondays at 07:00 UK time.
+- [x] Exclude OAuth downloads and analytics reports from Git and Jekyll.
+- [x] Move GitHub Actions and the build toolchain to Node.js 24.
+- [x] Pin local and CI builds to Ruby 3.3.12 and bridge the two legacy Liquid
+      taint methods removed from modern Ruby.
+- [x] Add a required editorial standard, reusable post template, blog-post
+      review checklist and automated style guardrail for future articles.
 
-### Files Modernized to Centralized CSS/JS
-- [x] `blog/index.html`
-- [x] `categories/index.html`
-- [x] `documents/publications.html`
-- [x] `changenvmeformat.html` - Redirect to blog post
-- [x] `spdknvmeof.html` - Redirect to blog post
+## Measurement
 
-### PWA Enhancements
-- [x] Create `manifest.json` for PWA installation
-- [x] Add theme-color meta tag
-- [ ] Add app icons (72x72 to 512x512) - Requires image files
+- [ ] Confirm the first unattended analytics collection completes successfully.
+- [ ] Create an initial improvement chart after at least two weekly snapshots.
+- [ ] Review the chart after four to six weeks and agree useful targets.
 
-### SEO & Performance
-- [x] Add `robots.txt`
-- [x] Add RSS/Atom feed (`feed.xml`)
-- [ ] Add Open Graph images for social sharing - Requires image files
+## Design assets
 
-### Bug Fixes
-- [x] Create missing `documents/contact-info.html`
-- [x] Fix email showing "Loading..." on homepage
+- [ ] Create dedicated PWA PNG icons from 72x72 through 512x512 pixels.
+- [ ] Create individual social-sharing images for priority articles where the
+      default site image is not specific enough.
 
-### Cleanup
-- [x] Remove `oldindex.html` (unused file)
-- [x] Convert old HTML pages to redirects
+## Editorial work
 
----
+- [ ] Continue the ongoing Strix Halo series as runtimes, compatibility and
+      stability change.
+- [ ] Develop the bicycle overtaking analysis series around the method and the
+      route to an answer, rather than publishing footage as the objective.
 
-## 📊 Progress Summary
+## Security and operations
 
-| Phase | Total | Completed | Remaining |
-|-------|-------|-----------|-----------|
-| Phase 1 | 38 | 38 | 0 ✅ |
-| Phase 2 | 14 | 12 | 2 |
-| **Total** | **52** | **50** | **2** |
+- [ ] Permanently remove the downloaded OAuth client files from Trash after the
+      first unattended analytics run has succeeded.
+- [ ] Review GitHub Actions versions periodically and update them before their
+      runtimes reach end of support.
 
----
+## Deliberately deferred
 
-## 📝 Remaining Items (Require Image Assets):
-
-1. **PWA Icons** - Create icons at `/assets/images/`:
-   - icon-72.png, icon-96.png, icon-128.png, icon-144.png
-   - icon-152.png, icon-192.png, icon-384.png, icon-512.png
-   
-2. **Open Graph Images** - For social media sharing previews
-
----
-
-## 🐛 Issues Fixed:
-1. ✅ GitHub Actions workflow failing - Fixed terser `--mangle false` syntax error
-2. ✅ Contact link broken (`documents/contact-info.html` missing) - Created page
-3. ✅ Email showing "Loading..." on homepage - Fixed to show actual email
-4. ✅ Old HTML files with inline CSS - Converted to redirects to blog posts
-5. ✅ Missing RSS feed - Created feed.xml
-
----
-
-## 📝 Recent Commits:
-- `0447579` - Fix bugs: Create missing contact-info.html and fix email display
-- `9337844` - Phase 2: Modernize remaining pages and add PWA support
-- `cb1bfdd` - Fix GitHub Actions workflow
-- `905a1a4` - Add GitHub Actions workflow for minification
-- `3045111` - Main Phase 1 modernization changes
-
----
-
-*Last updated: 22/02/2026*
+- [ ] Correct the apex/non-www DNS behaviour. Darren has explicitly deferred
+      this work; it is not a blocker for the canonical `www.soothill.io` site.

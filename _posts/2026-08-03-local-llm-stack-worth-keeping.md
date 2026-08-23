@@ -8,14 +8,18 @@ permalink: /blog/2026/08/03/local-llm-stack-worth-keeping/
 categories: [local-ai, product, operations]
 tags: [strix-halo, lemonade, llama-cpp, rocm, vulkan, local-llm]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
 series_order: 6
-description: "The final Strix Halo stack: which hardware, Linux memory model, runtimes, models and operating controls I would keep after the benchmarks."
+description: "The Strix Halo stack I would keep after the first benchmark sequence: hardware, Linux memory, runtimes, models and operating controls."
 ---
 
 > **Decision record:** this recommendation is based on the EVO-X3 hardware audit, matched backend tests, eight-model size sweep and 101-minute 122B soak completed by 3 August 2026. The current stack is fast and stable in-session; one remaining operations gap — supervised boot persistence — is called out rather than silently declared finished.
 
-A field note series should end with a decision.
+A benchmark sequence should end with a decision.
 
 The GMKtec EVO-X3 can load a 397B-class quant, run a 122B model across a nearly full 256K context and generate from a 30B coding model at up to 98 tokens per second. Those are satisfying demonstrations. They are not, on their own, a product.
 
