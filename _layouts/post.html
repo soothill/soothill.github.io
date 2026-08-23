@@ -13,20 +13,10 @@ layout: default
     {% endif %}
   </nav>
 
-  {% if page.series %}
-  {% assign series_posts_chronological = site.posts | where: "series", page.series | sort: "date" %}
-  {% for series_post in series_posts_chronological %}
-    {% if series_post.url == page.url %}
-      {% assign series_article_number = forloop.index %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-  {% endif %}
-
   <header class="article-header">
     <div class="eyebrow">
       {% if page.series %}<span>{{ page.series }}</span>{% elsif page.categories.first %}<span>{{ page.categories.first }}</span>{% else %}<span>Field note</span>{% endif %}
-      {% if series_article_number %}<span>Article {{ series_article_number | prepend: '0' | slice: -2, 2 }}</span>{% else %}<span>No. {{ page.date | date: '%y.%m.%d' }}</span>{% endif %}
+      {% if page.series_order %}<span>Article {{ page.series_order | prepend: '0' | slice: -2, 2 }}</span>{% else %}<span>No. {{ page.date | date: '%y.%m.%d' }}</span>{% endif %}
     </div>
     <h1>{{ page.title }}</h1>
     {% if page.description %}<p class="article-deck">{{ page.description }}</p>{% endif %}

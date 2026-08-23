@@ -4,7 +4,7 @@ title: Home
 description: "Darren Soothill tests storage, GPU and local-AI systems, recording what worked, what failed and what the result changes."
 ---
 
-{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" | sort: "date" | reverse %}
+{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" | sort: "series_order" | reverse %}
 {% assign remaining_strix_halo_posts = strix_halo_posts.size | minus: 3 %}
 
 <section class="home-hero shell">
@@ -56,7 +56,7 @@ description: "Darren Soothill tests storage, GPU and local-AI systems, recording
     <div class="series-list">
       <ol class="series-index" reversed start="{{ strix_halo_posts.size }}">
         {% for post in strix_halo_posts limit: 3 %}
-        {% assign article_number = strix_halo_posts.size | minus: forloop.index0 %}
+        {% assign article_number = post.series_order %}
         {% assign published_stamp = post.date | date: '%s' %}
         {% assign updated_stamp = post.last_modified_at | default: post.date | date: '%s' %}
         {% assign published_clock = post.date | date: '%H:%M' %}
@@ -85,8 +85,7 @@ description: "Darren Soothill tests storage, GPU and local-AI systems, recording
         </summary>
         <ol class="series-index series-index--continued" reversed start="{{ remaining_strix_halo_posts }}">
           {% for post in strix_halo_posts offset: 3 %}
-          {% assign article_offset = forloop.index0 | plus: 3 %}
-          {% assign article_number = strix_halo_posts.size | minus: article_offset %}
+          {% assign article_number = post.series_order %}
           {% assign published_stamp = post.date | date: '%s' %}
           {% assign updated_stamp = post.last_modified_at | default: post.date | date: '%s' %}
           {% assign published_clock = post.date | date: '%H:%M' %}

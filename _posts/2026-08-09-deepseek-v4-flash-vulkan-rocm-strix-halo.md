@@ -13,7 +13,7 @@ editorial_review_status: approved
 editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
-series_order: 8
+series_order: 9
 description: "Matched DeepSeek V4 Flash tests on Strix Halo show a 44% ROCm prefill gain from tuning, but patched Vulkan still wins all four llama.cpp workloads."
 image: "/assets/images/deepseek-v4-flash-rocm-vulkan-strix-halo-og.png"
 image_alt: "DeepSeek V4 Flash ROCm versus Vulkan benchmark card in the Soot and Silicon visual style"

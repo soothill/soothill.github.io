@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "EVO-X3 from BIOS to Lemonade: the reproducible build"
+title: "EVO-X3 from BIOS to Lemonade: a reproducible build"
 seo_title: "EVO-X3 Ubuntu, GTT and Lemonade installation guide"
 date: 2026-08-06
 last_modified_at: 2026-08-06 09:50:00 +0100
@@ -8,49 +8,53 @@ permalink: /blog/2026/08/06/evox3-bios-to-lemonade-reproducible-build/
 categories: [local-ai, linux, automation]
 tags: [gmktec, evo-x3, strix-halo, ubuntu, rocm, gtt, lemonade, autoinstall]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-23
 series: "Local LLMs on Strix Halo"
 series_order: 8
-description: "A tested route from EVO-X3 firmware settings to a signed Ubuntu USB image, 120GiB dynamic GTT, SSH-key-only access, Lemonade and verified updates."
+description: "A tested route from EVO-X3 firmware settings to a signed Ubuntu USB image, 120 GiB dynamic GTT, SSH-key-only access, Lemonade and verified updates."
 image: /assets/images/evox3-bios-to-llm-server.png
-image_alt: "EVO X3 from BIOS to LLM server, showing 1GiB fixed UMA and a 120GiB dynamic GTT limit"
+image_alt: "EVO X3 from BIOS to LLM server, showing 1 GiB fixed UMA and a 120 GiB dynamic GTT limit"
 image_type: image/png
 ---
 
 > **Release record:** this guide describes `evox3-llm-provisioner` 2026.08.06.2. The repository keeps tested versions separate from the moving stable channel, and it does not claim that every Lemonade backend is a ROCm 7.14 userspace runtime.
 
-The first seven parts of this series answer a sequence of engineering questions: what the EVO-X3 hardware actually exposes, how ROCm and Vulkan behave, which quantizations are useful, what survives long context, and which DeepSeek profile can be defended with evidence. This part turns those findings into a product someone else can install.
+The first seven articles in this series were about finding the limits of my EVO-X3: what the hardware exposes, how ROCm and Vulkan behave, which quantisations are useful and what survives a long context. I then had to turn that collection of working settings into something I could reinstall without retracing every mistake.
 
-The complete automation and runbook are now in the separate [EVO X3 LLM provisioner repository](https://github.com/soothill/evox3-llm-provisioner). It covers the path from firmware to a bootable Ubuntu image, then keeps the machine patched and its configuration on a tested update channel.
+The result is the [EVO X3 LLM provisioner repository](https://github.com/soothill/evox3-llm-provisioner). It starts with the firmware settings, builds a bootable Ubuntu image and leaves the installed machine on a tested update channel. This article explains the decisions in that automation, including the few things I deliberately refused to automate.
 
 ## Start with the memory model, not a 96GB label
 
-The most important firmware decision is counter-intuitive: select the smallest UMA frame-buffer or dedicated-graphics reservation the BIOS offers—typically Auto, 512MiB or 1GiB. Do not make a permanent 96GiB GPU / 32GiB CPU split.
+The most important firmware decision is counter-intuitive: select the smallest UMA frame-buffer or dedicated-graphics reservation the BIOS offers—typically Auto, 512 MiB or 1 GiB. Do not make a permanent 96 GiB GPU / 32 GiB CPU split.
 
-Strix Halo's CPU and Radeon 8060S physically share the same LPDDR5X memory. AMD's current [Strix Halo optimization guide](https://rocm.docs.amd.com/en/docs-7.2.0/how-to/system-optimization/strixhalo.html) explains that GTT controls how much system RAM a user process may map into a GPU virtual address space. It is a dynamic mapping limit, not a second physical pool. A large firmware carve-out removes memory from Linux whether a model uses it or not.
+Strix Halo's CPU and Radeon 8060S physically share the same LPDDR5X memory. AMD's current [Strix Halo optimisation guide](https://rocm.docs.amd.com/en/docs-7.2.0/how-to/system-optimization/strixhalo.html) explains that GTT controls how much system RAM a user process may map into a GPU virtual address space. It is a dynamic mapping limit, not a second physical pool. A large firmware carve-out removes memory from Linux whether a model uses it or not.
 
-The qualified outcome on my 128GiB EVO-X3 is:
+This is the layout I kept on my 128 GiB EVO-X3:
 
 | Memory view | Qualified value |
 | --- | ---: |
-| Fixed VRAM / UMA | Approximately 1GiB |
-| Host-visible memory | Approximately 124–125GiB |
+| Fixed VRAM / UMA | Approximately 1 GiB |
+| Host-visible memory | Approximately 124–125 GiB |
 | TTM page limit | `31457280` 4KiB pages |
-| Dynamic GTT | 120GiB |
+| Dynamic GTT | 120 GiB |
 
 The installer writes `options ttm pages_limit=31457280` to its own managed modprobe file and regenerates initramfs. It refuses a conflicting `pages_limit` definition and never adds the deprecated `amdgpu.gttsize` option.
 
-That layout was not chosen from theory alone. The DeepSeek V4 Flash target needs one 97,161MiB managed allocation, and the target plus its optional draft model occupy more than 105GiB before context and runtime allocations. The fixed 96/32 layout cannot run that monolithic profile and leaves the OS dangerously constrained.
+That layout was not chosen from theory alone. The DeepSeek V4 Flash target needs one 97,161 MiB managed allocation, and the target plus its optional draft model occupy more than 105 GiB before context and runtime allocations. The fixed 96/32 layout cannot run that monolithic profile and leaves the OS dangerously constrained.
 
-## The USB image remains safe enough to share
+## I left the destructive choices outside the automation
 
 The image builder follows Ubuntu's Noble channel instead of baking one point-release filename into the project. It downloads Ubuntu's `SHA256SUMS` and detached signature, verifies them with the Ubuntu archive keyring, selects the newest listed 24.04 live-server image, and verifies the ISO before modifying it.
 
-The resulting USB contains the complete versioned provisioner and a NoCloud autoinstall seed. It automates the repeatable parts but leaves two decisions interactive:
+The resulting USB contains the complete versioned provisioner and a NoCloud autoinstall seed. It handles the repeatable work but still asks for two decisions:
 
 1. network configuration, when DHCP is not enough;
 2. the target NVMe device that will be erased.
 
-A reusable image must not guess the second one.
+A reusable image has no business guessing the second one.
 
 The builder also asks where SSH public keys should come from. It can read a GitHub username, an HTTPS key URL, or a local file. If no key is embedded, the installed machine opens a first-boot console wizard with the same choices plus pasted keys. The operator password is locked and password SSH remains disabled.
 
@@ -92,13 +96,13 @@ Lemonade deliberately reuses a system ROCm tree only when its expected major and
 
 The public installer uses Lemonade's managed stable runtime by default. The repository separately records the exact custom 7.14 pins, checksums and promotion boundaries so the updater can advance them honestly when Lemonade publishes and validates an equivalent native bundle.
 
-## Failed upgrades become controls
+## Two failed canaries changed the update rule
 
-The build carries more than successful numbers. Two recent llama.cpp canaries revealed why update qualification needs a realistic request sequence.
+Two recent llama.cpp canaries are the reason the updater does more than launch a model and wait for a short answer.
 
 Unmodified b10216 and b10290 could answer a short Qwen3-Coder request correctly, process a new uncached 8,191-token prompt, and then return the *previous* short answer. A fresh-process smoke had missed it. The root cause was a write-after-read race around device-owned pinned host input buffers on the integrated HIP path.
 
-The general custom backend therefore remains b10083. Qwen3-Coder alone may use b10290 only with the narrow upstream PR 25863 host-buffer fix, which passed the sequential short-to-8K test, long decode, 4,775 focused ROCm backend operations and the throughput gate. “Newest” is not a release criterion when stateful correctness fails.
+I therefore kept b10083 as the general custom backend. Qwen3-Coder alone may use b10290, and only with the narrow upstream PR 25863 host-buffer fix. That combination passed the sequential short-to-8K test, long decode, 4,775 focused ROCm backend operations and the throughput gate. A newer build does not qualify when it can return an answer from the wrong request.
 
 Other evidence became operating policy:
 
@@ -108,7 +112,7 @@ Other evidence became operating policy:
 - 32K and 64K context are comfortable; 128K is an exclusive, swap-active workload; 192K crossed the available-memory safety floor.
 - DeepSeek's accuracy profile keeps exact prefill, all six routed experts and target-only decode. Sparse/four-expert/DSpark configurations remain explicit speed-versus-quality experiments.
 
-## The update channel is small enough to audit
+## The update channel stays small enough to audit
 
 Every installed machine checks one `stable.env` manifest in the GitHub repository. The updater parses it as restricted data rather than sourcing it as shell code. It verifies schema, channel, upgrade direction, minimum updater version, payload path, SHA-256 and the exact version inside the tagged release archive.
 
@@ -116,9 +120,9 @@ Releases live under `/opt/evox3/releases/VERSION`; the `current` symlink changes
 
 The weekly timer runs in a maintenance window because a runtime update can restart Lemonade and unload a model. It can be disabled where another maintenance process owns that decision.
 
-## The useful deliverable is the contract
+## What the provisioner actually guarantees
 
-The USB image is convenient, but the real deliverable is the boundary it enforces:
+The USB image is convenient. What matters more is the boundary the provisioner enforces:
 
 - firmware leaves physical memory available to Linux;
 - GTT makes that memory dynamically addressable by the GPU;
@@ -128,4 +132,4 @@ The USB image is convenient, but the real deliverable is the boundary it enforce
 - failed canaries remain visible and block unsafe promotion;
 - updates are repeatable, checked and reversible at the release-directory level.
 
-That is the difference between documenting one workstation and producing a system another person can install, understand and keep current. The [repository README](https://github.com/soothill/evox3-llm-provisioner#readme) starts at the BIOS checklist and follows the same path all the way through `sudo evox3-verify`.
+I can now rebuild the machine without relying on notes scattered across several tests, and another owner can see which settings are defaults and which remain experiments. The [repository README](https://github.com/soothill/evox3-llm-provisioner#readme) starts at the BIOS checklist and follows the same path through to `sudo evox3-verify`.

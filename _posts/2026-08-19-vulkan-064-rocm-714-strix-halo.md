@@ -13,7 +13,7 @@ editorial_review_status: approved
 editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-19
 series: "Local LLMs on Strix Halo"
-series_order: 11
+series_order: 12
 description: "I compared Vulkan 0.6.2 and 0.6.4 with ROCm 7.14 on Strix Halo. The new release improved prefill by up to 72%, while decode performance stayed unchanged."
 ---
 
