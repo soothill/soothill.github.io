@@ -1,25 +1,39 @@
 ---
 layout: post
-title: "Muse Glimmer 30B on Strix Halo: ROCm wins the sprint, Vulkan passes the context test"
+title: "Muse Glimmer 30B on Strix Halo: Vulkan passed the 8K test"
 seo_title: "Muse Glimmer 30B on Strix Halo: ROCm vs Vulkan"
-date: 2026-08-11 09:00:00 +0100
-last_modified_at: 2026-08-11 09:00:00 +0100
+date: 2026-08-11 12:38:41 +0100
+last_modified_at: 2026-08-11 12:38:41 +0100
 permalink: /blog/2026/08/11/muse-glimmer-30b-strix-halo-rocm-vulkan/
 categories: [local-ai, benchmarks, engineering]
 tags: [muse-glimmer, llama-cpp, rocm, vulkan, strix-halo, dflash, speculative-decoding, multimodal]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-23
 series: "Local LLMs on Strix Halo"
-series_order: 10
+series_order: 12
 description: "Muse Glimmer 30B reaches 42 tok/s with DFlash on ROCm, but an 8K correctness test makes Vulkan the safer Strix Halo deployment."
 ---
 
-> **Test record:** I qualified [Muse Glimmer 30B](https://huggingface.co/meta-models/Muse-Glimmer-30B-GGUF) on a 128GB GMKtec EVO-X3 with a Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`). The same [`llama.cpp` b10362 commit](https://github.com/ggml-org/llama.cpp/commit/4801e3c567d5131dd41b387df5f2d4b1370d92be) was built for ROCm 7.14 and Vulkan. ROCm processed a 2,048-token prompt at **434.59 tok/s** and, with the model's DFlash drafter tuned to 15 tokens, reached **42.38 tok/s** on a favourable generation workload. Vulkan was much slower at prompt processing but was the only backend to pass the fresh 8K passkey test. The deployment answer is therefore not the largest number: use Vulkan without speculative decoding for the correctness-first service, and retain ROCm plus DFlash as a fast short-context profile.
+> **Test record:** I qualified [Muse Glimmer 30B](https://huggingface.co/meta-models/Muse-Glimmer-30B-GGUF)
+> on a 128GB GMKtec EVO-X3 with a Ryzen AI MAX+ 395 / Radeon 8060S
+> (`gfx1151`). I built the same [`llama.cpp` b10362 commit](https://github.com/ggml-org/llama.cpp/commit/4801e3c567d5131dd41b387df5f2d4b1370d92be)
+> for ROCm 7.14 and Vulkan. ROCm processed a 2,048-token prompt at **434.59
+> tok/s** and reached **42.38 tok/s** on a favourable DFlash workload. Vulkan
+> was much slower at prompt processing, but it was the only backend to pass the
+> fresh 8K passkey test. I kept Vulkan without speculative decoding for the
+> correctness-first service and retained ROCm plus DFlash as a short-context
+> speed profile.
 
-Muse Glimmer is unusually well matched to this machine. It is a dense 29.6B-parameter multimodal model with tool calling, a 131,072-token context window and a separate DFlash draft model. The dynamic quant and vision projector fit comfortably in 128GB unified memory, while the active model is large enough to expose meaningful differences between ROCm and Vulkan.
+For the first half of this test, ROCm looked like the easy choice. It was roughly twice as fast as Vulkan at prompt processing on the dynamic quant, and DFlash could push a favourable generation task beyond 40 tokens/s.
 
-It is also a good example of why an inference qualification cannot stop at `llama-bench`. The fastest backend in a shallow benchmark failed an ordinary retrieval test once the prompt moved beyond roughly 4,000 tokens. The slower backend returned the exact passkey at 8,000 tokens. Performance mattered; correctness decided the default.
+Then I moved the passkey beyond roughly 4,000 tokens. ROCm stopped returning the right value; Vulkan returned it exactly at 8,000 tokens. That one failure changed the deployment decision.
 
-## The result in one table
+Muse Glimmer is a dense 29.6B-parameter multimodal model with tool calling, a 131,072-token context window and a separate DFlash draft model. Both published quants and the vision projector fit comfortably in the EVO-X3's 128GB unified memory. Fit was not the problem. The test was about how much speed I could use without narrowing the model's working context by accident.
+
+## The numbers that shaped the decision
 
 | Requirement | Retained configuration | Result |
 |---|---|---|
@@ -32,7 +46,7 @@ It is also a good example of why an inference qualification cannot stop at `llam
 
 The distinction between “highest favourable result” and “representative set” is deliberate. Speculative decoding accelerates accepted draft tokens; its benefit changes with the prompt and output. A single arithmetic loop is useful for tuning the ceiling, but it is not an honest forecast for coding, explanation and operational writing.
 
-## Exact platform and artifacts
+## The exact build I tested
 
 The test host was the same `evox3` workstation used throughout this series:
 
@@ -49,7 +63,7 @@ The test host was the same `evox3` workstation used throughout this series:
 
 I tested both model quants published in the official repository rather than treating the filename as provenance:
 
-| Artifact | Size | SHA-256 | Model-card quality note |
+| Artefact | Size | SHA-256 | Model-card quality note |
 |---|---:|---|---:|
 | `muse-glimmer-30B-kquant-17gb.gguf` | 16.76GB | `7e9b74b7c8875e9e265695df9613bf6290f2392e479ce740495a129019c488d8` | about 1.0% degradation |
 | `muse-glimmer-30B-kquant-dynamic.gguf` | 19.65GB | `513109c8319115f69eb09fb7b118c97c8167d15bc014fd7670d2e30489bf106c` | about 0.2% degradation |
@@ -84,7 +98,7 @@ cmake --build build-vulkan --config Release -j
 
 The common benchmark shape was pp2048 and tg128, repeated three times with all layers on the GPU, flash attention enabled, an 8,192-token batch and 2,048-token micro-batch. Model loading was excluded from the timed result.
 
-## ROCm owns prefill; Vulkan edges baseline decode
+## ROCm won prefill; Vulkan narrowly won baseline decode
 
 | Quant | Backend | HIP graphs | pp2048 | tg128 |
 |---|---|---:|---:|---:|
@@ -101,7 +115,7 @@ HIP graphs did not create a useful ROCm win. Disabling them improved prompt proc
 
 These are microbenchmarks, not complete chat-request rates. They isolate prompt processing and autoregressive generation so the backend differences are visible; the later correctness and feature tests decide whether a configuration is deployable.
 
-## DFlash changes ROCm generation
+## DFlash made ROCm much faster on the right output
 
 The official DFlash model is not plug-and-play with the current GGUF metadata. Its `muse-glimmer.attention.sliding_window_pattern` is encoded as an array of booleans, while the current DFlash binding expects the scalar pattern. That mismatch is tracked in [`llama.cpp` issue #26894](https://github.com/ggml-org/llama.cpp/issues/26894) and can terminate model loading with a `vector::_M_range_check` exception.
 
@@ -135,7 +149,7 @@ The three representative 512-token tasks averaged **23.46 tok/s**, 1.89 times th
 
 Dynamic plus DFlash showed the same shape. A favourable integer run reached 43.87 tok/s, coding reached 31.03 and the B-tree explanation reached 17.68. With seed 123, the speculative and target-only paths also returned identical final content for an exact addition check: `12345 + 67890 = 80,235.`
 
-This is the strongest ROCm performance result in the study. It still did not become the default, because speed is only useful inside the context range that returns the right answer.
+This is the strongest ROCm performance result in the study. I still did not make it the default, because it only helps inside the context range that returns the right answer.
 
 ## The context test changed the deployment decision
 
@@ -211,13 +225,13 @@ For workloads capped at 4K, the 17GB ROCm quant plus DFlash is the useful speed 
 
 The context cap is a safety control derived from the observed boundary, not a property of the model. I would remove it only when that exact ROCm build passes the same 8K and longer tests.
 
-## Final verdict
+## The two profiles I kept
 
-ROCm is the performance winner in the shallow, well-qualified lane. Its dynamic-quant prefill is twice as fast as Vulkan, and DFlash can lift a mixed 512-token generation set from a 12.43 tok/s target-only baseline to 23.46 tok/s. On favourable output it can exceed 40 tok/s.
+ROCm is the quicker option in the shallow, well-tested lane. Its dynamic-quant prefill was twice as fast as Vulkan, and DFlash lifted the mixed 512-token set from a 12.43 tok/s target-only baseline to 23.46 tok/s. On favourable output it exceeded 40 tok/s.
 
-Vulkan is the deployment winner today. It is slower at prompt processing and barely faster at target-only decode, but it returned the exact 8K passkey where the current ROCm path did not. DFlash adds too little on Vulkan—and can subtract substantially when acceptance is poor—so the quality-first route is the dynamic target model by itself.
+I kept Vulkan as the default because it returned the exact 8K passkey where the current ROCm path did not. It is slower at prompt processing and only slightly faster at target-only decode. DFlash adds too little on Vulkan—and can make generation substantially slower when acceptance is poor—so the correctness-first route uses the dynamic target model by itself.
 
-That produces two honest profiles instead of one misleading champion:
+That leaves two profiles with deliberately different limits:
 
 - **Vulkan / dynamic / no DFlash** for multimodal and tool-capable service up to the currently qualified 8K context.
 - **ROCm / 17GB / DFlash 15** for deliberately short workloads where throughput matters more than the extra quantisation quality.
