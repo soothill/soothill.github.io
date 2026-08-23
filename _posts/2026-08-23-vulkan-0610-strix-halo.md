@@ -3,7 +3,7 @@ layout: post
 title: "Vulkan 0.6.10 on Strix Halo: the MTP fix has a cost"
 seo_title: "Vulkan 0.6.10 vs 0.6.7 on Strix Halo"
 date: 2026-08-23 04:13:17 +0100
-last_modified_at: 2026-08-23 04:13:17 +0100
+last_modified_at: 2026-08-23 04:43:20 +0100
 permalink: /blog/2026/08/23/vulkan-0610-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [vulkan, llama-cpp, strix-halo, qwen3-6, mtp, deepseek-v4, lemonade]
@@ -169,7 +169,9 @@ Each cell below is prompt processing followed by decode, in tokens per second.
 The large prefill improvement happened between 0.6.5 and 0.6.7, and 0.6.10
 kept it. Against 0.6.5, Q4_0 prompt processing was 15.4% faster at 32K, 34.8%
 at 64K and 55.5% at 128K. Against 0.6.7, it was effectively unchanged. The F16
-control also stayed within 1.8% of both older builds.
+control also stayed within 1.8% of both older builds except for 128K prompt
+processing. That cell reached 91.76 tokens/s on 0.6.10, 2.34% above 0.6.5 and
+1.71% above 0.6.7.
 
 Decode moved the wrong way. Q4_0 fell by 4.1% at 32K, 3.0% at 64K and 3.5% at
 128K compared with 0.6.7. The independent 128K repeat stayed close to the first
@@ -229,9 +231,9 @@ quicker for cold MTP and still carries the quantised-KV prefill improvement over
 0.6.5. I would not put it back on a genuinely long MTP route just to recover
 that speed, because it does not contain the full replay fix.
 
-DeepSeek stays where it is. Vulkan 0.6.10 did not improve its F16 path or its
-long answer, and Q4_0 decode was 3–4% slower than 0.6.7. Release 0.6.5 has no
-remaining advantage in these results.
+DeepSeek stays where it is. Vulkan 0.6.10 did not produce a consistent F16 gain
+or improve the long answer, and Q4_0 decode was 3–4% slower than 0.6.7. Release
+0.6.5 has no remaining advantage in these results.
 
 So this is not the usual upgrade story. Vulkan 0.6.10 fixes the problem that
 could stop the request, and charges roughly 11% of Qwen's MTP speed for doing
