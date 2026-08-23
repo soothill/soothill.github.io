@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Upgrading the Strix Halo LLM stack: what got faster, what failed"
+title: "Strix Halo LLM upgrades: what got faster and what failed"
 seo_title: "Strix Halo LLM upgrade: wins and regressions"
 date: 2026-08-11 11:00:00 +0100
 last_modified_at: 2026-08-11 11:00:00 +0100
@@ -8,20 +8,32 @@ permalink: /blog/2026/08/11/strix-halo-llm-stack-upgrade-benchmarks/
 categories: [local-ai, benchmarks, engineering]
 tags: [llama-cpp, vllm, lemonade, rocm, strix-halo, gfx1151, qwen35, deepseek-v4, bf16, kv-cache, speculative-decoding]
 author: Darren Soothill
+editorial_standard: soothill-human-v1
+editorial_review_status: approved
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-23
 series: "Local LLMs on Strix Halo"
-series_order: 10
+series_order: 11
 description: "Matched before-and-after tests of llama.cpp, vLLM and Lemonade on Strix Halo, plus quantised KV, BF16, MTP, DFlash and ROCmFPX experiments."
 ---
 
-> **Test record:** I updated the principal inference engines on my 128GB Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) system, then repeated matched before-and-after benchmarks before changing the working services. `llama.cpp` b10362 remained within **1.02%** of its old result, vLLM 0.27.0 remained within **0.30%** on the 122B throughput test, and Lemonade 11.5.2 plus my existing memory fix retained **97.9% less request memory** than unpatched 11.5.2. Two community experiments were much faster—quantised-KV decode improved by as much as **151.5%**, and a BF16 patch improved 32K decode by **34.3%**—but the speculative paths changed deterministic output and did not pass the deployment gate.
+> **Test record:** I updated the main inference engines on my 128GB Ryzen AI
+> MAX+ 395 / Radeon 8060S (`gfx1151`) system, then repeated matched
+> before-and-after benchmarks before touching the working services.
+> `llama.cpp` b10362 stayed within **1.02%** of the old result and vLLM 0.27.0
+> stayed within **0.30%** on the 122B throughput test. Lemonade 11.5.2 with my
+> existing memory fix retained **97.9% less request memory** than unpatched
+> 11.5.2. Quantised-KV decode improved by as much as **151.5%**, and a BF16
+> patch improved 32K decode by **34.3%**, but the speculative candidates changed
+> deterministic output and did not pass the deployment gate.
 
-The fastest patch is not automatically the best update.
+I expected this to be a fairly routine round of upgrades. It was not.
 
-That sounds obvious until a new release, a Reddit result and a three-digit percentage gain arrive together. On a shared-memory APU, an inference change can improve one context depth, regress another, alter output, or move memory pressure into a different counter. A version number does not settle any of those questions.
+The official `llama.cpp` and vLLM updates barely moved performance. The quiet Lemonade memory fix was the change I was happy to deploy. The eye-catching community patches produced the largest numbers, but some of them also changed output or failed at a different context depth.
 
-This article records the complete upgrade decision: what was built, what moved, which community ideas survived correctness checks, and what I actually deployed.
+On a shared-memory APU, those failures matter more than the headline speed-up. I built each candidate away from the stable services, repeated the useful controls and only then decided what could stay on the machine.
 
-## The version boundary
+## What I actually changed
 
 “Latest” is a moving target, so this test pins the exact boundary captured on 11 August 2026:
 
@@ -125,7 +137,7 @@ This benchmark intentionally gives allocation overhead an unusually large share 
 
 This was the only candidate I promoted immediately. The active service now runs patched Lemonade 11.5.2, the previous 11.5.1 unit override is retained for rollback, and the production DeepSeek model passed a fresh end-to-end chat request after restart.
 
-## Community experiment one: quantised KV becomes usable
+## Quantised KV fixed the long-context slowdown
 
 The [quantised-KV work discussed in the Strix Halo community](https://www.reddit.com/r/StrixHalo/comments/1uzqg5m/i_made_quantized_kv_cache_workable_on_strix_halo/) changes the ROCm Flash Attention path rather than the model weights. I tested Q8 KV at increasing depth on Qwen3-Coder-30B-A3B:
 
@@ -142,7 +154,7 @@ The ROCm-focused operation tests passed. The corresponding Vulkan candidate did 
 
 This patch narrows an important ROCm weakness and could make long-context Q8 KV genuinely practical. It still belongs on a pinned ROCm-only experimental branch until the wider correctness surface and upstream state are clearer.
 
-## Community experiment two: BF16 improves speed and quality
+## BF16 was the patch worth watching
 
 The most promising result came from [`llama.cpp` PR #26856](https://github.com/ggml-org/llama.cpp/pull/26856), also discussed in the [Strix Halo BF16 thread](https://www.reddit.com/r/StrixHalo/comments/1vl02db/llamacpp_pr26856_faster_prefill_better_quality/).
 
@@ -167,11 +179,11 @@ Perplexity is the stronger part of the result:
 | candidate F16 | 9.7953 |
 | candidate BF16 | **9.2304** |
 
-The candidate BF16 result matches the F32 reference rather than merely becoming faster. That is the rare optimisation that improves both the serving metric and the quality control.
+The candidate BF16 result matches the F32 reference rather than merely becoming faster. In this test, it improved both the serving metric and the quality control.
 
 I still did not put it into the stable service. The pull request remains an upstream work in progress, and a strong three-chunk perplexity result is not the same as broad model coverage. This is the first patch I would revisit after upstream review.
 
-## The attractive results I rejected
+## The speed-ups I did not ship
 
 The remaining experiments explain why the release gate includes output and workload shape rather than throughput alone:
 
@@ -188,7 +200,7 @@ The [community MTP result](https://www.reddit.com/r/StrixHalo/comments/1tgxh2a/l
 
 The 4,096-token, same-seed outputs diverged at byte 181. That may be a bug, an implementation boundary or a difference in the expected acceptance contract, but it is not byte identity. I will not trade deterministic output for a 16.8% throughput gain in the stable lane.
 
-### DFlash: dramatically faster, and a failed output gate
+### DFlash: much faster, but different output
 
 Lucebox DFlash completed ten HumanEval-style prompts at 37.51 generated tok/s; plain `llama.cpp` produced 10.31 tok/s. Mean end-to-end latency fell from 10.77s to 3.31s.
 
@@ -202,7 +214,7 @@ The ROCmFPX build passed its focused quantisation tests, and the matched Q6 mode
 
 The model-card claim may hold for another build, shape or conversion. It did not reproduce as a useful end-to-end win on this host, so I rejected the current candidate rather than averaging unlike phases into a comforting number.
 
-## Stability and the absence of drama
+## Nothing reset the GPU
 
 The useful negative result is that none of the retained runs reset the GPU.
 
@@ -217,9 +229,9 @@ Normal ROCm queue-eviction messages appeared when large processes exited. They a
 
 AMD's [ROCm 7.14 release notes](https://rocm.docs.amd.com/en/docs-7.14.0/about/release-notes.html) still list lower-than-expected LLM inference performance on RDNA 3, RDNA 4 and Ryzen AI MAX as a known issue. The [RDNA 3/4 optimisation guide](https://rocm.docs.amd.com/en/develop/reference/system-optimization/rdna3-5.html) remains the host baseline, but these results show that model-specific kernels and graph behaviour can dominate after the host is configured correctly.
 
-## What is running now
+## What I left running
 
-| Component | Final state |
+| Component | Retained state |
 | --- | --- |
 | Lemonade | patched 11.5.2 active; rollback to 11.5.1 retained |
 | production DeepSeek | specialised ROCmFP3 image restored, healthy and chat-tested |
@@ -232,9 +244,9 @@ AMD's [ROCm 7.14 release notes](https://rocm.docs.amd.com/en/docs-7.14.0/about/r
 
 The custom ROCmFP3 DeepSeek backend is still pinned. Qualifying upstream b10362 does not magically rebase a separate quantisation and kernel stack. That work deserves its own build and correctness campaign rather than a version-label shortcut.
 
-## The release rule I would keep
+## What I will do for the next upgrade
 
-The version updates were deliberately uneventful. That is a good result:
+The version updates were uneventful, which is a useful result. I would use the same sequence again:
 
 1. Accept a release when the balanced before-and-after test stays inside the gate.
 2. Repeat on the large model that matters, not only the convenient smoke model.
@@ -243,11 +255,11 @@ The version updates were deliberately uneventful. That is a good result:
 5. Treat deterministic divergence as a release blocker until explained.
 6. Keep a rollback path and prove the production model after changing the daemon.
 
-The strongest immediate production improvement was not the 3.64x speculative result. It was the quieter Lemonade update that returned memory correctly, passed its tests and restarted the existing model cleanly.
+The production improvement I kept was not the 3.64x speculative result. It was the quieter Lemonade update that returned memory correctly, passed its tests and restarted the existing model cleanly.
 
 The quantised-KV and BF16 work show real headroom in ROCm on Strix Halo. The failed Vulkan operation test, long-context MoE regression and speculative output mismatches show why that headroom still needs qualification.
 
-Faster is a benchmark result. Safe to keep is a product decision.
+For now, BF16 and quantised KV remain the two experiments worth revisiting. MTP and DFlash need an explanation for the output differences before I would put either in the stable lane.
 
 Continue with the complete [Local LLMs on Strix Halo series](/series/strix-halo/), or read the preceding [five-model SGLang, vLLM and `llama.cpp` comparison](/blog/2026/08/10/sglang-vllm-llamacpp-evox3/).
 
