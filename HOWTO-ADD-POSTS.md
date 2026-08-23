@@ -1,320 +1,249 @@
-# How to Add New Blog Posts
+# Publishing a Soot / Silicon field note
 
-This guide explains how to add new blog posts to your Jekyll-powered GitHub Pages site.
+This is the required workflow for creating or materially updating a blog post.
+It applies the approved Soothill editorial standard alongside the site's build,
+metadata and accessibility checks.
 
-## Quick Start
+The objective is not to satisfy an AI detector. The article must preserve
+Darren Soothill's evidence, reasoning and judgement without inventing facts,
+experience, failures or certainty.
 
-### 1. Create a New Post File
+## The publication gate
 
-Create a new file in the `_posts` directory with this naming format:
+A post is ready only when all four conditions are true:
 
+1. The source record supports every important claim.
+2. The article passes the evidence and voice review below.
+3. Darren has approved the factual conclusions and final wording.
+4. The editorial, site and link validators pass.
+
+Do not publish a draft with `editorial_review_status: pending`. The editorial
+validator intentionally rejects it.
+
+## 1. Start with the source record
+
+Before drafting, record:
+
+- the question, assumption or claim being tested;
+- why its answer could change a product, operating or technical decision;
+- the hardware, software, model, firmware and source revisions involved;
+- launch settings, workload, controls, repeats and acceptance conditions;
+- raw measurements, logs, retained data and primary sources;
+- failures, unexpected results and changes made during the investigation;
+- Darren's interpretation and the decision that followed;
+- what was not tested and where the conclusion stops.
+
+An external specification, release note, benchmark screenshot or community
+answer is an input. It is not Darren's conclusion until the article says what
+was independently checked and what could not be checked.
+
+When AI assists with drafting or editing, give it this source record. Instruct
+it to flag missing evidence rather than fill gaps. Check every anecdote,
+measurement, quotation and first-person statement against the source record.
+
+## 2. Create the post
+
+Copy `_templates/blog-post.md` to `_posts` using this filename convention:
+
+```text
+_posts/YYYY-MM-DD-specific-post-slug.md
 ```
-_posts/YYYY-MM-DD-your-post-title.md
-```
 
-**Example:**
-```
-_posts/2025-10-15-setting-up-iscsi-target.md
-```
+Replace every placeholder. Do not leave the template's headings in place
+unless they are genuinely the clearest headings for that investigation.
 
-### 2. Add Front Matter
+The post layout supplies the page's H1. Begin article sections with `##` and
+use `###` only beneath an existing `##` section.
 
-Every post must start with YAML front matter (metadata between `---` markers):
+### Required front matter
 
 ```yaml
 ---
 layout: post
-title: "Your Post Title Here"
-date: 2025-10-15
-categories: [storage, linux]
-tags: [iscsi, storage, linux, tutorial]
+title: "State the useful result or question"
+seo_title: "Short search title"
+date: 2026-08-17 10:00:00 +0100
+last_modified_at: 2026-08-17 10:00:00 +0100
+categories: [local-ai, benchmarks]
+tags: [specific-technology, workload, platform]
 author: Darren Soothill
-description: "A brief description of your post for SEO (150-160 characters)"
-keywords: "comma, separated, keywords, for, seo"
+editorial_standard: soothill-human-v1
+editorial_review_status: pending
+editorial_reviewer: Darren Soothill
+editorial_reviewed_at: 2026-08-17
+description: "Describe the tested subject, method and useful result in 50 to 165 characters."
 ---
-
-Your content starts here...
 ```
 
-### 3. Write Your Content
+Use a full time and UK offset when the publication time is known. Use an ISO
+date without a fabricated time for older material whose time was not recorded.
+Change `last_modified_at` only for a meaningful published update, not for an
+unpublished drafting edit.
 
-Use Markdown formatting for your content. Here are some common elements:
-
-#### Headings
-
-```markdown
-## Main Section
-### Subsection
-#### Sub-subsection
-```
-
-#### Code Blocks
-
-Use triple backticks with language identifier:
-
-````markdown
-```bash
-sudo apt install package-name
-```
-````
-
-#### Lists
-
-```markdown
-- Unordered item 1
-- Unordered item 2
-
-1. Ordered item 1
-2. Ordered item 2
-```
-
-#### Links
-
-```markdown
-[Link text](https://example.com)
-```
-
-#### Images
-
-```markdown
-![Alt text](/path/to/image.png)
-```
-
-#### Bold and Italic
-
-```markdown
-**Bold text**
-*Italic text*
-```
-
-## Complete Example Post
-
-Create `_posts/2025-10-15-example-post.md`:
+For an ongoing series, also add its name and next reading-order number:
 
 ```yaml
----
-layout: post
-title: "Example Technical Guide"
-date: 2025-10-15
-categories: [tutorial, linux]
-tags: [example, tutorial, guide]
-author: Darren Soothill
-description: "An example blog post showing the structure and formatting"
-keywords: "example, tutorial, blog, jekyll"
----
+series: "Local LLMs on Strix Halo"
+series_order: 11
+```
 
-This is the introduction to your post. It should briefly explain what the post covers.
+Set `editorial_review_status: approved` only after Darren completes the final
+review. Record that review's real date in `editorial_reviewed_at`.
 
-## Prerequisites
+## 3. Write around the investigation
 
-- Requirement 1
-- Requirement 2
-- Requirement 3
+The article should answer these questions, but it should not repeat them as a
+fixed set of headings:
 
-## Installation
+- What was I trying to find out?
+- Why did the answer matter?
+- What did I test, observe or change?
+- What failed or contradicted the first result?
+- What does the result mean for a real decision?
+- What does it not prove?
+- What would I use, reject, repeat or test next?
 
-Install the required packages:
+Start with the useful question, failure or result. Background belongs after the
+reader knows why it matters.
+
+Use the structure the evidence requires: prose for reasoning, a table for a
+comparison, code for exact commands, and a figure when it makes a relationship
+clearer. Do not force every explanation into three bullets or give every
+section the same length.
+
+### The four voice requirements
+
+Question and test claims. Treat vendor and community material as claims until
+the relevant part is reproduced or clearly labelled as untested.
+
+Measure before asserting. Name the environment, workload and relevant control.
+Keep the evidence boundary close to the result it qualifies.
+
+Be candidly decisive. Say `I kept`, `I rejected`, `I would use` or `I still do
+not know` when that is Darren's real decision.
+
+Be technically plain-spoken. Use the correct term, then connect it to the
+product or operational consequence.
+
+### Language rules
+
+- Use UK English in authored text, metadata, captions and alternative text.
+- Preserve official names, code, command options, URLs, data fields and exact
+  quotations even when they contain US spelling.
+- Use `I` for Darren's work and judgement.
+- Do not use a corporate `we` for this one-person publication.
+- Use `you` only for a real instruction, warning or reader decision.
+- Use sentence case for headings.
+- Use `14 August 2026` in prose and ISO dates in metadata or technical records.
+- Preserve the distinction between GB and GiB and record compact technical
+  units consistently.
+- Prefer full stops and commas. Use an em dash only when the interruption earns
+  it.
+
+Avoid marketing defaults such as `seamless`, `game-changing`, `cutting-edge`,
+`ever-evolving` and claims about unlocking potential. Do not start with `In
+today's fast-paced world` or a `whether you are X or Y` construction.
+
+The approved detailed voice standard is maintained in the editorial project at
+`../soothill-editorial/phase-3-provisional-voice-guide.md`.
+
+## 4. Complete the human review
+
+Darren must review the rendered article, not only the Markdown source.
+
+### Evidence review
+
+- The test environment is specific enough to understand the result.
+- Measurements and retained data agree with the prose and tables.
+- External claims are distinct from direct observations and interpretation.
+- Failures, reversals and negative results have not been smoothed away.
+- The article states where the evidence stops.
+- The conclusion changes or informs a real decision.
+
+### Voice review
+
+- The opening says something useful immediately.
+- A competitor could not publish the article unchanged.
+- First-person statements belong to Darren and come from the source record.
+- Paragraphs and sections do not repeat one uniform rhythm.
+- Technical terms are either necessary or explained.
+- Generic scene-setting, marketing language and repeated summaries are gone.
+- The article sounds natural when Darren reads it aloud.
+
+### Publication review
+
+- Title, description, categories, tags and series metadata are correct.
+- Publication and update dates are accurate.
+- Source links, data downloads and internal links work.
+- Informative images have accurate alternative text, captions where needed and
+  intrinsic dimensions.
+- The article works at desktop and mobile widths.
+
+Use `.github/PULL_REQUEST_TEMPLATE/blog-post.md` to record this review in the
+pull request. When opening the pull request manually, select it with:
+
+```text
+?template=blog-post.md
+```
+
+## 5. Validate locally
+
+From the repository root, run:
 
 ```bash
-sudo apt update
-sudo apt install package-name
+python3 scripts/validate_editorial.py
+bundle exec jekyll build --trace
+python3 scripts/validate_site.py _site
+python3 scripts/check_external_links.py _site
 ```
 
-## Configuration
+The editorial validator fails for:
 
-Here's how to configure the service:
+- missing or unapproved editorial metadata;
+- invalid publication, update or review dates;
+- US spellings in authored prose covered by its high-confidence dictionary;
+- a small set of formulaic marketing constructions;
+- no visible signal of testing or measurement;
+- no visible evidence boundary;
+- no decision, recommendation or operational consequence;
+- accidental body H1s, malformed code fences or a very short field note.
 
-```bash
-sudo nano /etc/config/file.conf
-```
+It ignores fenced code, inline code and link destinations when checking
+spelling and formulaic wording. It may warn about a generic heading or the
+absence of an external source; Darren decides whether the context justifies
+that warning.
 
-Add the following configuration:
+The validator is a guardrail, not an editor. Passing it does not replace the
+source check, read-aloud review or Darren's approval.
 
-```conf
-option1 = value1
-option2 = value2
-```
+## 6. Publish through review
 
-## Testing
+Create a branch and a pull request. Do not publish a new article by committing
+directly to `main`.
 
-Verify the installation:
+Before merge:
 
-```bash
-sudo systemctl status service-name
-```
+1. Complete the blog-post pull-request checklist.
+2. Change `editorial_review_status` from `pending` to `approved` after Darren's
+   review.
+3. Confirm the Site quality workflow passes.
+4. Perform the desktop and mobile browser review.
+5. Obtain Darren's final approval.
 
-## Troubleshooting
+After merge, confirm the production article, canonical URL, publication and
+update dates, social metadata, source links and series/archive placement.
 
-### Common Issue 1
+## Updating an existing article
 
-**Problem:** Description of the problem
+Use the same source, voice and validation process for a material update.
 
-**Solution:**
-```bash
-sudo command-to-fix
-```
+- Preserve the original `date`.
+- Set `last_modified_at` to the real update date and time.
+- Update `editorial_reviewed_at` when Darren reviews the revised article.
+- Explain changed findings in the body when the old conclusion materially
+  changed.
+- Do not erase a superseded result if it is needed to understand the reversal.
+- Recheck links, structured metadata and the sitemap after building.
 
-## Conclusion
-
-Summary of what was covered and next steps.
-
----
-
-© 2025 Darren Soothill. All rights reserved.
-```
-
-## Testing Locally
-
-### Install Dependencies (First Time Only)
-
-```bash
-# Install Ruby and Bundler if not already installed
-# Then install Jekyll dependencies:
-bundle install
-```
-
-### Run Local Development Server
-
-```bash
-bundle exec jekyll serve
-```
-
-Open your browser to `http://localhost:4000` to preview your site.
-
-### Build Without Running Server
-
-```bash
-bundle exec jekyll build
-```
-
-The built site will be in the `_site` directory.
-
-## Publishing to GitHub Pages
-
-### Option 1: Git Command Line
-
-```bash
-# Add your new post
-git add _posts/YYYY-MM-DD-your-post.md
-
-# Commit with a descriptive message
-git commit -m "Add new post about [topic]"
-
-# Push to GitHub
-git push origin main
-```
-
-### Option 2: GitHub Web Interface
-
-1. Go to your repository on GitHub
-2. Navigate to the `_posts` folder
-3. Click "Add file" → "Create new file"
-4. Name it `YYYY-MM-DD-your-post.md`
-5. Paste your content with front matter
-6. Click "Commit new file"
-
-GitHub will automatically build and deploy your site within a few minutes.
-
-## Tips and Best Practices
-
-### SEO Optimisation
-
-1. **Title:** Keep it under 60 characters
-2. **Description:** 150-160 characters, compelling summary
-3. **Keywords:** 5-10 relevant keywords
-4. **Headings:** Use proper H2, H3 hierarchy
-5. **Images:** Always include alt text
-
-### Content Structure
-
-1. Start with a clear introduction
-2. Use descriptive headings (H2, H3)
-3. Include code examples with syntax highlighting
-4. Add troubleshooting sections
-5. End with a summary or conclusion
-
-### Categories and Tags
-
-**Categories:** Broad topics using lowercase slugs (`storage`, `linux`, `networking`). The topic index applies display capitalisation.
-**Tags:** Specific keywords (nvme, spdk, rdma, ubuntu)
-
-```yaml
-categories: [storage, nvme]
-tags: [nvme-of, roce, rdma, ubuntu, enterprise-storage]
-```
-
-### Date Format
-
-Always use `YYYY-MM-DD` format:
-- ✅ `2025-10-15`
-- ❌ `10/15/2025`
-- ❌ `15-10-2025`
-
-## Common Issues
-
-### Post Not Showing Up
-
-**Check:**
-1. File is in `_posts` directory
-2. Filename format is `YYYY-MM-DD-title.md`
-3. Front matter is properly formatted (YAML between `---` markers)
-4. Date is not in the future
-5. `layout: post` is specified
-
-### Formatting Issues
-
-**Check:**
-1. YAML front matter has proper indentation
-2. Code blocks use triple backticks (\`\`\`)
-3. Lists have blank line before and after
-4. No tabs (use spaces for indentation)
-
-### Build Errors
-
-**Check:**
-1. Run `bundle exec jekyll build` locally to see errors
-2. Check `_config.yml` for syntax errors
-3. Verify all required plugins are in Gemfile
-4. Check GitHub Pages build status in repository settings
-
-## Markdown Cheat Sheet
-
-```markdown
-# H1 Heading
-## H2 Heading
-### H3 Heading
-
-**Bold text**
-*Italic text*
-`Inline code`
-
-[Link text](URL)
-![Image alt text](image-url)
-
-- Bullet point
-- Another bullet
-
-1. Numbered item
-2. Another item
-
-> Blockquote
-
----
-Horizontal rule
-
-Table:
-| Header 1 | Header 2 |
-|----------|----------|
-| Cell 1   | Cell 2   |
-```
-
-## Need Help?
-
-- [Jekyll Documentation](https://jekyllrb.com/docs/)
-- [GitHub Pages Documentation](https://docs.github.com/en/pages)
-- [Markdown Guide](https://www.markdownguide.org/)
-- Email: darren@soothill.com
-
----
-
-Now you're ready to start adding blog posts! 🚀
+Typographical corrections that do not change meaning do not require a new
+public update time, but the resulting article must still pass the validators.

@@ -1,14 +1,14 @@
 ---
 layout: default
 title: Publications & media
-description: "Articles, technical field notes and video by Darren Soothill on infrastructure products, storage and systems."
+description: "Selected technical writing and recorded presentations by Darren Soothill on infrastructure products, storage, GPUs and local AI."
 permalink: /documents/publications.html
 ---
 
 <header class="document-hero shell">
   <p class="eyebrow"><span>Publications</span><span>Writing / video</span></p>
-  <h1>Make the detail<br><em>useful to others.</em></h1>
-  <p>Long-form technical notes, product thinking and presentations from work across storage and infrastructure.</p>
+  <h1>Selected writing and<br><em>recorded presentations.</em></h1>
+  <p>This page brings together external media and a small selection of the work published here. The Field notes archive contains every article.</p>
 </header>
 
 <section class="publication-feature shell">
@@ -24,15 +24,32 @@ permalink: /documents/publications.html
 </section>
 
 <section class="published-notes shell">
-  <header><p class="eyebrow"><span>Written archive</span><span>{{ site.posts.size }} field notes</span></p><h2>Published on Soot / Silicon</h2></header>
+  <header><p class="eyebrow"><span>Selected writing</span><span>Four starting points</span></p><h2>Investigations that show the method</h2></header>
   <div class="article-list">
-    {% for post in site.posts %}
-    <a class="article-row" href="{{ post.url | relative_url }}">
-      <div class="article-row__meta"><span>{{ post.date | date: '%Y.%m.%d' }}</span><span>{{ post.categories.first }}</span></div>
-      <h3>{{ post.title }}</h3>
-      <p>{{ post.description | default: post.excerpt | strip_html | truncatewords: 22 }}</p>
+    <a class="article-row" href="{{ '/blog/2026/08/14/coding-model-benchmark-strix-halo/' | relative_url }}">
+      <div class="article-row__meta"><span>14 August 2026</span><span>Local AI</span></div>
+      <h3>23 coding deployments on Strix Halo</h3>
+      <p>A controlled comparison that separates throughput, context behaviour and answer quality instead of treating tokens per second as the answer.</p>
       <span class="article-row__arrow" aria-hidden="true">↗</span>
     </a>
-    {% endfor %}
+    <a class="article-row" href="{{ '/blog/2026/08/04/deepseek-v4-flash-0731-evox3-rocm/' | relative_url }}">
+      <div class="article-row__meta"><span>4 August 2026</span><span>Local AI</span></div>
+      <h3>DeepSeek V4 Flash: the long run</h3>
+      <p>A sustained ROCm test that asks whether an apparently working model remains stable when the session is allowed to continue.</p>
+      <span class="article-row__arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="article-row" href="{{ '/blog/2025/10/10/spdk-nvmeof-target-setup/' | relative_url }}">
+      <div class="article-row__meta"><span>10 October 2025</span><span>Storage</span></div>
+      <h3>SPDK NVMe-oF target setup</h3>
+      <p>A reproducible setup route with the hugepage, binding, transport and verification details that usually decide whether the test works.</p>
+      <span class="article-row__arrow" aria-hidden="true">↗</span>
+    </a>
+    <a class="article-row" href="{{ '/blog/2026/02/22/s3-benchmarking-multipart-uploads-downloads/' | relative_url }}">
+      <div class="article-row__meta"><span>22 February 2026</span><span>Storage</span></div>
+      <h3>S3 ranged-download benchmarking</h3>
+      <p>A test of multipart uploads and ranged downloads that keeps object shape, client concurrency and measurement boundaries visible.</p>
+      <span class="article-row__arrow" aria-hidden="true">↗</span>
+    </a>
   </div>
+  <p><a class="text-link" href="{{ '/blog/' | relative_url }}">Browse all {{ site.posts.size }} field notes <span aria-hidden="true">↗</span></a></p>
 </section>

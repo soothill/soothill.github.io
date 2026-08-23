@@ -16,13 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3"
           bundler-cache: true
+
+      - name: Validate editorial standard
+        run: python3 scripts/validate_editorial.py
 
       - name: Build production site
         env:

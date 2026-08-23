@@ -1,10 +1,11 @@
 # Jekyll Configuration for GitHub Pages Blog
 title: "Soot / Silicon"
-description: "Product thinking from the hardware up — field notes on infrastructure, storage systems and local AI by Director of Product Darren Soothill."
+description: "Darren Soothill investigates storage, GPUs and local AI by testing systems, recording failures and explaining what the results change."
 author: "Darren Soothill"
 email: "darren@soothill.com"
 url: "https://www.soothill.io"
 baseurl: ""
+timezone: "Europe/London"
 
 # Build settings
 markdown: kramdown
@@ -37,10 +38,13 @@ exclude:
   - HOWTO-ADD-POSTS.md
   - SETUP-COMPLETE.md
   - TODO.md
+  - _templates
   - Gemfile
   - Gemfile.lock
   - node_modules
   - vendor
+  # Private analytics exports must never be rendered or published by Jekyll.
+  - reports
   # Local sync-conflict copies of legacy pages. Keep them out of the built site
   # so crawlers can only reach the canonical editorial pages.
   - "useful-commands 2.html"
@@ -65,10 +69,10 @@ social:
     - https://www.linkedin.com/in/darrensoothill
 
 # Editorial settings
-tagline: "Product direction, grounded in real systems."
-location: "London, UK"
+tagline: "Practical tests of storage, GPUs and local AI."
+location: "Newport Pagnell, UK"
 role: "Director of Product"
-author_description: "Director of Product working hands-on across infrastructure, hardware, storage systems and local AI."
+author_description: "Director of Product Darren Soothill sets direction for storage and GPU products and tests the system behaviour behind the decision."
 github_username: soothill
 linkedin_url: "https://www.linkedin.com/in/darrensoothill"
 social_image: "/assets/images/og-default.png"
@@ -77,7 +81,7 @@ social_image: "/assets/images/og-default.png"
 # one canonical index rather than duplicate paginated copies.
 
 # Date format
-date_format: "%B %d, %Y"
+date_format: "%-d %B %Y"
 
 # Excerpt settings
 excerpt_separator: "<!--more-->"
