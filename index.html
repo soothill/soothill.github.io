@@ -54,14 +54,15 @@ description: "Darren Soothill tests storage, GPU and local-AI systems, recording
     </div>
 
     <div class="series-list">
-      <ol class="series-index">
+      <ol class="series-index" reversed start="{{ strix_halo_posts.size }}">
         {% for post in strix_halo_posts limit: 3 %}
+        {% assign article_number = strix_halo_posts.size | minus: forloop.index0 %}
         {% assign published_stamp = post.date | date: '%s' %}
         {% assign updated_stamp = post.last_modified_at | default: post.date | date: '%s' %}
         {% assign published_clock = post.date | date: '%H:%M' %}
         {% assign updated_clock = post.last_modified_at | date: '%H:%M' %}
         <li>
-          <span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span>{{ article_number | prepend: '0' | slice: -2, 2 }}</span>
           <div>
             <strong><a href="{{ post.url | relative_url }}">{{ post.title }}</a></strong>
             <div class="series-index__dates">
@@ -82,9 +83,10 @@ description: "Darren Soothill tests storage, GPU and local-AI systems, recording
           <span class="series-more__open">Hide the older articles</span>
           <i aria-hidden="true"></i>
         </summary>
-        <ol class="series-index series-index--continued" start="4">
+        <ol class="series-index series-index--continued" reversed start="{{ remaining_strix_halo_posts }}">
           {% for post in strix_halo_posts offset: 3 %}
-          {% assign article_number = forloop.index | plus: 3 %}
+          {% assign article_offset = forloop.index0 | plus: 3 %}
+          {% assign article_number = strix_halo_posts.size | minus: article_offset %}
           {% assign published_stamp = post.date | date: '%s' %}
           {% assign updated_stamp = post.last_modified_at | default: post.date | date: '%s' %}
           {% assign published_clock = post.date | date: '%H:%M' %}
