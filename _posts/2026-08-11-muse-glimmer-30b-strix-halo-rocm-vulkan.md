@@ -3,7 +3,7 @@ layout: post
 title: "Muse Glimmer 30B on Strix Halo: Vulkan passed the 8K test"
 seo_title: "Muse Glimmer 30B on Strix Halo: ROCm vs Vulkan"
 date: 2026-08-11 12:38:41 +0100
-last_modified_at: 2026-08-11 12:38:41 +0100
+last_modified_at: 2026-08-23 06:25:51 +0100
 permalink: /blog/2026/08/11/muse-glimmer-30b-strix-halo-rocm-vulkan/
 categories: [local-ai, benchmarks, engineering]
 tags: [muse-glimmer, llama-cpp, rocm, vulkan, strix-halo, dflash, speculative-decoding, multimodal]
@@ -14,7 +14,7 @@ editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-23
 series: "Local LLMs on Strix Halo"
 series_order: 12
-description: "Muse Glimmer 30B reaches 42 tok/s with DFlash on ROCm, but an 8K correctness test makes Vulkan the safer Strix Halo deployment."
+description: "Muse Glimmer 30B reaches 42 tok/s with DFlash on ROCm, but an 8K correctness test makes Vulkan the safer Strix Halo text route."
 ---
 
 > **Test record:** I qualified [Muse Glimmer 30B](https://huggingface.co/meta-models/Muse-Glimmer-30B-GGUF)
@@ -24,8 +24,8 @@ description: "Muse Glimmer 30B reaches 42 tok/s with DFlash on ROCm, but an 8K c
 > tok/s** and reached **42.38 tok/s** on a favourable DFlash workload. Vulkan
 > was much slower at prompt processing, but it was the only backend to pass the
 > fresh 8K passkey test. I kept Vulkan without speculative decoding for the
-> correctness-first service and retained ROCm plus DFlash as a short-context
-> speed profile.
+> correctness-first text service and retained ROCm plus DFlash as the next
+> short-context candidate to qualify.
 
 For the first half of this test, ROCm looked like the easy choice. It was roughly twice as fast as Vulkan at prompt processing on the dynamic quant, and DFlash could push a favourable generation task beyond 40 tokens/s.
 
@@ -42,7 +42,7 @@ Muse Glimmer is a dense 29.6B-parameter multimodal model with tool calling, a 13
 | Highest favourable speculative result | ROCm, 17GB quant, DFlash `n-max=15` | **42.38 tok/s** mean |
 | More representative ROCm DFlash set | ROCm, 17GB quant, three 512-token tasks | **23.46 tok/s** mean |
 | Qualified longer-context route | Vulkan, dynamic quant, no DFlash | exact 8K passkey returned |
-| Vision and tool use | dynamic quant with projector / Jinja tool parser | both returned correct structured results |
+| Vision and tool use | ROCm, dynamic, DFlash 15, projector / Jinja tool parser | passed in that feature check; not retested on Vulkan |
 
 The distinction between “highest favourable result” and “representative set” is deliberate. Speculative decoding accelerates accepted draft tokens; its benefit changes with the prompt and output. A single arithmetic loop is useful for tuning the ceiling, but it is not an honest forecast for coding, explanation and operational writing.
 
@@ -176,24 +176,29 @@ I tested 8K retrieval, not the model's full advertised 131K window. The server c
 
 ## Vision and tool calling
 
-The model's non-text features worked on the same source revision.
+The feature checks used the dynamic quant on ROCm with DFlash 15. They did not
+use the Vulkan/no-DFlash profile that passed the 8K retrieval test.
 
 With `mmproj-kquant.gguf`, Muse Glimmer correctly identified a supplied GitHub icon. Loading the first image increased GPU-visible GTT by about 346MiB. I then compared two 10,016-token prefill controls before and after the image: 390.52 and 400.91 tok/s. That does **not** reproduce the first-image prefill collapse reported for CUDA in [`llama.cpp` issue #26873](https://github.com/ggml-org/llama.cpp/issues/26873), although the extra retained memory was visible.
 
 The Jinja tool path also returned a valid OpenAI-compatible `tool_calls` response for a weather lookup, with the expected `get_weather` function and `{"city":"Paris"}` arguments. Reasoning appeared separately from final content, and the ordinary arithmetic smoke test returned 391 for 17 × 23.
 
-Those feature checks matter because a fast text-only benchmark does not prove that the model's actual product surface—images, reasoning and structured tools—survives the selected build.
+Those results establish that the features worked on the tested ROCm route. They
+do not establish multimodal or tool-call support on Vulkan merely because both
+backends came from the same source revision. I would repeat the image and tool
+checks on the exact Vulkan profile before exposing either feature there.
 
-## What I would deploy
+## What I would run next
 
-### Correctness-first service
+### Correctness-first text service
 
-The default is the dynamic quant on Vulkan, without DFlash. This command exposes only loopback, keeps one slot, and caps the qualified endpoint at 8K:
+The retained default is the dynamic quant on Vulkan, without DFlash. This
+text-only command exposes loopback, keeps one slot and caps the qualified
+retrieval endpoint at 8K:
 
 ```bash
 ./build-vulkan/bin/llama-server \
   -m muse-glimmer-30B-kquant-dynamic.gguf \
-  --mmproj mmproj-kquant.gguf \
   -ngl 99 -fa on \
   -c 8192 -np 1 \
   -b 8192 -ub 2048 \
@@ -202,11 +207,19 @@ The default is the dynamic quant on Vulkan, without DFlash. This command exposes
   --host 127.0.0.1 --port 18090
 ```
 
-The model supports a 131,072-token context, so the context can be raised after each longer retrieval and multi-turn compaction gate passes. Keeping `-np 1` avoids silently dividing the configured context across slots. A public or LAN-facing service also needs authentication and a deliberate network policy; loopback is the safe baseline.
+The model supports a 131,072-token context, so the context can be raised after
+each longer retrieval and multi-turn compaction gate passes. Keeping `-np 1`
+avoids silently dividing the configured context across slots. A public or
+LAN-facing service also needs authentication and a deliberate network policy;
+loopback is the safe baseline. The projector is deliberately absent here:
+adding images or publishing tool calls requires a fresh check on this exact
+Vulkan/no-DFlash profile.
 
-### Fast short-context service
+### Fast short-context candidate
 
-For workloads capped at 4K, the 17GB ROCm quant plus DFlash is the useful speed profile:
+The 17GB ROCm quant plus DFlash produced the useful speed result, but the
+retained passkey checks used the dynamic target without DFlash. I would use the
+following command as a qualification canary, not yet as a service profile:
 
 ```bash
 ./build-rocm/bin/llama-server \
@@ -223,18 +236,26 @@ For workloads capped at 4K, the 17GB ROCm quant plus DFlash is the useful speed 
   --host 127.0.0.1 --port 18091
 ```
 
-The context cap is a safety control derived from the observed boundary, not a property of the model. I would remove it only when that exact ROCm build passes the same 8K and longer tests.
+The 4K cap is a conservative test ceiling, not a validated safety boundary for
+this configuration. The 4,086-token pass in the dataset belongs to the dynamic
+quant without DFlash. Before serving the 17GB/DFlash combination, I would run a
+fresh 4K retrieval gate on that exact command and only then repeat the 8K and
+longer tests.
 
-## The two profiles I kept
+## The profile I kept and the candidate I did not promote
 
 ROCm is the quicker option in the shallow, well-tested lane. Its dynamic-quant prefill was twice as fast as Vulkan, and DFlash lifted the mixed 512-token set from a 12.43 tok/s target-only baseline to 23.46 tok/s. On favourable output it exceeded 40 tok/s.
 
-I kept Vulkan as the default because it returned the exact 8K passkey where the current ROCm path did not. It is slower at prompt processing and only slightly faster at target-only decode. DFlash adds too little on Vulkan—and can make generation substantially slower when acceptance is poor—so the correctness-first route uses the dynamic target model by itself.
+I kept Vulkan as the text default because it returned the exact 8K passkey where the current ROCm path did not. It is slower at prompt processing and only slightly faster at target-only decode. DFlash adds too little on Vulkan—and can make generation substantially slower when acceptance is poor—so the correctness-first text route uses the dynamic target model by itself.
 
-That leaves two profiles with deliberately different limits:
+That leaves one qualified text profile and one benchmark candidate:
 
-- **Vulkan / dynamic / no DFlash** for multimodal and tool-capable service up to the currently qualified 8K context.
-- **ROCm / 17GB / DFlash 15** for deliberately short workloads where throughput matters more than the extra quantisation quality.
+- **Vulkan / dynamic / no DFlash** for text retrieval up to the currently
+  qualified 8K context. Multimodal and tool use remain unqualified on this
+  exact profile.
+- **ROCm / 17GB / DFlash 15** as the next short-context candidate. It is not a
+  deployment recommendation until the exact combination passes the 4K
+  retrieval gate.
 
 The complete retained measurements are available as [CSV](/assets/data/muse-glimmer-strix-halo-2026-08-11.csv). The production DeepSeek service was unloaded for the isolated tests and restored afterwards; the benchmark server was not left competing for unified memory.
 
