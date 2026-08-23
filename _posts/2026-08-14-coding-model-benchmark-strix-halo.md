@@ -13,7 +13,7 @@ editorial_review_status: approved
 editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
-series_order: 10
+series_order: 11
 description: "I ran 23 local coding-model deployments through 230 executable tasks on a 128GB Strix Halo workstation, comparing accuracy, latency and context limits."
 ---
 

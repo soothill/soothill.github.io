@@ -13,7 +13,7 @@ editorial_review_status: approved
 editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-23
 series: "Local LLMs on Strix Halo"
-series_order: 12
+series_order: 13
 description: "Vulkan 0.6.10 fixes the long MTP stall on my Strix Halo machine, but Qwen3.6 decode falls about 11% and DeepSeek does not improve."
 ---
 

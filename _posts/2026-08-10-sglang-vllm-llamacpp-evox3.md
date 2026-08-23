@@ -13,7 +13,7 @@ editorial_review_status: approved
 editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-17
 series: "Local LLMs on Strix Halo"
-series_order: 9
+series_order: 10
 description: "Twenty matched SGLang-vLLM points plus llama.cpp and DeepSeek tests show why vLLM wins native Qwen while specialised runtimes win large quants."
 ---
 

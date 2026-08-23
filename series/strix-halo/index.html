@@ -7,7 +7,7 @@ schema_type: CollectionPage
 schema_series: true
 ---
 
-{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" %}
+{% assign strix_halo_posts = site.posts | where: "series", "Local LLMs on Strix Halo" | sort: "series_order" | reverse %}
 
 <header class="series-hero">
   <div class="shell series-hero__inner">
@@ -62,7 +62,7 @@ schema_series: true
 
   <ol class="roadmap-list" reversed start="{{ strix_halo_posts.size }}">
     {% for post in strix_halo_posts %}
-    {% assign article_number = strix_halo_posts.size | minus: forloop.index0 %}
+    {% assign article_number = post.series_order %}
     <li{% if forloop.first %} class="is-active"{% endif %}>
       <div><span>{{ article_number | prepend: '0' | slice: -2, 2 }}</span><small>Published</small></div>
       <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
