@@ -2,14 +2,14 @@
 layout: post
 title: "Vulkan 0.6.10 on Strix Halo: the MTP fix has a cost"
 seo_title: "Vulkan 0.6.10 vs 0.6.7 on Strix Halo"
-date: 2026-08-23 02:00:00 +0100
-last_modified_at: 2026-08-23 02:00:00 +0100
+date: 2026-08-23 04:13:17 +0100
+last_modified_at: 2026-08-23 04:13:17 +0100
 permalink: /blog/2026/08/23/vulkan-0610-strix-halo/
 categories: [local-ai, benchmarks, engineering]
 tags: [vulkan, llama-cpp, strix-halo, qwen3-6, mtp, deepseek-v4, lemonade]
 author: Darren Soothill
 editorial_standard: soothill-human-v1
-editorial_review_status: pending
+editorial_review_status: approved
 editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-23
 series: "Local LLMs on Strix Halo"
