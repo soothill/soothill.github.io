@@ -682,6 +682,12 @@ button, input, textarea, select { font: inherit; }
 .camera-mark b { width: 31px; height: 31px; margin-bottom: 9px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.6); border-radius: 50%; }
 .camera-mark strong { font-family: var(--font-sans); font-size: 12px; font-weight: 700; }
 .camera-mark span { color: rgba(255,255,255,.68); }
+.camera-police-guidance { margin-top: 34px; padding: 23px 0; display: grid; grid-template-columns: .38fr 1.25fr auto; gap: clamp(24px, 5vw, 70px); align-items: center; border-block: 1px solid #394542; }
+.camera-police-guidance > span { color: var(--acid); font-family: var(--font-mono); font-size: 9px; letter-spacing: .08em; }
+.camera-police-guidance p { margin: 0; color: #aeb8b5; font-size: 13px; line-height: 1.6; }
+.camera-police-guidance p strong { display: block; margin-bottom: 4px; color: white; font-size: 14px; }
+.camera-police-guidance a { color: white; font-family: var(--font-mono); font-size: 9px; text-decoration-color: var(--signal); text-underline-offset: 4px; white-space: nowrap; }
+.camera-police-guidance a:hover { color: var(--acid); }
 .camera-deliverables { margin-top: 58px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #394542; border-left: 1px solid #394542; }
 .camera-deliverables > div { min-height: 132px; padding: 23px; display: grid; grid-template-columns: 38px 1fr; align-content: center; gap: 4px 13px; border-right: 1px solid #394542; border-bottom: 1px solid #394542; }
 .camera-deliverables > div > span { grid-row: 1 / span 2; width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #687572; border-radius: 50%; color: var(--acid); font-family: var(--font-mono); font-size: 8px; }
@@ -1040,6 +1046,7 @@ th { color: var(--paper-light); background: var(--soot); }
   .camera-evidence-window { grid-template-columns: 1fr; }
   .camera-evidence-window > div, .camera-evidence-window > div:last-child { min-height: 78px; text-align: left; }
   .camera-evidence-window .camera-mark { min-height: 128px; text-align: center; }
+  .camera-police-guidance { grid-template-columns: 1fr; gap: 12px; }
   .camera-deliverables { grid-template-columns: 1fr; }
   .camera-deliverables > div { min-height: 105px; }
   .camera-project-end .button { width: 100%; }
