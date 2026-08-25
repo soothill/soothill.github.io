@@ -2,7 +2,7 @@
 layout: default
 title: Garmin dual-camera evidence pipeline
 seo_title: Garmin camera processing project
-description: "A work-in-progress system that imports Garmin footage, builds continuous ride recordings, pairs front and rear views, and extracts selected evidence clips."
+description: "A work-in-progress pipeline for Garmin Varia Vue front and Varia RCT715 rear footage: automatic USB import, matching, review and evidence export."
 permalink: /projects/garmin-camera-processing/
 ---
 
@@ -12,7 +12,7 @@ permalink: /projects/garmin-camera-processing/
   <div class="camera-hero-grid">
     <div>
       <h1>From a ride’s camera files to the moment that matters.</h1>
-      <p class="camera-standfirst">A system for importing front and rear Garmin footage automatically, building continuous recordings, reviewing matched views and saving a selected event to a separate evidence share.</p>
+      <p class="camera-standfirst">A system for importing footage from a front-facing Garmin Varia Vue and rear-facing Garmin Varia RCT715, building continuous recordings, reviewing matched views and saving a selected event to a separate evidence share.</p>
       <div class="hero-actions">
         <a class="button button--solid" href="#workflow">See the workflow <span aria-hidden="true">↓</span></a>
         <a class="button button--quiet" href="#limitations">Read the current limitations <span aria-hidden="true">→</span></a>
@@ -21,8 +21,8 @@ permalink: /projects/garmin-camera-processing/
     <div class="camera-hero-plate" aria-label="Front and rear camera processing overview">
       <div class="camera-plate-top"><span>Ride / two viewpoints</span><span class="camera-status-dot">Work in progress</span></div>
       <div class="camera-lanes">
-        <div><span>F</span><strong>Front camera</strong><i></i><i></i><i></i></div>
-        <div><span>R</span><strong>Rear camera</strong><i></i><i></i><i></i><i></i><i></i></div>
+        <div><span>F</span><strong>Varia Vue</strong><i></i><i></i><i></i></div>
+        <div><span>R</span><strong>Varia RCT715</strong><i></i><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="camera-plate-output"><span>Output</span><strong>Review → select → evidence share</strong></div>
     </div>
@@ -32,7 +32,7 @@ permalink: /projects/garmin-camera-processing/
 <section class="camera-facts" aria-label="Project facts">
   <div class="shell camera-facts-grid">
     <div><span>Status</span><strong>Active prototype</strong></div>
-    <div><span>Inputs</span><strong>Front + rear Garmin</strong></div>
+    <div><span>Cameras</span><strong>Varia Vue + RCT715</strong></div>
     <div><span>Import</span><strong>Automatic over USB</strong></div>
     <div><span>Working source</span><strong>One full ride per camera</strong></div>
     <div><span>Evidence window</span><strong>60s before + after</strong></div>
@@ -45,7 +45,7 @@ permalink: /projects/garmin-camera-processing/
     <h2 id="camera-question-title">Two cameras create plenty of footage—and plenty of manual work.</h2>
   </div>
   <div class="camera-question-copy">
-    <p>Garmin cameras record a ride as a sequence of small files and reuse the same filenames. With a camera facing forwards and another facing backwards, reviewing one incident can mean copying two sets of files, reconstructing the ride, finding the right times and working out whether the views belong together.</p>
+    <p>The front-facing Garmin Varia Vue and rear-facing Garmin Varia RCT715 record a ride as a sequence of small files and reuse the same filenames. Reviewing one incident can mean copying two sets of files, reconstructing the ride, finding the right times and working out whether the views belong together.</p>
     <p>This project is designed to remove most of that handling. The server takes care of import and organisation, the processing pipeline looks for useful events, and a private web interface makes the results easier to review.</p>
   </div>
 </section>
@@ -71,7 +71,7 @@ permalink: /projects/garmin-camera-processing/
   <div class="camera-import-copy">
     <p class="eyebrow"><span>Automatic server import</span></p>
     <h2 id="camera-import-title">The filing starts when the camera reaches the USB port.</h2>
-    <p>The Linux server is configured to recognise each camera independently. Plugging one in starts its own import job: the device is mounted, its video files are found, and recording timestamps are read so that everything lands in the correct camera and ride-date folder.</p>
+    <p>The Linux server is configured to recognise the Varia Vue and Varia RCT715 independently. Plugging one in starts its own import job: the device is mounted, its video files are found, and recording timestamps are read so that everything lands in the correct camera and ride-date folder.</p>
     <p>Garmin can reuse names such as <code>GRMN0001.MP4</code>, so imported files receive unique names. Copies are written safely, checked against the source size and retried if needed. Empty tail files are ignored, and successful imports can clear the camera ready for the next ride.</p>
   </div>
   <div class="camera-import-sequence" aria-label="Automatic import stages">
@@ -117,6 +117,18 @@ permalink: /projects/garmin-camera-processing/
       <p>Those events remain clearly marked as rear-only. Improving front-camera detection and the pairing rate is one of the project’s main next steps.</p>
     </aside>
   </div>
+  <aside class="camera-hub-bug" aria-labelledby="camera-hub-bug-title">
+    <div>
+      <span>KNOWN BUG / SHARED USB HUB</span>
+      <h3 id="camera-hub-bug-title">The front camera must be connected first.</h3>
+      <p>Both cameras connect through the same USB hub. If the rear Varia RCT715 is connected first and the front Varia Vue is plugged in afterwards, the RCT715 crashes.</p>
+      <p>The current workaround is a strict connection order: front camera first, rear camera second.</p>
+    </div>
+    <ol aria-label="Required camera connection order">
+      <li><span>01</span><div><strong>Connect Garmin Varia Vue</strong><small>Front camera first</small></div></li>
+      <li><span>02</span><div><strong>Connect Garmin Varia RCT715</strong><small>Rear camera second</small></div></li>
+    </ol>
+  </aside>
 </section>
 
 <section class="camera-evidence" aria-labelledby="evidence-title">
@@ -150,6 +162,7 @@ permalink: /projects/garmin-camera-processing/
     <li><span>02</span><p><strong>Refine automatic clip selection</strong> around the most useful point in each pass.</p></li>
     <li><span>03</span><p><strong>Measure pairing coverage</strong> against reviewed rides rather than relying on isolated examples.</p></li>
     <li><span>04</span><p><strong>Keep the cautious fallback</strong> so an uncertain match stays rear-only instead of becoming misleading evidence.</p></li>
+    <li><span>05</span><p><strong>Resolve the shared USB-hub fault</strong> so either camera can be connected first without crashing the RCT715.</p></li>
   </ol>
 </section>
 
