@@ -595,12 +595,18 @@ button, input, textarea, select { font: inherit; }
 .camera-plate-output strong { color: white; font-weight: 500; text-align: right; }
 
 .camera-facts { border-block: 1px solid var(--ink); background: var(--paper-light); }
-.camera-facts-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+.camera-facts-grid { display: grid; grid-template-columns: repeat(6, 1fr); }
 .camera-facts-grid div { min-height: 112px; padding: 23px 20px 22px 0; }
 .camera-facts-grid div + div { padding-left: 24px; border-left: 1px solid var(--line); }
 .camera-facts span, .camera-facts strong { display: block; }
 .camera-facts span { color: var(--ink-faint); font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; }
 .camera-facts strong { margin-top: 15px; font-size: 13px; line-height: 1.35; }
+
+.camera-update { padding-block: clamp(78px, 9vw, 122px); display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(50px, 10vw, 145px); border-bottom: 1px solid var(--line); }
+.camera-update h2 { max-width: 720px; margin: 0; font-family: var(--font-serif); font-size: clamp(42px, 5.2vw, 72px); font-weight: 400; letter-spacing: -.047em; line-height: .98; }
+.camera-update-copy { align-self: end; padding-left: clamp(22px, 4vw, 48px); border-left: 4px solid var(--signal); }
+.camera-update-copy p { margin: 0 0 17px; color: var(--ink-soft); font-size: 16px; line-height: 1.75; }
+.camera-update-copy small { display: block; color: var(--ink-faint); font-family: var(--font-mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
 
 .camera-question, .camera-import, .camera-matching, .camera-next { padding-block: clamp(86px, 10vw, 145px); }
 .camera-question { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(50px, 10vw, 145px); }
@@ -1030,6 +1036,8 @@ th { color: var(--paper-light); background: var(--soot); }
   .camera-plate-output strong { text-align: left; }
   .camera-facts-grid { grid-template-columns: 1fr; }
   .camera-facts-grid div, .camera-facts-grid div:nth-child(even) { min-height: 88px; padding: 18px 0; border-left: 0; }
+  .camera-update { padding-block: 72px; grid-template-columns: 1fr; }
+  .camera-update-copy { padding-left: 20px; }
   .camera-question, .camera-import, .camera-matching, .camera-next { padding-block: 72px; }
   .camera-interface { padding-block: 72px; }
   .camera-interface-intro { margin: 0 0 40px; }

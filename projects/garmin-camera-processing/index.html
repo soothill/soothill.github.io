@@ -43,6 +43,19 @@ permalink: /projects/garmin-camera-processing/
     <div><span>Import</span><strong>Automatic over USB</strong></div>
     <div><span>Working source</span><strong>One full ride per camera</strong></div>
     <div><span>Evidence window</span><strong>60s before + after</strong></div>
+    <div><span>Last updated</span><strong><time datetime="2026-08-25T15:32:00+01:00">25 Aug 2026 · 15:32 BST</time></strong></div>
+  </div>
+</section>
+
+<section class="camera-update shell" id="project-updates" aria-labelledby="camera-update-title">
+  <div>
+    <p class="eyebrow"><span>Project update</span><span><time datetime="2026-08-25T15:32:00+01:00">25 August 2026 · 15:32 BST</time></span></p>
+    <h2 id="camera-update-title">Front and rear matching has been improved.</h2>
+  </div>
+  <div class="camera-update-copy">
+    <p>The matching stage has been refined so that it produces more dependable links between the Varia Vue and Varia RCT715 timelines, reducing avoidable rear-only results.</p>
+    <p>This is an improvement rather than a claim that every pair is now correct. When the available timing evidence is still uncertain, the event remains marked as rear-only instead of being forced into a potentially misleading match.</p>
+    <small>Future project changes will be recorded with a visible date, time and time zone.</small>
   </div>
 </section>
 
@@ -140,10 +153,11 @@ permalink: /projects/garmin-camera-processing/
     <div class="camera-matching-copy">
       <p>The processing pipeline detects likely vehicle events independently in the forward- and rear-facing recordings. It then uses the cameras’ displayed clocks, their stable timing difference and the physical handoff of a passing vehicle to decide which events belong together.</p>
       <p>When confidence is high enough, the interface presents both views as one synchronised review clip. When it is not, the system deliberately avoids inventing a match.</p>
+      <p>The latest matching changes have increased the number of dependable two-camera results while keeping that cautious fallback.</p>
     </div>
     <aside class="camera-limit-card">
       <span>LIMIT / STILL BEING TUNED</span>
-      <h3>Clip selection and pairing are not consistently right yet.</h3>
+      <h3>Improved, but clip selection and pairing are not consistently right yet.</h3>
       <p>The automatic selector can miss the strongest moment or choose a less useful window. The rear-facing pipeline also produces more usable clips than the forward-facing one, so some rear events have no confident front-camera partner.</p>
       <p>Those events remain clearly marked as rear-only. Improving front-camera detection and the pairing rate is one of the project’s main next steps.</p>
     </aside>
@@ -204,7 +218,7 @@ permalink: /projects/garmin-camera-processing/
 
 <section class="camera-project-end">
   <div class="shell">
-    <p class="eyebrow"><span>Project status / August 2026</span></p>
+    <p class="eyebrow"><span>Project status / updated <time datetime="2026-08-25T15:32:00+01:00">25 August 2026 · 15:32 BST</time></span></p>
     <h2>An automated workflow that is already useful—and honest about where it still needs work.</h2>
     <a class="button button--solid" href="{{ '/documents/portfolio.html' | relative_url }}">Back to selected work <span aria-hidden="true">→</span></a>
   </div>
