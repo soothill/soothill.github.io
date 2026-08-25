@@ -1,0 +1,14 @@
+scope,workload,profile,samples,prompt_tokens,completion_tokens,prompt_tokens_per_second,generation_tokens_per_second,wall_seconds,draft_acceptance
+live_direct,short,Qwen3.8-27B-ROCMFPX-MTP,3,512,512,282.538220,25.818273,21.739142,0.514243
+live_direct,short,Qwen3.8-27B-ROCMFPX-DFlash2,3,512,512,262.143825,18.854691,29.184627,0.880000
+live_direct,short,Qwen3.8-27B-ROCMFPX-Exact,3,512,512,168.227732,13.108896,42.907479,
+live_direct,context_8k,Qwen3.8-27B-ROCMFPX-MTP,3,8200,512,299.043269,22.693391,48.581138,0.454420
+live_direct,context_8k,Qwen3.8-27B-ROCMFPX-DFlash2,3,8200,512,294.689774,17.440722,57.068920,0.920949
+live_direct,context_8k,Qwen3.8-27B-ROCMFPX-Exact,3,8200,512,300.047170,12.956036,67.616987,
+live_direct,context_32k,Qwen3.8-27B-ROCMFPX-MTP,1,32768,512,245.277204,20.595524,158.624899,0.497804
+live_direct,context_32k,Qwen3.8-27B-ROCMFPX-DFlash2,1,32768,512,245.909054,17.405609,162.944795,0.903780
+live_direct,context_32k,Qwen3.8-27B-ROCMFPX-Exact,1,32768,512,253.724453,12.317946,171.456827,
+fixed_code_ab,near_full_262k,clean_stochastic_baseline,1,259012,2048,99.689000,10.375000,2795.670000,
+fixed_code_ab,near_full_262k,repaired_dflash2,1,259012,2048,100.361000,10.131000,2783.020000,
+router_overhead,short_64,direct_llm-fast,3,25,64,,16.483163,4.309785,
+router_overhead,short_64,generic_llm_router,3,25,64,,16.050068,8.599280,
