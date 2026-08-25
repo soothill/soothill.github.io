@@ -9,7 +9,7 @@ permalink: /documents/portfolio.html
 
 <header class="document-hero shell">
   <p class="eyebrow"><span>Selected work</span><span>Product ↔ systems</span></p>
-  <h1>Four investigations where the method matters as much as the answer.</h1>
+  <h1>Five investigations where the method matters as much as the answer.</h1>
   <p>I selected these because each leaves something another person can inspect or reproduce: a test record, a configuration, a tool or a clearly stated limit.</p>
 </header>
 
@@ -21,19 +21,25 @@ permalink: /documents/portfolio.html
   </article>
 
   <article class="work-entry">
-    <div class="work-entry__meta"><span>02</span><small>Storage path</small></div>
+    <div class="work-entry__meta"><span>02</span><small>Active prototype</small></div>
+    <div><h2>Garmin dual-camera evidence pipeline</h2><p>An end-to-end system that imports front and rear camera footage over USB, builds continuous ride recordings, pairs usable views for review, and extracts a selected moment into a separate evidence share. Current limits are part of the project record rather than hidden.</p><a class="text-link" href="{{ '/projects/garmin-camera-processing/' | relative_url }}">Open the project <span aria-hidden="true">↗</span></a></div>
+    <ul><li>Automatic ingest</li><li>Video processing</li><li>Front / rear matching</li><li>Evidence workflow</li></ul>
+  </article>
+
+  <article class="work-entry">
+    <div class="work-entry__meta"><span>03</span><small>Storage path</small></div>
     <div><h2>SPDK NVMe-oF target</h2><p>This guide deliberately starts with disposable memory-backed storage. That proves the SPDK and RDMA path without putting a real drive at risk. The release is pinned, host access is explicit and the checks show where a lab configuration would need more work before production use.</p><a class="text-link" href="{{ '/blog/2025/10/10/spdk-nvmeof-target-setup/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
     <ul><li>Controlled lab</li><li>Explicit host access</li><li>Pinned SPDK release</li></ul>
   </article>
 
   <article class="work-entry">
-    <div class="work-entry__meta"><span>03</span><small>Infrastructure</small></div>
+    <div class="work-entry__meta"><span>04</span><small>Infrastructure</small></div>
     <div><h2>Kernel NVMe-oF over RoCE</h2><p>The risky assumptions are made visible before the configuration begins: which device is being exported, whether anything else is using it, which host is authorised and whether the entire RoCE path has been checked. The result is a persistent lab target with refusal checks around the most damaging mistakes.</p><a class="text-link" href="{{ '/blog/2025/10/10/nvme-over-fabrics-roce-setup/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
     <ul><li>Stable device identity</li><li>Data-loss boundary</li><li>End-to-end RoCE checks</li></ul>
   </article>
 
   <article class="work-entry">
-    <div class="work-entry__meta"><span>04</span><small>Performance tooling</small></div>
+    <div class="work-entry__meta"><span>05</span><small>Performance tooling</small></div>
     <div><h2>S3 ranged-download benchmarking</h2><p>I developed <code>s3bench</code> to test parallel byte-range downloads with controlled chunk sizes and concurrency. Discarding the data isolates the transfer path; writing it exposes the end-to-end path, including local storage. The tool does not assume that more concurrency is always better.</p><a class="text-link" href="{{ '/blog/2026/02/22/s3-benchmarking-multipart-uploads-downloads/' | relative_url }}">Read the field note <span aria-hidden="true">↗</span></a></div>
     <ul><li>Go tool</li><li>Ranged GETs</li><li>Workload sweep</li><li>Comparable output</li></ul>
   </article>

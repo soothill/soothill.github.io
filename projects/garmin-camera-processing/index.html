@@ -1,0 +1,162 @@
+---
+layout: default
+title: Garmin dual-camera evidence pipeline
+seo_title: Garmin camera processing project
+description: "A work-in-progress system that imports Garmin footage, builds continuous ride recordings, pairs front and rear views, and extracts selected evidence clips."
+permalink: /projects/garmin-camera-processing/
+---
+
+<header class="camera-project-hero shell">
+  <a class="camera-back-link" href="{{ '/documents/portfolio.html' | relative_url }}">← Selected work</a>
+  <p class="eyebrow"><span>Project / active prototype</span><span>Camera processing</span></p>
+  <div class="camera-hero-grid">
+    <div>
+      <h1>From a ride’s camera files to the moment that matters.</h1>
+      <p class="camera-standfirst">A system for importing front and rear Garmin footage automatically, building continuous recordings, reviewing matched views and saving a selected event to a separate evidence share.</p>
+      <div class="hero-actions">
+        <a class="button button--solid" href="#workflow">See the workflow <span aria-hidden="true">↓</span></a>
+        <a class="button button--quiet" href="#limitations">Read the current limitations <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="camera-hero-plate" aria-label="Front and rear camera processing overview">
+      <div class="camera-plate-top"><span>Ride / two viewpoints</span><span class="camera-status-dot">Work in progress</span></div>
+      <div class="camera-lanes">
+        <div><span>F</span><strong>Front camera</strong><i></i><i></i><i></i></div>
+        <div><span>R</span><strong>Rear camera</strong><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="camera-plate-output"><span>Output</span><strong>Review → select → evidence share</strong></div>
+    </div>
+  </div>
+</header>
+
+<section class="camera-facts" aria-label="Project facts">
+  <div class="shell camera-facts-grid">
+    <div><span>Status</span><strong>Active prototype</strong></div>
+    <div><span>Inputs</span><strong>Front + rear Garmin</strong></div>
+    <div><span>Import</span><strong>Automatic over USB</strong></div>
+    <div><span>Working source</span><strong>One full ride per camera</strong></div>
+    <div><span>Evidence window</span><strong>60s before + after</strong></div>
+  </div>
+</section>
+
+<section class="camera-question shell" aria-labelledby="camera-question-title">
+  <div>
+    <p class="eyebrow"><span>The problem</span></p>
+    <h2 id="camera-question-title">Two cameras create plenty of footage—and plenty of manual work.</h2>
+  </div>
+  <div class="camera-question-copy">
+    <p>Garmin cameras record a ride as a sequence of small files and reuse the same filenames. With a camera facing forwards and another facing backwards, reviewing one incident can mean copying two sets of files, reconstructing the ride, finding the right times and working out whether the views belong together.</p>
+    <p>This project is designed to remove most of that handling. The server takes care of import and organisation, the processing pipeline looks for useful events, and a private web interface makes the results easier to review.</p>
+  </div>
+</section>
+
+<section class="camera-workflow" id="workflow" aria-labelledby="workflow-title">
+  <div class="shell">
+    <div class="camera-section-heading">
+      <p class="eyebrow"><span>End-to-end workflow</span><span>01 → 06</span></p>
+      <h2 id="workflow-title">Plug in. Build the ride. Find the event. Keep the evidence.</h2>
+    </div>
+    <ol class="camera-flow-list">
+      <li><span>01</span><div><strong>Connect a camera</strong><small>USB detection</small></div><p>The server recognises each configured Garmin device by its storage identity.</p></li>
+      <li><span>02</span><div><strong>Import safely</strong><small>Copy + verify</small></div><p>Files are organised by camera and date, then checked before the source is cleared.</p></li>
+      <li><span>03</span><div><strong>Build the full ride</strong><small>Join, no re-encode</small></div><p>The camera’s short MP4 files become one continuous working recording.</p></li>
+      <li><span>04</span><div><strong>Detect and align</strong><small>Front + rear</small></div><p>Candidate events are found, then compatible camera timelines are matched.</p></li>
+      <li><span>05</span><div><strong>Review the result</strong><small>Private web view</small></div><p>Paired clips and rear-only events are shown chronologically alongside full originals.</p></li>
+      <li><span>06</span><div><strong>Preserve a moment</strong><small>Evidence share</small></div><p>The selected time is extracted again from the original front and rear recordings.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="camera-import shell" aria-labelledby="camera-import-title">
+  <div class="camera-import-copy">
+    <p class="eyebrow"><span>Automatic server import</span></p>
+    <h2 id="camera-import-title">The filing starts when the camera reaches the USB port.</h2>
+    <p>The Linux server is configured to recognise each camera independently. Plugging one in starts its own import job: the device is mounted, its video files are found, and recording timestamps are read so that everything lands in the correct camera and ride-date folder.</p>
+    <p>Garmin can reuse names such as <code>GRMN0001.MP4</code>, so imported files receive unique names. Copies are written safely, checked against the source size and retried if needed. Empty tail files are ignored, and successful imports can clear the camera ready for the next ride.</p>
+  </div>
+  <div class="camera-import-sequence" aria-label="Automatic import stages">
+    <div><span>Detect</span><strong>Identify the specific camera</strong></div>
+    <div><span>Organise</span><strong>Separate by device and ride date</strong></div>
+    <div><span>Verify</span><strong>Confirm every completed copy</strong></div>
+    <div><span>Combine</span><strong>Join the small MP4 files in order</strong></div>
+    <div><span>Hand off</span><strong>Queue the full recording for processing</strong></div>
+  </div>
+</section>
+
+<section class="camera-continuous">
+  <div class="shell camera-continuous-grid">
+    <div class="camera-file-diagram" aria-hidden="true">
+      <div class="camera-fragments"><i></i><i></i><i></i><i></i><i></i></div>
+      <span>Short camera files</span>
+      <b>↓</b>
+      <div class="camera-joined-file">One continuous ride</div>
+    </div>
+    <div>
+      <p class="eyebrow"><span>Why combine the files?</span></p>
+      <h2>A stable source for seeking, matching and extracting.</h2>
+      <p>Each camera’s clips are joined in sequence into a single large MP4. The video and audio streams are copied rather than re-encoded, making the operation quicker and avoiding an unnecessary generation of quality loss.</p>
+      <p>These continuous recordings become the working sources for video processing and make it much easier to reconstruct a selected time later.</p>
+    </div>
+  </div>
+</section>
+
+<section class="camera-matching shell" id="limitations" aria-labelledby="matching-title">
+  <div class="camera-section-heading camera-section-heading--light">
+    <p class="eyebrow"><span>Matching the two views</span><span>Current reality</span></p>
+    <h2 id="matching-title">Useful now, but not perfect.</h2>
+  </div>
+  <div class="camera-matching-grid">
+    <div class="camera-matching-copy">
+      <p>The processing pipeline detects likely vehicle events independently in the forward- and rear-facing recordings. It then uses the cameras’ displayed clocks, their stable timing difference and the physical handoff of a passing vehicle to decide which events belong together.</p>
+      <p>When confidence is high enough, the interface presents both views as one synchronised review clip. When it is not, the system deliberately avoids inventing a match.</p>
+    </div>
+    <aside class="camera-limit-card">
+      <span>LIMIT / STILL BEING TUNED</span>
+      <h3>Clip selection and pairing are not consistently right yet.</h3>
+      <p>The automatic selector can miss the strongest moment or choose a less useful window. The rear-facing pipeline also produces more usable clips than the forward-facing one, so some rear events have no confident front-camera partner.</p>
+      <p>Those events remain clearly marked as rear-only. Improving front-camera detection and the pairing rate is one of the project’s main next steps.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="camera-evidence" aria-labelledby="evidence-title">
+  <div class="shell">
+    <div class="camera-evidence-heading">
+      <p class="eyebrow"><span>Review to evidence</span></p>
+      <h2 id="evidence-title">The combined view finds the moment. The originals create the export.</h2>
+      <p>Selecting a significant moment does not simply save the review preview. The worker returns to the full-length front and rear recordings and cuts a separate two-minute file from each original source.</p>
+    </div>
+    <div class="camera-evidence-window" aria-label="Evidence time window">
+      <div><strong>−60 sec</strong><span>Context before</span></div>
+      <div class="camera-mark"><b>!</b><strong>Selected moment</strong><span>Exact player time</span></div>
+      <div><strong>+60 sec</strong><span>Context after</span></div>
+    </div>
+    <div class="camera-deliverables">
+      <div><span>F</span><strong>Front clip</strong><small>Separate original view</small></div>
+      <div><span>R</span><strong>Rear clip</strong><small>Separate original view</small></div>
+      <div><span>GPS</span><strong>Location</strong><small>With verification status</small></div>
+      <div><span>✓</span><strong>Evidence share</strong><small>Checksummed before publishing</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="camera-next shell" aria-labelledby="camera-next-title">
+  <div>
+    <p class="eyebrow"><span>What comes next</span></p>
+    <h2 id="camera-next-title">Turn more rear detections into dependable two-camera records.</h2>
+  </div>
+  <ol>
+    <li><span>01</span><p><strong>Improve forward-facing detection</strong> so that more genuine rear events have a candidate front view.</p></li>
+    <li><span>02</span><p><strong>Refine automatic clip selection</strong> around the most useful point in each pass.</p></li>
+    <li><span>03</span><p><strong>Measure pairing coverage</strong> against reviewed rides rather than relying on isolated examples.</p></li>
+    <li><span>04</span><p><strong>Keep the cautious fallback</strong> so an uncertain match stays rear-only instead of becoming misleading evidence.</p></li>
+  </ol>
+</section>
+
+<section class="camera-project-end">
+  <div class="shell">
+    <p class="eyebrow"><span>Project status / August 2026</span></p>
+    <h2>An automated workflow that is already useful—and honest about where it still needs work.</h2>
+    <a class="button button--solid" href="{{ '/documents/portfolio.html' | relative_url }}">Back to selected work <span aria-hidden="true">→</span></a>
+  </div>
+</section>
