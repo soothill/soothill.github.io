@@ -620,6 +620,19 @@ button, input, textarea, select { font: inherit; }
 .camera-flow-list small { margin-top: 8px; color: #81908d; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; }
 .camera-flow-list p { max-width: 550px; margin: 0; color: #aeb8b5; font-size: 14px; }
 
+.camera-interface { padding-block: clamp(86px, 10vw, 145px); border-bottom: 1px solid var(--line); background: var(--paper-light); }
+.camera-interface .camera-section-heading { margin-bottom: 36px; }
+.camera-interface-intro { max-width: 820px; margin: 0 0 55px auto; color: var(--ink-soft); font-size: 16px; line-height: 1.75; }
+.camera-interface-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(34px, 5vw, 70px) clamp(24px, 4vw, 52px); }
+.camera-interface-card { margin: 0; }
+.camera-interface-card--wide { grid-column: 1 / -1; }
+.camera-interface-card img { width: 100%; height: auto; display: block; border: 1px solid var(--ink); background: var(--soot); box-shadow: 10px 10px 0 var(--paper-deep); }
+.camera-interface-card figcaption { padding-top: 24px; display: grid; grid-template-columns: 42px 1fr; gap: 14px; }
+.camera-interface-card figcaption > span { color: var(--signal-dark); font-family: var(--font-mono); font-size: 10px; }
+.camera-interface-card figcaption strong { display: block; font-family: var(--font-serif); font-size: clamp(25px, 3vw, 36px); font-weight: 400; letter-spacing: -.035em; line-height: 1.05; }
+.camera-interface-card figcaption p { max-width: 670px; margin: 12px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
+.camera-interface-card--wide figcaption { max-width: 880px; }
+
 .camera-import { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(50px, 10vw, 145px); }
 .camera-import-copy h2 { margin-bottom: 35px; }
 .camera-import-copy code { padding: 2px 5px; background: var(--paper-deep); font-family: var(--font-mono); font-size: .82em; }
@@ -1013,6 +1026,11 @@ th { color: var(--paper-light); background: var(--soot); }
   .camera-facts-grid { grid-template-columns: 1fr; }
   .camera-facts-grid div, .camera-facts-grid div:nth-child(even) { min-height: 88px; padding: 18px 0; border-left: 0; }
   .camera-question, .camera-import, .camera-matching, .camera-next { padding-block: 72px; }
+  .camera-interface { padding-block: 72px; }
+  .camera-interface-intro { margin: 0 0 40px; }
+  .camera-interface-grid { grid-template-columns: 1fr; }
+  .camera-interface-card--wide { grid-column: auto; }
+  .camera-interface-card img { box-shadow: 6px 6px 0 var(--paper-deep); }
   .camera-flow-list li { grid-template-columns: 42px 1fr; gap: 15px; }
   .camera-flow-list li p { grid-column: 2; }
   .camera-file-diagram { min-height: 300px; padding: 26px; }
