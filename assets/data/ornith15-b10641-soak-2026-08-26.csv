@@ -1,0 +1,3 @@
+path,elapsed_seconds,structured_json_passed,isolation_passed,cache_pairs_passed,cancellation_recovery_passed,long_prose_passed,structured_median_tokens_per_second,structured_median_acceptance_pct,long_prose_median_tokens_per_second,long_prose_median_acceptance_pct,cache_hit_min_tokens,cache_hit_median_tokens,server_error_lines,gpu_fault_lines,production_overlap,passed
+direct-llama-server,1807.389692916011,150,150,150,150,3,67.46762119178238,54.02010050251256,49.82150973205057,38.51428571428571,4113,4113,0,0,false,true
+lemonade-11.7.0,1806.2348956020141,150,150,150,150,3,67.38148170698275,53.88471177944862,49.57188505010186,38.51428571428571,4113,4113,0,0,false,true
