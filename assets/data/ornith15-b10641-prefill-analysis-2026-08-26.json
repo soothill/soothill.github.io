@@ -1,0 +1,278 @@
+{
+  "run_id": "20260826T055054+0100",
+  "launch_order": [
+    "current-b10635",
+    "patched-b10641",
+    "patched-b10641",
+    "current-b10635"
+  ],
+  "records": 24,
+  "raw_samples": 120,
+  "repetitions_per_launch_cell": 5,
+  "launches_per_build": 2,
+  "summary_statistic": "median across ten raw observations per build/depth/ubatch cell",
+  "builds": {
+    "current-b10635": {
+      "build_commit": "b576dc7dc",
+      "build_number": 10635,
+      "model_filename": "Ornith-1.5-35B-Q6_K.gguf",
+      "model_size": 29197740544,
+      "model_n_params": 35505251456,
+      "backend": "Vulkan",
+      "gpu": "Radeon 8060S Graphics (RADV STRIX_HALO)"
+    },
+    "patched-b10641": {
+      "build_commit": "28a3e60",
+      "build_number": 1,
+      "model_filename": "Ornith-1.5-35B-Q6_K.gguf",
+      "model_size": 29197740544,
+      "model_n_params": 35505251456,
+      "backend": "Vulkan",
+      "gpu": "Radeon 8060S Graphics (RADV STRIX_HALO)"
+    }
+  },
+  "comparisons": [
+    {
+      "depth_tokens": 0,
+      "ubatch_tokens": 512,
+      "current_median_prompt_tokens_per_second": 924.755,
+      "patched_median_prompt_tokens_per_second": 972.9555,
+      "change_pct": 5.212245
+    },
+    {
+      "depth_tokens": 0,
+      "ubatch_tokens": 2048,
+      "current_median_prompt_tokens_per_second": 943.9455,
+      "patched_median_prompt_tokens_per_second": 1359.56,
+      "change_pct": 44.029502
+    },
+    {
+      "depth_tokens": 16384,
+      "ubatch_tokens": 512,
+      "current_median_prompt_tokens_per_second": 661.3205,
+      "patched_median_prompt_tokens_per_second": 695.099,
+      "change_pct": 5.107735
+    },
+    {
+      "depth_tokens": 16384,
+      "ubatch_tokens": 2048,
+      "current_median_prompt_tokens_per_second": 756.074,
+      "patched_median_prompt_tokens_per_second": 994.8115,
+      "change_pct": 31.575944
+    },
+    {
+      "depth_tokens": 32768,
+      "ubatch_tokens": 512,
+      "current_median_prompt_tokens_per_second": 533.4895,
+      "patched_median_prompt_tokens_per_second": 551.495,
+      "change_pct": 3.375043
+    },
+    {
+      "depth_tokens": 32768,
+      "ubatch_tokens": 2048,
+      "current_median_prompt_tokens_per_second": 635.2825,
+      "patched_median_prompt_tokens_per_second": 789.688,
+      "change_pct": 24.305014
+    }
+  ],
+  "launch_medians": [
+    {
+      "launch": "launch-1",
+      "build": "current-b10635",
+      "depth_tokens": 0,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 935.21
+    },
+    {
+      "launch": "launch-1",
+      "build": "current-b10635",
+      "depth_tokens": 0,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 984.194
+    },
+    {
+      "launch": "launch-1",
+      "build": "current-b10635",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 664.982
+    },
+    {
+      "launch": "launch-1",
+      "build": "current-b10635",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 765.549
+    },
+    {
+      "launch": "launch-1",
+      "build": "current-b10635",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 533.611
+    },
+    {
+      "launch": "launch-1",
+      "build": "current-b10635",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 640.151
+    },
+    {
+      "launch": "launch-2",
+      "build": "patched-b10641",
+      "depth_tokens": 0,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 975.704
+    },
+    {
+      "launch": "launch-2",
+      "build": "patched-b10641",
+      "depth_tokens": 0,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 1360.22
+    },
+    {
+      "launch": "launch-2",
+      "build": "patched-b10641",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 693.963
+    },
+    {
+      "launch": "launch-2",
+      "build": "patched-b10641",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 994.777
+    },
+    {
+      "launch": "launch-2",
+      "build": "patched-b10641",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 551.264
+    },
+    {
+      "launch": "launch-2",
+      "build": "patched-b10641",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 788.722
+    },
+    {
+      "launch": "launch-3",
+      "build": "patched-b10641",
+      "depth_tokens": 0,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 970.207
+    },
+    {
+      "launch": "launch-3",
+      "build": "patched-b10641",
+      "depth_tokens": 0,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 1357.17
+    },
+    {
+      "launch": "launch-3",
+      "build": "patched-b10641",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 695.122
+    },
+    {
+      "launch": "launch-3",
+      "build": "patched-b10641",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 996.857
+    },
+    {
+      "launch": "launch-3",
+      "build": "patched-b10641",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 551.726
+    },
+    {
+      "launch": "launch-3",
+      "build": "patched-b10641",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 790.04
+    },
+    {
+      "launch": "launch-4",
+      "build": "current-b10635",
+      "depth_tokens": 0,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 904.848
+    },
+    {
+      "launch": "launch-4",
+      "build": "current-b10635",
+      "depth_tokens": 0,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 891.465
+    },
+    {
+      "launch": "launch-4",
+      "build": "current-b10635",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 658.809
+    },
+    {
+      "launch": "launch-4",
+      "build": "current-b10635",
+      "depth_tokens": 16384,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 730.238
+    },
+    {
+      "launch": "launch-4",
+      "build": "current-b10635",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 512,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 533.436
+    },
+    {
+      "launch": "launch-4",
+      "build": "current-b10635",
+      "depth_tokens": 32768,
+      "ubatch_tokens": 2048,
+      "samples": 5,
+      "median_prompt_tokens_per_second": 617.369
+    }
+  ],
+  "files": {
+    "ornith15-b10641-prefill-2026-08-26.csv": "66793994eccccbe64298b405f1359fc6ab64af82a1211a79891c2acf371d88b3",
+    "ornith15-b10641-prefill-summary-2026-08-26.csv": "aca989a329ac9b5395d0ff7c6814620c0874d3a1b312a803e03c4917e48d39eb",
+    "ornith15-b10641-prefill-raw-2026-08-26.jsonl": "4413aa26fe9001028b09ec2db71e523166df598ccf485bc890b09e26748c2210",
+    "source_raw_jsonl": "4413aa26fe9001028b09ec2db71e523166df598ccf485bc890b09e26748c2210"
+  }
+}

@@ -1,5 +1,6 @@
 {
   "recorded_at": "2026-08-26",
+  "updated_at": "2026-08-26T06:13:05+01:00",
   "host": {
     "name": "evox3",
     "system": "GMKtec EVO-X3",
@@ -52,8 +53,32 @@
     "evict_weight_factor": 2.0
   },
   "qualification": {
-    "prefill_repetitions_per_cell": 3,
-    "zero_depth_launch_order": "A-B-B-A",
+    "prefill_refresh": {
+      "run_id": "20260826T055054+0100",
+      "launch_order": [
+        "current-b10635",
+        "patched-b10641",
+        "patched-b10641",
+        "current-b10635"
+      ],
+      "launches_per_build": 2,
+      "repetitions_per_launch_cell": 5,
+      "samples_per_build_cell": 10,
+      "benchmark_records": 24,
+      "raw_samples": 120,
+      "summary_statistic": "median across ten raw observations per build/depth/ubatch cell",
+      "gpu_fault_lines": 0,
+      "production_service_restored": true,
+      "current_llama_bench_sha256": "c66acb56b32c4924da0eafa54b1a30b6c95b4d96bdc95b6c785c731ff2e5763f",
+      "patched_llama_bench_sha256": "9aa1ca56899705003703c2f9af3e9059c6c3de9d0730997016a6748f76d0dbaa",
+      "vulkan_driver_sha256": "56947038530a3ba1b5a006b7d598fc42170a04aa666639dd6f825e6628d8453f",
+      "data_files": {
+        "ornith15-b10641-prefill-2026-08-26.csv": "66793994eccccbe64298b405f1359fc6ab64af82a1211a79891c2acf371d88b3",
+        "ornith15-b10641-prefill-summary-2026-08-26.csv": "aca989a329ac9b5395d0ff7c6814620c0874d3a1b312a803e03c4917e48d39eb",
+        "ornith15-b10641-prefill-raw-2026-08-26.jsonl": "4413aa26fe9001028b09ec2db71e523166df598ccf485bc890b09e26748c2210",
+        "ornith15-b10641-prefill-analysis-2026-08-26.json": "8476b9d1970f1fdff5b18380d20f9c776d0ee854ba491c36bc0a44b9a2a197c7"
+      }
+    },
     "direct_soak_seconds": 1807.389692916011,
     "lemonade_soak_seconds": 1806.2348956020141,
     "lemonade_soak_passed": true,

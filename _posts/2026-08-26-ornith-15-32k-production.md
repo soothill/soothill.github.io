@@ -3,7 +3,7 @@ layout: post
 title: "Ornith 1.5 on Strix Halo: the 32K production profile"
 seo_title: "Ornith 1.5 35B Vulkan performance on Strix Halo"
 date: 2026-08-26 04:21:44 +0100
-last_modified_at: 2026-08-26 04:21:44 +0100
+last_modified_at: 2026-08-26 06:13:05 +0100
 permalink: /blog/2026/08/26/ornith-15-32k-production/
 categories: [local-ai, engineering, benchmarks]
 tags: [ornith, llama-cpp, vulkan, mtp, lemonade, strix-halo, prompt-caching]
@@ -14,13 +14,13 @@ editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-26
 series: "Local LLMs on Strix Halo"
 series_order: 17
-description: "I qualified a patched Vulkan build for Ornith 1.5 35B on Strix Halo, lifting 32K prefill by 31% and passing two 30-minute production soaks."
+description: "I qualified a patched Vulkan build for Ornith 1.5 35B on Strix Halo, lifting 32K prefill by 24% and passing two 30-minute production soaks."
 ---
 
 > **Test record:** I compared two Vulkan `llama.cpp` builds with the same
 > 27.2GiB Ornith-1.5-35B Q6_K file on `evox3`, my 128GB Ryzen AI MAX+ 395 / Radeon
 > 8060S workstation. The safety-patched b10641 build increased prompt processing
-> by **47.5% at zero depth**, **33.2% at 16K** and **31.2% at 32K** when I used a
+> by **44.0% at zero depth**, **31.6% at 16K** and **24.3% at 32K** when I used a
 > 2,048-token physical batch. It then passed two separate 30-minute soaks: one
 > against `llama-server` directly and one through Lemonade 11.7.0. Each run
 > completed 150 structured responses, 150 isolation checks, 150 prompt-cache
@@ -52,27 +52,42 @@ built the source locally against the Vulkan stack already qualified on the
 machine.
 
 I kept the model, driver, flash-attention setting and Q8_0 K/V cache fixed. The
-control was my existing safety-patched b10635 Vulkan build. Each benchmark cell
-contains three samples. The zero-depth matrix was repeated in an A-B-B-A launch
-order so a warm machine or simple run order could not explain the difference.
+control was my existing safety-patched b10635 Vulkan build.
+
+After publication, a review caught a gap in the evidence file: it contained
+aggregate rows, while the article described them as complete samples. I reran
+the full matrix instead of trying to reconstruct measurements I had not kept.
+The replacement used two launches per build in A-B-B-A order. Every launch ran
+each depth and physical-batch cell five times, giving ten raw observations per
+build/cell and 120 observations overall. The table reports the median of those
+ten values.
 
 | Prompt position | Physical batch | b10635 prompt tok/s | Patched b10641 prompt tok/s | Change |
 | --- | ---: | ---: | ---: | ---: |
-| Start of context | 512 | 931.33 | 995.17 | +6.9% |
-| Start of context | 2,048 | 930.07 | 1,371.99 | **+47.5%** |
-| 16K depth | 2,048 | 744.09 | 991.16 | **+33.2%** |
-| 32K depth | 2,048 | 542.79 | 712.13 | **+31.2%** |
+| Start of context | 512 | 924.76 | 972.96 | +5.2% |
+| Start of context | 2,048 | 943.95 | 1,359.56 | **+44.0%** |
+| 16K depth | 2,048 | 756.07 | 994.81 | **+31.6%** |
+| 32K depth | 2,048 | 635.28 | 789.69 | **+24.3%** |
 
 At a 512-token physical batch, b10641 was a normal incremental improvement.
-At 2,048 it was a different result. The older build gained nothing from making
-the physical batch wider at zero depth; b10641 processed the same 2,048-token
-prompt at about 1,372 rather than 930 tokens per second.
+At 2,048 it was a different result. The older build gained 2.1% from making the
+physical batch wider at zero depth; b10641 gained 39.7% and processed the same
+2,048-token prompt at about 1,360 rather than 944 tokens per second.
 
 The advantage survived a filled cache. Inside b10641, moving from a 512- to a
-2,048-token physical batch increased prompt processing by 28.3% at 16K and
-10.9% at 32K. That is why the production recipe uses `batch=2048` and
+2,048-token physical batch increased prompt processing by 43.1% at 16K and
+43.2% at 32K. That is why the production recipe uses `batch=2048` and
 `ubatch=2048`. Copying the new binary while leaving the old 512-token
 micro-batch would discard much of the improvement I was trying to deploy.
+
+The counterbalanced launches also exposed why retaining the samples mattered.
+At zero depth and a 2,048-token physical batch, the two b10635 launch medians
+were 984.19 and 891.47 tokens per second. The patched launch medians were
+1,360.22 and 1,357.17. Across the ten raw observations, the old build's
+coefficient of variation was 5.1%; the patched build's was 0.7%. Even the
+slowest patched observation was faster than the fastest control observation in
+that cell. The improvement held, but the better evidence reduced the headline
+from 47.5% to 44.0% and made the run-to-run behaviour visible.
 
 I did not reproduce the release author's absolute 1,616–1,648 tokens per second.
 Those figures used a smaller Q4_K_M model, while my retained production quant
@@ -231,7 +246,10 @@ I kept the final arrangement because it has a narrow, defensible claim:
 - Qwen still owns the default route because this work did not repeat or reverse
   the developer-quality comparison.
 
-The complete [prefill samples](/assets/data/ornith15-b10641-prefill-2026-08-26.csv),
+The [120 individual prefill samples](/assets/data/ornith15-b10641-prefill-2026-08-26.csv),
+[raw `llama-bench` records](/assets/data/ornith15-b10641-prefill-raw-2026-08-26.jsonl),
+[prefill summary](/assets/data/ornith15-b10641-prefill-summary-2026-08-26.csv),
+[analysis record](/assets/data/ornith15-b10641-prefill-analysis-2026-08-26.json),
 [soak summary](/assets/data/ornith15-b10641-soak-2026-08-26.csv) and
 [deployment manifest](/assets/data/ornith15-b10641-production-manifest-2026-08-26.json)
 retain the unrounded measurements, model and runtime hashes, launch settings
