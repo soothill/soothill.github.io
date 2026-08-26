@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-08-26",
+  "host": {
+    "name": "evox3",
+    "system": "GMKtec EVO-X3",
+    "processor": "AMD Ryzen AI MAX+ 395",
+    "gpu": "Radeon 8060S",
+    "memory_gib": 128
+  },
+  "model": {
+    "name": "Ornith-1.5-35B-A3B-Q6_K",
+    "filename": "Ornith-1.5-35B-Q6_K.gguf",
+    "size_bytes": 29208731200,
+    "sha256": "1c4e5bb98a74c89a5d93a2488b5748b7b331daf77f6dbb64bd9b2ff864b64eb3"
+  },
+  "runtime": {
+    "llama_cpp_release": "b10641",
+    "source_commit": "28a3e60e5b0b162bec0c35527ea7247d00543fea",
+    "server_sha256": "debeaafb8cf09d64ea3d98cb5f6aa616e4150b6b03e1bd5618660c2775e27df9",
+    "production_safety_patch_sha256": "c04fee55c166a25fe696dea22ca1dce96fdfe43d496fb29e8a5ba8bc318fb396",
+    "vulkan_driver": "Strix Halo llama.cpp v0.6.11",
+    "lemonade_version": "11.7.0"
+  },
+  "profile": {
+    "public_aliases": [
+      "ornith",
+      "ornith35",
+      "Ornith-1.5-35B-A3B-Q6_K"
+    ],
+    "public_port": 13305,
+    "backend_binding": "loopback-only, Lemonade-managed",
+    "context_tokens": 32768,
+    "batch_tokens": 2048,
+    "ubatch_tokens": 2048,
+    "kv_key_type": "q8_0",
+    "kv_value_type": "q8_0",
+    "flash_attention": true,
+    "parallel_slots": 1,
+    "host_prompt_cache_mib": 8192,
+    "cache_prompt": true,
+    "cache_idle_slots": true,
+    "speculation": {
+      "type": "draft-mtp",
+      "adaptive": true,
+      "draft_n_min": 2,
+      "draft_n_max": 4,
+      "draft_p_min": 0
+    },
+    "auto_evict": true,
+    "downsize_idle_seconds": 120,
+    "evict_idle_seconds": 900,
+    "evict_weight_factor": 2.0
+  },
+  "qualification": {
+    "prefill_repetitions_per_cell": 3,
+    "zero_depth_launch_order": "A-B-B-A",
+    "direct_soak_seconds": 1807.389692916011,
+    "lemonade_soak_seconds": 1806.2348956020141,
+    "lemonade_soak_passed": true,
+    "server_error_lines": 0,
+    "gpu_fault_lines": 0,
+    "production_overlap": false
+  },
+  "boundaries": {
+    "qualified_context_tokens": 32768,
+    "model_architectural_context_tokens": 262144,
+    "not_tested": [
+      "64K or longer context with ubatch 2048",
+      "multi-slot serving",
+      "adaptive MTP against fixed MTP as a controlled performance A/B",
+      "power consumption"
+    ]
+  }
+}
