@@ -47,7 +47,7 @@ That was the starting point, not the end of the tuning. Once Vulkan had passed c
 | 3,149-token uncached request through Lemonade | **27.15 seconds** |
 | Same request with a prompt-cache hit | **0.73 seconds** |
 
-The optimized production release is registered in Lemonade as `Qwen3.8-Flash-Next-Q4KXL-PR27742-Fixed`. The two-slot design preserves a full 262,144-token context for each request; it does not turn either request into a 512K-context request.
+The optimised production release is registered in Lemonade as `Qwen3.8-Flash-Next-Q4KXL-PR27742-Fixed`. The two-slot design preserves a full 262,144-token context for each request; it does not turn either request into a 512K-context request.
 
 This is not evidence that Vulkan always beats ROCm. It is evidence that, for this experimental Qwen4Exp graph, this quantization, this llama.cpp build, and this AMD unified-memory architecture, Vulkan was the substantially better runtime.
 
@@ -160,11 +160,11 @@ The important llama.cpp arguments are:
 --override-tensor '^per_layer_token_embd[.]weight$=CPU'
 ```
 
-The earlier profile passed retrieval checks with context allocations of 16K, 32K, 64K, 128K, and 256K, followed by a correct 27,986-token retrieval through Lemonade. The optimized production profile then passed exact output, arithmetic, strict JSON and retrieval again. Its production retrieval result reached 103.05 prompt tokens/s and 15.41 generated tokens/s.
+The earlier profile passed retrieval checks with context allocations of 16K, 32K, 64K, 128K, and 256K, followed by a correct 27,986-token retrieval through Lemonade. The optimised production profile then passed exact output, arithmetic, strict JSON and retrieval again. Its production retrieval result reached 103.05 prompt tokens/s and 15.41 generated tokens/s.
 
 Two simultaneous exact-output requests started together and finished in 14.41 and 15.86 seconds. They delivered 13.81 aggregate tokens/s without a cache hit and 24.32 aggregate tokens/s with cached prefixes. Every answer was exact, and there were no GPU page faults, resets, device-loss messages or wedged-GPU events.
 
-I did not run a literal near-256K prompt. A simple linear estimate at the optimized 103–105 prompt tokens/s is about 42 minutes for a completely uncached 256K prefill, but real performance can fall as context grows. The allocation and execution path have been validated at 256K, and materially long retrieval has been validated at nearly 28K, but those are different claims. Lemonade's production timeout remains four hours so that a genuine 256K request is not cancelled prematurely.
+I did not run a literal near-256K prompt. A simple linear estimate at the optimised 103–105 prompt tokens/s is about 42 minutes for a completely uncached 256K prefill, but real performance can fall as context grows. The allocation and execution path have been validated at 256K, and materially long retrieval has been validated at nearly 28K, but those are different claims. Lemonade's production timeout remains four hours so that a genuine 256K request is not cancelled prematurely.
 
 ## Prompt caching changes repeat-request performance
 
