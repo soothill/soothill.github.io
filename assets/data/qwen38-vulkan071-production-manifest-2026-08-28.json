@@ -1,0 +1,96 @@
+{
+  "recorded_at": "2026-08-28T01:45:00+01:00",
+  "host": {
+    "name": "evox3",
+    "system": "GMKtec EVO-X3",
+    "processor": "AMD Ryzen AI MAX+ 395",
+    "gpu": "Radeon 8060S",
+    "memory_gb": 128,
+    "iommu_enabled": true
+  },
+  "model": {
+    "name": "Qwen3.8-Flash-Next-Q4KXL-PR27742-Fixed",
+    "quantisation": "UD-Q4_K_XL",
+    "shards": 4,
+    "approximate_size_gib": 103.7,
+    "source": "https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF"
+  },
+  "runtime": {
+    "llama_cpp_version": "0.1.0-dev",
+    "llama_cpp_build": 10637,
+    "llama_cpp_commit": "39817c47",
+    "llama_server_sha256": "27c7cb0668c6ac053f7958f76a7e1d544788b6b9740d75695379084255f7c04a",
+    "vulkan_bundle": "v0.7.1",
+    "vulkan_icd_manifest_sha256": "69a1dd23d3728031448ed8d7d4cf80878ee2e7e236f4a6ef934baed11995568c",
+    "vulkan_driver_library_sha256": "56947038530a3ba1b5a006b7d598fc42170a04aa666639dd6f825e6628d8453f",
+    "production_wrapper_sha256": "1f52bc0732a8a06aada918fdbd7764224cb184ba5ed4904e09e0700d9bb8458e",
+    "lemonade_version": "11.8.0",
+    "release_id": "20260828-v13-qwen4exp-v071-q8"
+  },
+  "profile": {
+    "public_port": 13305,
+    "backend": "127.0.0.1:8001",
+    "aliases": [
+      "Jarvis",
+      "llm",
+      "llm-exact",
+      "Qwen3.8-Flash-Next-Q4KXL-PR27742-Fixed"
+    ],
+    "total_context_tokens": 524288,
+    "parallel_slots": 2,
+    "context_tokens_per_slot": 262144,
+    "gpu_layers": 40,
+    "batch_tokens": 512,
+    "micro_batch_tokens": 128,
+    "kv_key_type": "q8_0",
+    "kv_value_type": "q8_0",
+    "host_prompt_cache_mib": 4096,
+    "cache_prompt": true,
+    "cache_idle_slots": false,
+    "load_mode": "mmap",
+    "speculative_decoding": "none",
+    "memory_guards": {
+      "minimum_start_mem_available_kib": 120000000,
+      "maximum_start_gtt_bytes": 1073741824,
+      "minimum_runtime_mem_available_gib": 18,
+      "maximum_runtime_gtt_gib": 90
+    }
+  },
+  "qualification": {
+    "production_cache_cycles": 20,
+    "production_cache_passed": true,
+    "production_concurrency_passed": true,
+    "soak_elapsed_seconds": 1820.4691155000037,
+    "soak_raw_runner_passed": false,
+    "soak_raw_runner_failures": [
+      "long_prose/1: generation below 17 tok/s",
+      "long_prose/2: generation below 17 tok/s",
+      "long_prose/3: generation below 17 tok/s"
+    ],
+    "soak_adjudication": "passed; 17 tok/s was an inherited threshold for a smaller speculative ROCmFPX profile, while the matched old-production baseline was 11.86 tok/s",
+    "post_soak_concurrency_passed": true,
+    "gpu_fault_lines": 0,
+    "fallback_loaded": false,
+    "initial_cutover_rollback": "passed; test request omitted Lemonade's required model field and received HTTP 400",
+    "final_cutover": "passed"
+  },
+  "retained_host_results": {
+    "qualification_root": "/home/darren/evox3-qwen4exp-improvement-qualification-20260827/results",
+    "old_baseline": "preferred-baseline",
+    "selected_candidate": "v0.7.1-q8-kv",
+    "soak": "v0.7.1-q8-kv-30m-soak",
+    "production": "/home/darren/evox3-llm-control/results/20260828-v13-qwen4exp-v071-q8",
+    "failed_cutover_evidence": "/home/darren/evox3-llm-control/results/20260828-v13-qwen4exp-v071-q8-failed-attempt1"
+  },
+  "boundaries": {
+    "longest_soak_prompt_tokens": 31012,
+    "longest_soak_completion_tokens": 768,
+    "not_tested": [
+      "two simultaneous near-262K prompts",
+      "24-hour memory trend",
+      "quality evaluation beyond the retained exact-output and developer cases",
+      "power consumption",
+      "operation with IOMMU disabled"
+    ]
+  }
+}
