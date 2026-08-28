@@ -1,0 +1,9 @@
+candidate,cache_type,slots,cold_prefill_tok_s,cycle_decode_median_tok_s,uncached_pair_tok_s,cached_pair_tok_s,peak_gtt_gib,result,reason
+Previous production b10707,F16,2,103.75661209521373,15.319327312019926,16.85670642445462,24.225217452931705,,baseline,existing preferred route
+Vulkan v0.7.1 F16,F16,2,,,,,,rejected,RADV reported insufficient command-submission memory then Vulkan device loss
+Vulkan v0.7.1 Q8,Q8_0,2,111.87024273924288,15.871898429098724,17.584079813626943,25.278118674350903,70.89294195175171,promoted,passed cache concurrency developer cases and 30-minute soak
+Previous b10707 plus tensor-read-lazy,F16,2,95.03022981321324,15.312431094585342,16.4807620428181,23.91115530778192,77.31284487247467,rejected,no useful memory reduction and slower prefill and concurrency
+EngramHalo Vulkan plain at 930918c,Q8_0,2,104.26932385565246,16.02078834987802,17.858715807503618,25.45833657011753,70.87107181549072,rejected as default,marginal decode gain but materially lower developer-workload prefill than selected profile
+EngramHalo Vulkan MTP plus ngram at 930918c,Q8_0,2,101.58315197133089,17.246490533294654,18.1489375971374,48.523586611799495,74.79614105820656,specialist only,45.36 tok/s code but prose fell to 14.44 tok/s at 61.7 percent draft acceptance
+EngramHalo ROCm 7.14 full offload at 930918c,Q8_0,1,,,,,,rejected,SVM mapping exceeded resident system memory limit with IOMMU retained
+EngramHalo ROCm 7.14 40-layer offload at 930918c,Q8_0,1,,,,,,rejected,SVM mapping exceeded resident system memory limit with IOMMU retained

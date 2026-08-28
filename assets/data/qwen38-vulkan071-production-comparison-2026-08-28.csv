@@ -1,0 +1,14 @@
+scope,metric,old_profile,new_profile,old_value,new_value,unit,change_percent,notes
+production,cold prefill for 3149-token cache probe,b10707 F16,v0.7.1 Q8,103.75661209521373,112.55735456689045,tokens_per_second,8.48210277297856,cache_prompt false
+production,median decode across 20 alternating cache cycles,b10707 F16,v0.7.1 Q8,15.319327312019926,15.901193149471576,tokens_per_second,3.7982466566603312,standard median of 20 observations
+production,two-request uncached aggregate,b10707 F16,v0.7.1 Q8,16.85670642445462,17.86489089556319,tokens_per_second,5.980910183296295,both exact outputs correct
+production,two-request cached aggregate,b10707 F16,v0.7.1 Q8,24.225217452931705,25.45180021092051,tokens_per_second,5.063247668971349,both exact outputs correct
+developer workload,structured JSON prompt,b10707 F16,v0.7.1 Q8,51.95394392632784,57.37763209785553,tokens_per_second,10.439415685589992,three samples per profile
+developer workload,structured JSON generation,b10707 F16,v0.7.1 Q8,16.96787531035629,18.115629156064667,tokens_per_second,6.764275577908374,three samples per profile
+developer workload,Python code prompt,b10707 F16,v0.7.1 Q8,55.73304526998562,61.027104111342155,tokens_per_second,9.498958500671751,old strict formatting result excluded from correctness comparison
+developer workload,Python code generation,b10707 F16,v0.7.1 Q8,16.589933457204836,17.608072783486737,tokens_per_second,6.137091079408363,old strict formatting result excluded from correctness comparison
+developer workload,prose prompt,b10707 F16,v0.7.1 Q8,47.97123745594221,52.305526675359786,tokens_per_second,9.035183266636126,three samples per profile
+developer workload,prose generation,b10707 F16,v0.7.1 Q8,16.385396808278145,16.818672213641012,tokens_per_second,2.644277770215298,three samples per profile
+production cache,cold wall time,v0.7.1 Q8,v0.7.1 Q8,28.609,28.609,seconds,0,3149 prompt tokens and zero cached tokens
+production cache,immediate same-slot wall time,v0.7.1 Q8 cold,v0.7.1 Q8 cache hit,28.609,0.697,seconds,-97.56300464818763,3145 of 3149 prompt tokens restored
+production cache,RAM-restored wall time,v0.7.1 Q8 cold,v0.7.1 Q8 RAM restore,28.609,0.683,seconds,-97.61263937921633,3145 of 3149 prompt tokens restored after alternate history

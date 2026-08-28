@@ -1,0 +1,13 @@
+record,elapsed_seconds,prompt_tokens,completion_tokens,cached_tokens,prompt_tok_s,generation_tok_s,wall_seconds,result,notes
+soak summary,1820.4691155000037,,,,,,,adjudicated pass,raw runner false only because three long requests were compared with an inapplicable 17 tok/s ROCmFPX threshold
+structured JSON count,,,,,,,,10 passed,median generation 17.934950656140053 tok/s
+isolation count,,,,,,,,10 passed,no cross-request response leakage
+cache-pair count,,,,,,,,10 passed,minimum and median cache hit 4116 tokens
+cancellation and recovery count,,,,,,,,10 passed,server recovered after cancelled streams
+long prose 1,,31012,768,0,77.36265413514737,12.172077951447216,463.9170681349933,functionally passed,raw runner threshold failure
+long prose 2,,31012,768,0,81.72803402281237,12.290909318167815,441.98969493100594,functionally passed,raw runner threshold failure
+long prose 3,,31012,768,0,81.73140965165616,12.500862999603426,440.9310164799972,functionally passed,raw runner threshold failure
+post-soak uncached concurrency,,,,,,,11.528,passed,aggregate generation 18.996476661270304 tok/s
+post-soak cached concurrency,,,,,,,8.677,passed,aggregate generation 25.24055525883871 tok/s
+resource samples,1820.4691155000037,,,,,,,1832 samples,minimum available 47855220 KiB; maximum GTT 76136181760 bytes; maximum RSS 24958700 KiB
+kernel fault capture,,,,,,,,passed,zero matching AMD GPU fault lines
