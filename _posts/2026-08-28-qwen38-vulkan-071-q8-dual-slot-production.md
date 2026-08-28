@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Qwen3.8 Flash Next: the Q8 cache made Vulkan 0.7.1 fit"
+title: "Qwen3.8 Flash Next: Vulkan 0.7.1 and Q8 in production"
 seo_title: "Qwen3.8 Vulkan 0.7.1 Q8 on AMD Strix Halo"
 date: 2026-08-28 01:45:00 +0100
-last_modified_at: 2026-08-28 01:45:00 +0100
+last_modified_at: 2026-08-28 02:12:00 +0100
 permalink: /blog/2026/08/28/qwen38-vulkan-071-q8-dual-slot-production/
 categories: [local-ai, benchmarks, engineering]
 tags: [qwen3.8, qwen4exp, llama-cpp, vulkan, strix-halo, lemonade, prompt-caching, long-context]
@@ -69,14 +69,22 @@ runtime: the experimental [Qwen4Exp
 implementation](https://github.com/ggml-org/llama.cpp/pull/27742), the v0.7.1
 Vulkan userspace bundle and the Q8 cache configuration.
 
-Q8 was not an optional afterthought. The first v0.7.1 run retained the F16 K/V
-cache and failed with `Not enough memory for command submission`, followed by
-a Vulkan device loss. The successful Q8 candidate peaked at 70.89 GiB of GTT,
-compared with 77.31 GiB for a separate two-slot F16 control on the current
-build. Minimum available system memory rose from 38.53 GiB to 46.12 GiB.
+The cache representation still mattered to qualification. The first v0.7.1
+run retained the F16 K/V cache and failed with `Not enough memory for command
+submission`, followed by a Vulkan device loss. The v0.7.1/Q8 candidate then
+completed the same two-slot test shape and peaked at 70.89 GiB of GTT.
 
-That 6.42 GiB reduction was the difference between a failed candidate and one
-worth measuring.
+A separate two-slot F16/lazy control on build 10707 peaked at 77.31 GiB, while
+minimum available system memory was 38.53 GiB rather than the Q8 candidate's
+46.12 GiB. That is useful directional evidence, but it is not a matched
+v0.7.1 F16 comparison. The runtime builds differ, and the failed v0.7.1/F16
+run did not produce a peak-GTT result. I therefore cannot attribute the 6.42
+GiB difference to Q8 alone or prove that K/V precision alone caused the first
+run to fail.
+
+The operational conclusion is narrower: v0.7.1/F16 failed under the tested
+profile, while v0.7.1/Q8 completed the qualification. I deployed the complete
+configuration that passed.
 
 ## The new baseline
 
@@ -233,10 +241,11 @@ precision, so the exact-output and developer checks are evidence for these
 workloads rather than a universal quality result.
 
 For the general Qwen route, I would keep the v0.7.1/Q8 profile now in
-production. It recovered enough memory to make the preferred dual-slot layout
-reliable and added roughly 4–8% where it matters, without changing how clients
-reach Lemonade. I would revisit the MTP branch only as an explicit
-high-acceptance coding profile, after a longer mixed-output qualification.
+production. It completed the preferred dual-slot qualification, used less GTT
+than the separate F16 control and added roughly 4–8% where it matters, without
+changing how clients reach Lemonade. I would revisit the MTP branch only as an
+explicit high-acceptance coding profile, after a longer mixed-output
+qualification.
 
 *Benchmark and deployment record: 28 August 2026. GMKtec EVO-X3; AMD Ryzen AI
 MAX+ 395 / Radeon 8060S; 128 GB unified memory; Lemonade 11.8.0; Qwen3.8 Flash
