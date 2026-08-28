@@ -9,7 +9,7 @@ categories: [local-ai, benchmarks, engineering]
 tags: [qwen3.8, qwen4exp, llama-cpp, vulkan, strix-halo, lemonade, prompt-caching, long-context]
 author: Darren Soothill
 editorial_standard: soothill-human-v1
-editorial_review_status: pending
+editorial_review_status: approved
 editorial_reviewer: Darren Soothill
 editorial_reviewed_at: 2026-08-28
 series: "Local LLMs on Strix Halo"
