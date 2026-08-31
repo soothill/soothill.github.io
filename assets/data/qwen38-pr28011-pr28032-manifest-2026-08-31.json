@@ -1,0 +1,130 @@
+{
+  "recorded_at": "2026-08-31T16:09:40+01:00",
+  "host": {
+    "name": "evox3",
+    "system": "GMKtec EVO-X3",
+    "processor": "AMD Ryzen AI MAX+ 395",
+    "gpu": "AMD Radeon 8060S",
+    "unified_memory_gib": 128,
+    "control_plane": "Lemonade 11.8.0 with the local stream-timeout and state-recovery fixes"
+  },
+  "model": {
+    "service_name": "Qwen3.8-Flash-Next-Q4KXL-PR27742-Fixed",
+    "repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+    "quantization": "UD-Q4_K_XL",
+    "shards": 4,
+    "total_bytes": 111334654784,
+    "total_gib": 103.688477,
+    "first_shard_sha256": "4448186216b3af4cc558bbce2c3213f01608f8f8b2e5267a9767971dd3ec8082"
+  },
+  "production_profile": {
+    "total_context_tokens": 524288,
+    "parallel_slots": 2,
+    "context_per_slot_tokens": 262144,
+    "gpu_layers": 40,
+    "batch_size": 512,
+    "micro_batch_size": 128,
+    "kv_cache_k": "Q8_0",
+    "kv_cache_v": "Q8_0",
+    "host_prompt_cache_mib": 4096,
+    "prompt_caching": true,
+    "idle_slot_caching": false,
+    "model_loading": "mmap",
+    "cpu_override": "per_layer_token_embd.weight",
+    "speculative_decoding": false,
+    "pinned": false,
+    "auto_evict": false
+  },
+  "qualified_base": {
+    "description": "Nathan Vulkan v0.7.1 Qwen4Exp production source",
+    "llama_cpp_commit": "39817c476489c37747854bebc29d375770618f1c",
+    "tree": "08d6cad46778aab6be0cbe4abe4f4bda53f1701c",
+    "reported_build": 10637,
+    "binary_sha256": "27c7cb0668c6ac053f7958f76a7e1d544788b6b9740d75695379084255f7c04a"
+  },
+  "candidates": {
+    "pr28011": {
+      "upstream_pull_request": "https://github.com/ggml-org/llama.cpp/pull/28011",
+      "upstream_status": "merged",
+      "upstream_head": "bde428964886372dd341e0dc82402df326a0235c",
+      "upstream_merge_commit": "62acc89c26c66076cb72e049f307fbe93b8b9750",
+      "local_commit": "b0696b3bb9253e312296b94f3f0956e4125e4e3d",
+      "local_tree": "a5346422d17903d001a71c7bff472f7538fe9ecd",
+      "patch_sha256": "8043ef3a476d8b05a66528f115b177bcaec711ef9489dcfa2a4fc81618a56f26",
+      "binary_sha256": "adb3bdaaa8a24c1aa801caeb1a99539a458b671ff1b23e72b96030daeb3aeda3",
+      "reported_build": 10638,
+      "served": true,
+      "functional_result": "passed",
+      "performance_result": "rejected",
+      "reason": "No measured gain; the targeted lanes were 3.5 to 5.0 percent slower, excluding the more cold-start-sensitive short-prefill medians."
+    },
+    "pr28032": {
+      "upstream_pull_request": "https://github.com/ggml-org/llama.cpp/pull/28032",
+      "upstream_status": "merged",
+      "upstream_head": "fcc4a22d64acc03e83c5a34292fd471154cc0d8b",
+      "upstream_merge_commit": "daef7b6874397a5a7c3d7e38b55e2ee0adf7da38",
+      "local_commit": "521036530e5e25f562a0527964c93a083fccff74",
+      "local_tree": "d95cbebceb6325debdd91dea2a919fdc964e1bf6",
+      "patch_sha256": "ce81bb09dbf2d72d977ab5f1716cc04f1461f7914b09eaf0a7a6d5a15f48dbb0",
+      "binary_sha256": "e26eb32ccc7152268c4a25ea42de42be8c0d4009692f167d0acea9c3aa6fee70",
+      "reported_build": 10638,
+      "backport_note": "The upstream diff was applied to the qualified base. One context hunk applied at fuzz 2; no source logic was manually rewritten.",
+      "top_k_backend_tests": {
+        "passed": 453,
+        "total": 453,
+        "log_sha256": "aa72e44ddadf487d3316ebb64b60721926eff0537bef800a05104d33ed0f50c1"
+      },
+      "served": false,
+      "functional_result": "failed availability gate",
+      "performance_result": "not measured",
+      "server_log_sha256": "1dfc4410116508099a89ee58dc9ea849a413e7c4a4cef07d1116c953ed75832f",
+      "failure": [
+        "radv/amdgpu: Not enough memory for command submission",
+        "ggml_vulkan: device lost on Vulkan0",
+        "vk::Queue::submit: ErrorDeviceLost"
+      ]
+    },
+    "combined": {
+      "local_commit": "37ff55f572cf223bb9c10acc19e8e4bb4a6d0e1b",
+      "local_tree": "e871e3fcc3148edf0fd51f08356d081aa2879f8f",
+      "binary_sha256": "7b2792a488612d47e290d32dcc78192d8479356ea1b9fc5ba4845f3c2055bbc4",
+      "served": false,
+      "decision": "not run after PR 28032 failed the prerequisite availability gate"
+    }
+  },
+  "materiality_rule": "Require more than 5 percent median improvement in a targeted lane, repeated in both long samples, with no correctness, cache, concurrency, memory, kernel or recovery regression.",
+  "pr28011_summary": {
+    "all_correctness_checks_passed": true,
+    "prompt_cache_cycles_passed": 20,
+    "concurrency_passed": true,
+    "prefill_9025_class_change_percent": -3.647218,
+    "prefill_35908_class_change_percent": -3.706784,
+    "decode_change_percent": -3.526850,
+    "uncached_two_slot_change_percent": -4.534624,
+    "cached_two_slot_change_percent": -5.009767,
+    "minimum_mem_available_gib": 44.281395,
+    "peak_gtt_gib": 70.901711
+  },
+  "pr28032_failure_summary": {
+    "minimum_mem_available_gib_before_failure": 48.779613,
+    "peak_gtt_gib_before_failure": 71.376801,
+    "served_requests": 0,
+    "kernel_evidence": [
+      "amdgpu_gem_va_ioctl: Couldn't update BO_VA (-12)",
+      "amdgpu_vm_pt_free kernel oops during failed-process cleanup"
+    ]
+  },
+  "recovery": {
+    "automatic_first_reload": "failed with the same device-loss residue",
+    "dead_task": "one zero-file-descriptor llama-server task remained in Z/X state with 32 MiB GTT",
+    "control_plane_restart": true,
+    "temporary_recovery_override": "A non-persistent PATH shim ignored only Z/X llama-server tasks for one guarded launch and continued to reject any live task.",
+    "temporary_override_removed": true,
+    "production_qwen_ready": true,
+    "npu_helper_ready": true,
+    "production_probe": "RECOVERY-OK",
+    "production_profile_reverified": true,
+    "remaining_note": "The kernel-dead task remains visible until the host next reboots but holds no model or GPU memory."
+  },
+  "runner_sha256": "28d3615b593e63f14302fec7952c2597580a118738c45a7a5624673254bab5ff"
+}
