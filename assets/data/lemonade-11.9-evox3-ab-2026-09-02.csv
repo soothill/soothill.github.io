@@ -1,0 +1,15 @@
+scope,metric,lemonade_11_8,lemonade_11_9,change,unit,result
+fixed_benchmark,executable_tasks_passed,30,31,1,tasks,pass
+fixed_benchmark,task_errors,0,0,0,errors,pass
+fixed_benchmark,uncached_prefill,195.661,195.579,-0.04,percent,inside_noise
+fixed_benchmark,decode,18.931,18.567,-1.93,percent,inside_noise
+fixed_benchmark,median_streaming_ttft,0.2624,0.2556,-2.60,percent,improved_inside_noise
+fixed_benchmark,median_task_wall,7.237,7.627,5.39,percent,variable_workload
+fixed_benchmark,p95_task_wall,41.654,42.173,1.25,percent,variable_workload
+fixed_benchmark,median_task_prompt,99.798,92.657,-7.16,percent,variable_workload
+fixed_benchmark,median_task_decode,19.023,18.367,-3.45,percent,variable_workload
+capability_route,Jarvis,2.080,1.818,-12.60,seconds,same_marker
+capability_route,llm,0.846,1.908,125.53,seconds,same_marker
+capability_route,llm-reasoning,17.587,15.878,-9.72,seconds,same_marker
+capability_route,deepseek-code,47.596,42.249,-11.24,seconds,same_marker
+capability_route,deepseek-flash,76.847,53.724,-30.09,seconds,same_marker
