@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-09-02",
+  "host": {
+    "name": "evox3",
+    "system": "GMKtec EVO-X3",
+    "processor": "AMD Ryzen AI MAX+ 395",
+    "gpu": "AMD Radeon 8060S",
+    "unified_memory_gib": 128
+  },
+  "release": {
+    "version": "11.9.0",
+    "commit": "bb39eafc22aa7e57fc7aeb8b7d384d70b44a4531",
+    "archive": "lemonade-embeddable-11.9.0-ubuntu-x64.tar.gz",
+    "archive_sha256": "a18beaf78b5e30996087d1387683a6a5b4207cdd50f0a8ed7d7dc88823eb204d",
+    "installed_lemond_sha256": "0a164f82fc7504a43ef2d5f7da5ecc54ddefc2354e0d5ba2c539086129bcb118",
+    "previous_effective_lemond_sha256": "4ede68b1be45ff176428910f9e3cc90980fe6c8f6ee1f99f718a7d4aa898bf1e"
+  },
+  "comparison_lock": {
+    "benchmark_signature": "16cf9033cea9b566e10b95fdc8fd8526fcc41aeaa3f45e4fa0bf220f3df89fa9",
+    "model_fingerprint": "f425f930be7fca1f95e064b4e7eb64682685e6a8244e16f08a690a69933a96ac",
+    "tasks": 40,
+    "temperature": 0,
+    "seed": 1
+  },
+  "production_shape": {
+    "model": "Qwen3.8-Flash-Next-Q4KXL-PR27742-Fixed",
+    "ctx_size": 524288,
+    "parallel_slots": 2,
+    "gpu_layers": 40,
+    "cache_type_k": "q8_0",
+    "cache_type_v": "q8_0",
+    "prompt_cache_mib": 4096
+  },
+  "preserved_state": {
+    "model_ids": 13,
+    "aliases": 6,
+    "state_json_files_byte_identical": true,
+    "inference_backend_changed": false,
+    "model_changed": false
+  },
+  "decision": "retain Lemonade 11.9.0 in production",
+  "rollback_preserved": true
+}
