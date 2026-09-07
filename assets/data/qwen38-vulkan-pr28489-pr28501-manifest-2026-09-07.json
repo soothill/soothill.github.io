@@ -1,0 +1,196 @@
+{
+  "recorded_at": "2026-09-07T13:20:00+01:00",
+  "host": {
+    "name": "evox3",
+    "system": "GMKtec EVO-X3",
+    "processor": "AMD Ryzen AI MAX+ 395",
+    "gpu": "Radeon 8060S",
+    "vulkan_device": "RADV STRIX_HALO",
+    "memory_gib": 128
+  },
+  "production_control": {
+    "model_name": "Qwen3.8-Flash-Next-Q4KXL-PR27742-Fixed",
+    "llama_cpp_commit": "39817c476489c37747854bebc29d375770618f1c",
+    "llama_server_sha256": "27c7cb0668c6ac053f7958f76a7e1d544788b6b9740d75695379084255f7c04a",
+    "vulkan_bundle": "v0.7.1",
+    "lemonade_version": "11.9.0",
+    "screening": {
+      "prefill_8192_tokens_per_second": 77.27658840477979,
+      "prefill_32768_tokens_per_second": 85.74292847098909,
+      "single_decode_tokens_per_second": 15.698330957583726,
+      "two_stream_aggregate_tokens_per_second": 6.811377411589368,
+      "note": "Sanity control only. The production source predates the row-hoisting machinery required by PR 28501, so PR effects are attributed only from exact upstream base/head pairs."
+    }
+  },
+  "model": {
+    "repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+    "quantisation": "UD-Q4_K_XL",
+    "total_bytes": 111334654784,
+    "total_gib": 103.688477,
+    "shards": [
+      {"file": "Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf", "bytes": 10946624},
+      {"file": "Qwen3.8-Flash-Next-UD-Q4_K_XL-00002-of-00004.gguf", "bytes": 49859583136},
+      {"file": "Qwen3.8-Flash-Next-UD-Q4_K_XL-00003-of-00004.gguf", "bytes": 49376141504},
+      {"file": "Qwen3.8-Flash-Next-UD-Q4_K_XL-00004-of-00004.gguf", "bytes": 12087983520}
+    ]
+  },
+  "profile": {
+    "total_context_tokens": 524288,
+    "parallel_slots": 2,
+    "context_tokens_per_slot": 262144,
+    "gpu_layers": 40,
+    "batch_tokens": 512,
+    "micro_batch_tokens": 128,
+    "flash_attention": true,
+    "kv_key_type": "q8_0",
+    "kv_value_type": "q8_0",
+    "host_prompt_cache_mib": 4096,
+    "prompt_caching": true,
+    "idle_slot_caching": false,
+    "load_mode": "mmap",
+    "per_layer_token_embedding": "CPU",
+    "speculative_decoding": "none"
+  },
+  "toolchain": {
+    "compiler": "GNU 13.3.0",
+    "build_type": "Release",
+    "ggml_native": false,
+    "llama_curl": false,
+    "glslc": "shaderc v2026.3",
+    "glslc_sha256": "b91ab31aa56c7a6034a242e483f863ca6f9606571ba1cfb329ef6cb79a40234b"
+  },
+  "pull_requests": {
+    "28489": {
+      "title": "vulkan: make MMVQ path selection independent of batch size",
+      "url": "https://github.com/ggml-org/llama.cpp/pull/28489",
+      "state_at_test": "OPEN",
+      "draft_at_test": false,
+      "merge_state_at_test": "BLOCKED",
+      "base_commit": "73a43d1f69345aee8bb186ef4b3172cef892f2e5",
+      "head_commit": "ef94c0910bc1d6b9bd28507dd7d1f3904ac7cf62",
+      "binary_diff_sha256": "11df07ddeefcf62fdda2e6f66efc09740e44d04cd4f70c3e50bc4412556f8ed7",
+      "changed_files": [
+        "ggml/src/ggml-vulkan/ggml-vulkan.cpp",
+        "tests/test-backend-ops.cpp"
+      ],
+      "base_llama_server_sha256": "7b24821f66ac9b457c6c3e4766863b69770790a8002b125f172f7397a0d4dbe0",
+      "head_llama_server_sha256": "258a88040ea54f32b50001e1c15d4c21bf399c1b0ca66b34727d798821ce8532",
+      "base_libggml_vulkan_sha256": "182ab58d6562fbae5050e6e3c1d2137a2dce83845a2323dee101bde99cf7e1f3",
+      "head_libggml_vulkan_sha256": "aa37d62890eba6c93e972538d7c1a96163320813b3ffde7112764f306b48c2de"
+    },
+    "28501": {
+      "title": "vulkan: raise the hoisted row-id limit for mul_mat_id from 256 to 512 experts",
+      "url": "https://github.com/ggml-org/llama.cpp/pull/28501",
+      "state_at_test": "OPEN",
+      "draft_at_test": true,
+      "merge_state_at_test": "BLOCKED",
+      "base_commit": "465e49b9cea78a68b9c244ffb48d0ee24a82873d",
+      "head_commit": "266464c8a331279e157603d9a8728cc79ed5860a",
+      "binary_diff_sha256": "b0c1da46a5630667ee7a73ed8be1d0d2d38a901673d7ab0f55e4d181be5f046e",
+      "changed_files": [
+        "ggml/src/ggml-vulkan/ggml-vulkan.cpp",
+        "ggml/src/ggml-vulkan/vulkan-shaders/count_experts.comp",
+        "tests/test-backend-ops.cpp"
+      ],
+      "base_llama_server_sha256": "7c5cadd4b0f646024c3a9c4aff9ae4d4a5a2d49514745d3db4bde65721d1b01a",
+      "head_llama_server_sha256": "e5f9ce100a211667febd77af8ab57ac0b564db10314c353730c0f9fab1ed6f3d",
+      "base_libggml_vulkan_sha256": "e00319e20bccf06b64955245a42f71d6da68f97ce2681df18939a2a2e0a76f66",
+      "head_libggml_vulkan_sha256": "dbf889087e07da7529e5031b544c829505f536c9ea9ce2759afd6c93366c5916"
+    }
+  },
+  "method": {
+    "materiality_threshold_percent": 5,
+    "sampler": {"temperature": 0, "top_k": 1, "top_p": 1, "seed": 2848928501},
+    "request_cache_prompt": false,
+    "distinct_prefix_per_measured_request": true,
+    "prefill_repetitions_per_pair": 2,
+    "pairing": "base/head compared at the same first or warmed ordinal",
+    "start_gate": {"minimum_mem_available_kib": 115000000, "maximum_gtt_bytes": 1073741824},
+    "runtime_guard": {"minimum_mem_available_gib": 18, "maximum_gtt_gib": 96}
+  },
+  "results": {
+    "28489": {
+      "prefill_8192": {
+        "base": [77.73598989288107, 91.68077126460001],
+        "head": [78.36019580191842, 92.94228001188809],
+        "paired_delta_percent": [0.802982, 1.375980],
+        "base_median": 84.70838057874053,
+        "head_median": 85.65123790690325,
+        "median_delta_percent": 1.113063,
+        "outputs_match": true
+      },
+      "screening": {
+        "single_decode_base": 16.96157110569581,
+        "single_decode_head": 16.972706289408503,
+        "single_decode_delta_percent": 0.065649,
+        "two_stream_aggregate_base": 7.0476923292519835,
+        "two_stream_aggregate_head": 6.920061313312635,
+        "two_stream_delta_percent": -1.810962,
+        "note": "Single screening pass; generation text remained coherent but exact generation hashes changed with the kernel route."
+      },
+      "decision": "No material production performance benefit"
+    },
+    "28501": {
+      "prefill_8192": {
+        "base": [77.95161920022113, 92.56029690148088],
+        "head": [77.84748182848666, 93.21662272812604],
+        "paired_delta_percent": [-0.133592, 0.709079],
+        "base_median": 85.25595805085100,
+        "head_median": 85.53205227830635,
+        "median_delta_percent": 0.323842,
+        "outputs_match": true
+      },
+      "prefill_32768": {
+        "base": [84.54563773783006, 88.17253246094780],
+        "head": [85.03084634026213, 88.13454963421245],
+        "paired_delta_percent": [0.573901, -0.043078],
+        "base_median": 86.35908509938893,
+        "head_median": 86.58269798723728,
+        "median_delta_percent": 0.258934,
+        "outputs_match": true
+      },
+      "screening": {
+        "single_decode_base": 16.143651357025973,
+        "single_decode_head": 16.567954719779753,
+        "single_decode_delta_percent": 2.628299,
+        "note": "Single screening pass; below the materiality threshold and outside the changed prefill path."
+      },
+      "vulkan_mul_mat_id_tests": {"executed": 891, "command_exit_code": 0},
+      "decision": "No material production performance benefit at batch 512 / micro-batch 128"
+    }
+  },
+  "resources": {
+    "28489": {
+      "base_min_mem_available_gib": 47.855,
+      "head_min_mem_available_gib": 48.295,
+      "base_peak_gtt_gib": 70.718,
+      "head_peak_gtt_gib": 70.718
+    },
+    "28501": {
+      "base_min_mem_available_gib": 46.195,
+      "head_min_mem_available_gib": 46.872,
+      "base_peak_gtt_gib": 70.783,
+      "head_peak_gtt_gib": 70.827
+    },
+    "guard_stops": 0,
+    "gpu_faults_observed": 0
+  },
+  "recovery": {
+    "production_restored": true,
+    "production_model_ready": true,
+    "production_model_pinned": false,
+    "production_auto_evict": false,
+    "qwen35_npu_resident": true,
+    "qwen38_warmer_active": true,
+    "qwen38_residency_guard_active": true,
+    "inhibitor_removed": true
+  },
+  "boundaries": [
+    "One host and one Q4_K_XL model",
+    "No 262K prefill repetition",
+    "Speculative decoding disabled, matching production",
+    "Not a perplexity or broad answer-quality evaluation",
+    "PR 28489 focused test filter matched no cases and is excluded from claims",
+    "PR 28501 upstream author used Q5_K with batch 2048; this record does not refute that configuration"
+  ]
+}
