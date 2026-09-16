@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-16",
+  "hardware": {
+    "system": "GMKtec EVO-X3",
+    "cpu": "AMD Ryzen AI Max+ 395",
+    "gpu": "Radeon 8060S / gfx1151",
+    "installed_ram_gb": 128,
+    "linux_visible_ram_gib_approx": 124
+  },
+  "os": "Ubuntu 24.04.4; kernel 6.17.0-40-generic",
+  "runtime": {
+    "rocm": "7.14.0",
+    "torch": "2.11.0+rocm7.14.0",
+    "triton": "3.7.1+git0263a6a6.rocm7.14.0",
+    "transformers": "5.14.1",
+    "compressed_tensors": "0.17.0",
+    "safetensors": "0.8.0"
+  },
+  "checkpoint": {
+    "repository": "wtdcode/Qwen3.8-Flash-Next-AWQ-W4A16",
+    "revision": "0939125b929543a783ce700c90e36dd1a575c00c",
+    "text_backbone_gib": 67.225,
+    "ple_bf16_gib": 95.368
+  },
+  "vllm": {
+    "base_commit": "d4d0f73ef171154eac6f1914dca47001d662cfbb",
+    "local_changes": [
+      "HIP discovery fallback",
+      "disk-backed BF16 PLE lookup and loader adaptation",
+      "AMD QSA optional FlashAttention dependency fixes"
+    ],
+    "reused_native_extensions": true,
+    "max_model_len": 33280,
+    "max_num_seqs": 2,
+    "max_num_batched_tokens": 256,
+    "kv_cache_gib": 4,
+    "kv_dtype": "BF16",
+    "eager": true,
+    "tensor_parallel_size": 1
+  },
+  "baseline": {
+    "engine": "llama.cpp Vulkan v0.7.1",
+    "checkpoint": "Qwen3.8-Flash-Next-UD-Q4_K_XL",
+    "checkpoint_gib": 103.688,
+    "gpu_layers": 40,
+    "context_per_slot": 33280,
+    "slots": 2,
+    "kv_dtype": "Q8",
+    "batch": 512,
+    "microbatch": 128
+  },
+  "protocol": {
+    "input_tokens": [
+      512,
+      8192,
+      32768
+    ],
+    "clients": [
+      1,
+      2
+    ],
+    "waves_per_case": 3,
+    "reported_waves": [
+      1,
+      2
+    ],
+    "max_output_tokens": 128,
+    "temperature": 0,
+    "identical_input_token_ids": true,
+    "prefix_reuse": false,
+    "speculation": false,
+    "npu_unloaded": true
+  },
+  "validation": {
+    "retrieval_correct_per_engine": "27/27",
+    "http_errors_per_engine": 0,
+    "amd_qsa_tests_passed": 10,
+    "production_configuration_hashes_unchanged": 4,
+    "production_restored": true
+  },
+  "limitations": [
+    "Different quantisation, KV and placement: deployment comparison, not engine-only.",
+    "Two reported repeats, not confidence intervals.",
+    "Repeated filler does not qualify cold diverse-text disk access.",
+    "Text only; vision and MTP disabled.",
+    "No simultaneous vLLM/NPU qualification.",
+    "Development source with local patches; no clean stock-wheel build validation."
+  ]
+}
